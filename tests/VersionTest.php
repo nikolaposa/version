@@ -61,6 +61,25 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         new Version(2, 1, 'patch');
     }
 
+    /**
+     * @dataProvider getComparisonSet
+     */
+    public function testVersionComparison($v1, $v2, $result)
+    {
+        $version1 = Version::fromString($v1);
+        $version2 = Version::fromString($v2);
+
+        static $resultMethodMap = [
+            -1 => 'isLesserThan',
+            0 => 'isEqualTo',
+            1 => 'isGreaterThan'
+        ];
+
+        $method = $resultMethodMap[$result];
+
+        $this->assertTrue($version1->$method($version2));
+    }
+
     public static function getNormalVersionsSet()
     {
         return array(
@@ -68,6 +87,25 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             array('1.10.0', 1, 10, 0),
             array('2.5.4', 2, 5, 4),
             array('2.1.17', 2, 1, 17),
+        );
+    }
+
+    public static function getComparisonSet()
+    {
+        return array(
+            array('2.1.1', '2.1.0', 1),
+            array('1.10.1', '2.1.0', -1),
+            array('1.0.0', '1.0.0', 0),
+            array('1.0.0', '1.0.0-alpha', 1),
+            array('1.0.0-alpha', '1.0.0-beta', -1),
+            array('1.0.0-alpha.1', '1.0.0-alpha', 1),
+            array('1.0.0-alpha.1', '1.0.0-alpha', 1),
+            array('1.0.0-alpha.beta', '1.0.0-alpha.1', 1),
+            array('1.0.0-beta', '1.0.0-alpha.beta', 1),
+            array('1.0.0-beta.11', '1.0.0-beta.2', 1),
+            array('1.0.0-rc.1', '1.0.0-beta.11', 1),
+            array('1.0.0', '1.0.0-rc.1', 1),
+            array('1.0.0-alpha+20150919', '1.0.0-alpha+exp.sha.5114f85', 0),
         );
     }
 }

@@ -162,4 +162,69 @@ final class Version
     {
         return $this->getVersionString();
     }
+
+    /**
+     * @param self $version
+     * @return int
+     */
+    private function compareTo(Version $version)
+    {
+        if ($this->major > $version->major) {
+            return 1;
+        }
+
+        if ($this->major < $version->major) {
+            return -1;
+        }
+
+        if ($this->minor > $version->minor) {
+            return 1;
+        }
+
+        if ($this->minor < $version->minor) {
+            return -1;
+        }
+
+        if ($this->patch > $version->patch) {
+            return 1;
+        }
+
+        if ($this->patch < $version->patch) {
+            return -1;
+        }
+
+        //... major, minor, and patch are equal, compare pre-releases
+
+        if (!$this->preRelease && $version->preRelease) {
+            // normal version has greater precedence than a pre-release version version
+            return 1;
+        }
+
+        if ($this->preRelease && !$version->preRelease) {
+            // pre-release version has lower precedence than a normal version
+            return -1;
+        }
+
+        if ($this->preRelease && $version->preRelease) {
+            return $this->preRelease->compareTo($version->preRelease);
+        }
+
+        // ... equal
+        return 0;
+    }
+
+    public function isEqualTo(Version $version)
+    {
+        return $this->compareTo($version) == 0;
+    }
+
+    public function isGreaterThan(Version $version)
+    {
+        return $this->compareTo($version) == 1;
+    }
+
+    public function isLesserThan(Version $version)
+    {
+        return $this->compareTo($version) == -1;
+    }
 }
