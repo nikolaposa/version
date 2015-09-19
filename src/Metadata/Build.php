@@ -13,10 +13,8 @@ namespace Version\Metadata;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-final class Build
+final class Build extends BaseIdentifyingMetadata
 {
-    use IdentifyingMetadata;
-
     protected static function getIdentifierClass()
     {
         return 'Version\Identifier\Build';

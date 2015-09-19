@@ -13,10 +13,8 @@ namespace Version\Metadata;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-final class PreRelease
+final class PreRelease extends BaseIdentifyingMetadata
 {
-    use IdentifyingMetadata;
-
     protected static function getIdentifierClass()
     {
         return 'Version\Identifier\PreRelease';

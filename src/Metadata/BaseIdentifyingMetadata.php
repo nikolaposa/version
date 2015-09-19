@@ -16,7 +16,7 @@ use Version\Identifier\Identifier;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-trait IdentifyingMetadata
+abstract class BaseIdentifyingMetadata
 {
     /**
      * @var Identifier[]
@@ -62,7 +62,7 @@ trait IdentifyingMetadata
             $identifiers = [new $identifierClass($identifiersString)];
         }
 
-        return new self($identifiers);
+        return new static($identifiers);
     }
 
     /**
