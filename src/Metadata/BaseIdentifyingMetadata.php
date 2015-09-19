@@ -24,6 +24,11 @@ abstract class BaseIdentifyingMetadata
     protected $identifiers;
 
     /**
+     * @var string
+     */
+    protected static $identifierClass = null;
+
+    /**
      * @param array $identifiers
      */
     public function __construct(array $identifiers)
@@ -34,18 +39,13 @@ abstract class BaseIdentifyingMetadata
     }
 
     /**
-     * @return string
-     */
-    abstract protected static function getIdentifierClass();
-
-    /**
      * @param string $identifiersString
      * @return self
      * @throws InvalidIdentifierException
      */
     public static function fromString($identifiersString)
     {
-        $identifierClass = static::getIdentifierClass();
+        $identifierClass = static::$identifierClass;
 
         if (strpos($identifiersString, '.') !== false) {
             $identifiers = [];
@@ -72,7 +72,7 @@ abstract class BaseIdentifyingMetadata
      */
     protected function validateIdentifiers(array $identifiers)
     {
-        $identifierClass = static::getIdentifierClass();
+        $identifierClass = static::$identifierClass;
 
         foreach ($identifiers as $identifier) {
             if (!$identifier instanceof $identifierClass) {

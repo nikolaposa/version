@@ -15,8 +15,5 @@ namespace Version\Metadata;
  */
 final class Build extends BaseIdentifyingMetadata
 {
-    protected static function getIdentifierClass()
-    {
-        return 'Version\Identifier\Build';
-    }
+    protected static $identifierClass = 'Version\Identifier\Build';
 }

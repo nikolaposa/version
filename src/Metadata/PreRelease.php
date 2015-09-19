@@ -15,10 +15,7 @@ namespace Version\Metadata;
  */
 final class PreRelease extends BaseIdentifyingMetadata
 {
-    protected static function getIdentifierClass()
-    {
-        return 'Version\Identifier\PreRelease';
-    }
+    protected static $identifierClass = 'Version\Identifier\PreRelease';
 
     /**
      * @param self $preRelease
