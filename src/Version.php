@@ -126,7 +126,7 @@ final class Version
     }
 
     /**
-     * @return PreRelease[]
+     * @return PreRelease
      */
     public function getPreRelease()
     {
@@ -134,7 +134,7 @@ final class Version
     }
 
     /**
-     * @return Build[]
+     * @return Build
      */
     public function getBuild()
     {
@@ -150,8 +150,8 @@ final class Version
             $this->major
             . '.' . $this->minor
             . '.' . $this->patch
-            . (!empty($this->preRelease) ? '-' . implode('.', $this->preRelease) : '')
-            . (!empty($this->build) ? '+' . implode('.', $this->build) : '')
+            . (isset($this->preRelease) ? '-' . (string) $this->preRelease : '')
+            . (isset($this->build) ? '+' . (string) $this->build : '')
         ;
     }
 

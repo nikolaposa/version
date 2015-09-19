@@ -80,6 +80,14 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($version1->$method($version2));
     }
 
+    public function testVersionPrinting()
+    {
+        $this->assertEquals('2.1.0', (string) (new Version(2, 1, 0)));
+        $this->assertEquals('1.0.0+20150919', (string) Version::fromString('1.0.0+20150919'));
+        $this->assertEquals('1.0.0+exp.sha.5114f85', (string) Version::fromString('1.0.0+exp.sha.5114f85'));
+        $this->assertEquals('1.0.0-alpha.1+exp.sha.5114f85', (string) Version::fromString('1.0.0-alpha.1+exp.sha.5114f85'));
+    }
+
     public static function getNormalVersionsSet()
     {
         return array(
