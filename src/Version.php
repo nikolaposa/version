@@ -220,11 +220,11 @@ final class Version
 
     public function isGreaterThan(Version $version)
     {
-        return $this->compareTo($version) == 1;
+        return $this->compareTo($version) > 0;
     }
 
     public function isLesserThan(Version $version)
     {
-        return $this->compareTo($version) == -1;
+        return $this->compareTo($version) < 0;
     }
 }

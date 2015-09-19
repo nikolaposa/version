@@ -19,7 +19,7 @@ final class PreRelease extends BaseIdentifyingMetadata
 
     /**
      * @param self $preRelease
-     * @return int (1 if $this > $preRelease, -1 if $this < $preRelease, 0 if equal)
+     * @return int (> 0 if $this > $preRelease, < 0 if $this < $preRelease, 0 if equal)
      */
     public function compareTo(PreRelease $preRelease)
     {
@@ -51,31 +51,12 @@ final class PreRelease extends BaseIdentifyingMetadata
             }
 
             if (ctype_digit($pr1IdVal) && ctype_digit($pr2IdVal)) {
-                $pr1IdDigit = (int) $pr1IdVal;
-                $pr2IdDigit = (int) $pr2IdVal;
-
-                if ($pr1IdDigit > $pr2IdDigit) {
-                    return 1;
-                }
-
-                if ($pr1IdDigit < $pr2IdDigit) {
-                    return -1;
-                }
-
-                return 0;
+                return (int) $pr1IdVal - (int) $pr2IdVal;
             }
 
             return strcmp($pr1IdVal, $pr2IdVal);
         }
 
-        if ($pr1Count > $pr2Count) {
-            return 1;
-        }
-
-        if ($pr1Count < $pr2Count) {
-            return -1;
-        }
-
-        return 0;
+        return $pr1Count - $pr2Count;
     }
 }
