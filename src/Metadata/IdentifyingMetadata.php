@@ -10,7 +10,7 @@
 
 namespace Version\Metadata;
 
-use Version\Exception\InvalidArgumentException;
+use Version\Exception\InvalidIdentifierException;
 use Version\Identifier\Identifier;
 
 /**
@@ -41,7 +41,7 @@ trait IdentifyingMetadata
     /**
      * @param string $identifiersString
      * @return self
-     * @throws InvalidArgumentException
+     * @throws InvalidIdentifierException
      */
     public static function fromString($identifiersString)
     {
@@ -53,7 +53,7 @@ trait IdentifyingMetadata
             $parts = explode('.', $identifiersString);
             foreach ($parts as $val) {
                 if (empty($val)) {
-                    throw new InvalidArgumentException('Identifiers must not be empty');
+                    throw new InvalidIdentifierException('Identifiers must not be empty');
                 }
 
                 $identifiers[]= new $identifierClass($val);
@@ -68,7 +68,7 @@ trait IdentifyingMetadata
     /**
      * @param array $identifiers
      * @return void
-     * @throws InvalidArgumentException
+     * @throws InvalidIdentifierException
      */
     protected function validateIdentifiers(array $identifiers)
     {
@@ -76,7 +76,7 @@ trait IdentifyingMetadata
 
         foreach ($identifiers as $identifier) {
             if (!$identifier instanceof $identifierClass) {
-                throw new InvalidArgumentException("Identifier must be instance of $identifierClass");
+                throw new InvalidIdentifierException("Identifier must be instance of $identifierClass");
             }
         }
     }
