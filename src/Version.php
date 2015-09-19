@@ -10,8 +10,9 @@
 
 namespace Version;
 
-use Version\Identifier\PreRelease;
-use Version\Identifier\Build;
+use Version\Metadata\PreRelease;
+use Version\Metadata\Build;
+use Version\Exception\InvalidArgumentException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -34,20 +35,41 @@ final class Version
     private $patch;
 
     /**
-     * @var PreRelease[]
+     * @var PreRelease
      */
-    private $preRelease = array();
+    private $preRelease = null;
 
     /**
-     * @var Build[]
+     * @var Build
      */
-    private $build = array();
+    private $build = null;
 
     /**
-     * Force usage of factory methods.
+     * @param int $major
+     * @param int $minor
+     * @param int $patch
+     * @param PreRelease $preRelease OPTIONAL
+     * @param Build $build OPTIONAL
      */
-    private function __construct()
+    public function __construct($major, $minor, $patch, PreRelease $preRelease = null, Build $build = null)
     {
+        if (!is_int($major) || $major < 0) {
+            throw new InvalidArgumentException('Major version must be non-negative integer');
+        }
+
+        if (!is_int($minor) || $minor < 0) {
+            throw new InvalidArgumentException('Minor version must be non-negative integer');
+        }
+
+        if (!is_int($patch) || $patch < 0) {
+            throw new InvalidArgumentException('Patch version must be non-negative integer');
+        }
+
+        $this->major = $major;
+        $this->minor = $minor;
+        $this->patch = $patch;
+        $this->preRelease = $preRelease;
+        $this->build = $build;
     }
 
     /**
@@ -57,7 +79,7 @@ final class Version
      */
     public static function fromString($versionString)
     {
-        $parts = array();
+        $parts = [];
 
         if (!preg_match(
             '#^(?P<core>(?:[0-9]|[1-9][0-9]+)\.(?:[0-9]|[1-9][0-9]+)\.(?:[0-9]|[1-9][0-9]+))(?:\-(?P<preRelease>[0-9A-Za-z\-\.]+))?(?:\+(?P<build>[0-9A-Za-z\-\.]+))?$#',
@@ -67,45 +89,16 @@ final class Version
             throw new Exception\InvalidVersionStringException("Version string is not valid and cannot be parsed");
         }
 
-        $version = new self();
-
         list($major, $minor, $patch) = explode('.', $parts['core']);
+        $major = (int) $major;
+        $minor = (int) $minor;
+        $patch = (int) $patch;
 
-        $version->major = $major;
-        $version->minor = $minor;
-        $version->patch = $patch;
+        $preRelease = (!empty($parts['preRelease'])) ? PreRelease::fromString($parts['preRelease']) : null;
 
-        if (!empty($parts['preRelease'])) {
-            if (strpos($parts['preRelease'], '.') !== false) {
-                $preRelease = array();
+        $build = (!empty($parts['build'])) ? Build::fromString($parts['build']) : null;
 
-                $preReleaseParts = explode('.', $parts['preRelease']);
-                foreach ($preReleaseParts as $preReleaseVal) {
-                    $preRelease[]= new PreRelease($preReleaseVal);
-                }
-            } else {
-                $preRelease = array(new PreRelease($parts['preRelease']));
-            }
-
-            $version->preRelease = $preRelease;
-        }
-
-        if (!empty($parts['build'])) {
-            if (strpos($parts['build'], '.') !== false) {
-                $build = array();
-
-                $buildParts = explode('.', $parts['build']);
-                foreach ($buildParts as $buildVal) {
-                    $build[]= new Build($buildVal);
-                }
-            } else {
-                $build = array(new Build($buildVal));
-            }
-
-            $version->build = $build;
-        }
-
-        return $version;
+        return new self($major, $minor, $patch, $preRelease, $build);
     }
 
     /**

@@ -10,13 +10,12 @@
 
 namespace Version\Identifier;
 
-use Version\Exception\InvalidArgumentException;
 use Version\Exception\InvalidIdentifierValueException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-abstract class BaseIdentifier
+abstract class BaseIdentifier implements Identifier
 {
     /**
      * @var string
@@ -28,15 +27,20 @@ abstract class BaseIdentifier
      */
     public function __construct($value)
     {
-        if (!is_string($value)) {
-            throw new InvalidArgumentException(__CLASS__ . ' value must be of type string');
-        }
-
-        if (!preg_match('/^[[:alnum]]+$/', $value)) {
-            throw new InvalidIdentifierValueException(__CLASS__ . ' value must contain only alphanumeric characters');
-        }
+        $this->validate($value);
 
         $this->value = $value;
+    }
+
+    /**
+     * @param string $value
+     * @throws InvalidIdentifierValueException
+     */
+    protected function validate($value)
+    {
+        if (!is_string($value)) {
+            throw new InvalidIdentifierValueException(__CLASS__ . ' value must be of type string');
+        }
     }
 
     /**

@@ -8,11 +8,17 @@
  * located at the package root folder.
  */
 
-namespace Version\Exception;
+namespace Version\Metadata;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidIdentifierValueException extends InvalidArgumentException
+final class PreRelease
 {
+    use IdentifyingMetadata;
+
+    protected static function getIdentifierClass()
+    {
+        return 'Version\Identifier\PreRelease';
+    }
 }

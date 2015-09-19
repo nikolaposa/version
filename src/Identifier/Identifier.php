@@ -8,11 +8,15 @@
  * located at the package root folder.
  */
 
-namespace Version\Exception;
+namespace Version\Identifier;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidIdentifierValueException extends InvalidArgumentException
+interface Identifier
 {
+    /**
+     * @return string
+     */
+    public function getValue();
 }
