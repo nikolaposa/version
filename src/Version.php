@@ -49,10 +49,10 @@ final class Version
      * @param int $major
      * @param int $minor
      * @param int $patch
-     * @param PreRelease $preRelease OPTIONAL
-     * @param Build $build OPTIONAL
+     * @param PreRelease|array|string $preRelease OPTIONAL
+     * @param Build|array|string $build OPTIONAL
      */
-    public function __construct($major, $minor, $patch, PreRelease $preRelease = null, Build $build = null)
+    public function __construct($major, $minor, $patch, $preRelease = null, $build = null)
     {
         if (!is_int($major) || $major < 0) {
             throw new InvalidArgumentException('Major version must be non-negative integer');
@@ -64,6 +64,14 @@ final class Version
 
         if (!is_int($patch) || $patch < 0) {
             throw new InvalidArgumentException('Patch version must be non-negative integer');
+        }
+
+        if ($preRelease !== null && !$preRelease instanceof PreRelease) {
+            $preRelease = new PreRelease($preRelease);
+        }
+
+        if ($build !== null && !$build instanceof Build) {
+            $build = new Build($build);
         }
 
         $this->major = $major;
@@ -100,9 +108,9 @@ final class Version
         $minor = (int) $minor;
         $patch = (int) $patch;
 
-        $preRelease = (!empty($parts['preRelease'])) ? new PreRelease($parts['preRelease']) : null;
+        $preRelease = (!empty($parts['preRelease'])) ? $parts['preRelease'] : null;
 
-        $build = (!empty($parts['build'])) ? new Build($parts['build']) : null;
+        $build = (!empty($parts['build'])) ? $parts['build'] : null;
 
         return new self($major, $minor, $patch, $preRelease, $build);
     }
@@ -248,5 +256,35 @@ final class Version
     public function isLessThan($version)
     {
         return $this->compareTo($version) < 0;
+    }
+
+    /**
+     * @param PreRelease|array|string $preRelease
+     * @param Build|array|string $build
+     * @return self
+     */
+    public function incrementMajor($preRelease = null, $build = null)
+    {
+        return new self($this->major + 1, 0, 0, $preRelease, $build);
+    }
+
+    /**
+     * @param PreRelease|array|string $preRelease
+     * @param Build|array|string $build
+     * @return self
+     */
+    public function incrementMinor($preRelease = null, $build = null)
+    {
+        return new self($this->major, $this->minor + 1, 0, $preRelease, $build);
+    }
+
+    /**
+     * @param PreRelease|array|string $preRelease
+     * @param Build|array|string $build
+     * @return self
+     */
+    public function incrementPatch($preRelease = null, $build = null)
+    {
+        return new self($this->major, $this->minor, $this->patch + 1, $preRelease, $build);
     }
 }
