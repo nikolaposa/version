@@ -13,6 +13,7 @@ namespace Version;
 use Version\Metadata\PreRelease;
 use Version\Metadata\Build;
 use Version\Exception\InvalidArgumentException;
+use Version\Exception\InvalidVersionStringException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -75,10 +76,15 @@ final class Version
     /**
      * @param string $versionString
      * @return self
-     * @throws Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws InvalidVersionStringException
      */
     public static function fromString($versionString)
     {
+        if (!is_string($versionString)) {
+            throw new InvalidArgumentException(__METHOD__ . ' expects a string');
+        }
+
         $parts = [];
 
         if (!preg_match(
@@ -86,7 +92,7 @@ final class Version
             $versionString,
             $parts
         )) {
-            throw new Exception\InvalidVersionStringException("Version string is not valid and cannot be parsed");
+            throw new InvalidVersionStringException("Version string is not valid and cannot be parsed");
         }
 
         list($major, $minor, $patch) = explode('.', $parts['core']);

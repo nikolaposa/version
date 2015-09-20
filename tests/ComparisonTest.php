@@ -17,17 +17,17 @@ use Version\Version;
  */
 class ComparisonTest extends \PHPUnit_Framework_TestCase
 {
-    protected function assertVersionEqual(Version $expected, Version $actual)
+    protected function assertVersionEqual($expected, Version $actual)
     {
         $this->assertTrue($actual->isEqualTo($expected), "$actual is not equal to $expected");
     }
 
-    protected function assertVersionGreaterThan(Version $expected, Version $actual)
+    protected function assertVersionGreaterThan($expected, Version $actual)
     {
         $this->assertTrue($actual->isGreaterThan($expected), "$actual is not greater than $expected");
     }
 
-    protected function assertVersionLessThan(Version $expected, Version $actual)
+    protected function assertVersionLessThan($expected, Version $actual)
     {
         $this->assertTrue($actual->isLessThan($expected), "$actual is not less than $expected");
     }
@@ -35,18 +35,20 @@ class ComparisonTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getComparisonSet
      */
-    public function testVersionComparison($v1, $v2, $result)
+    public function testVersionComparison($version1, $version2, $result)
     {
-        $version1 = Version::fromString($v1);
-        $version2 = Version::fromString($v2);
-
         if ($result > 0) {
-            $this->assertVersionGreaterThan($version2, $version1);
+            $this->assertVersionGreaterThan($version2, Version::fromString($version1));
         } elseif ($result < 0) {
-            $this->assertVersionLessThan($version2, $version1);
+            $this->assertVersionLessThan($version2, Version::fromString($version1));
         } else {
-            $this->assertVersionEqual($version2, $version1);
+            $this->assertVersionEqual($version2, Version::fromString($version1));
         }
+    }
+
+    public function testComparisonAcceptsVersionsAsStrings()
+    {
+        $this->assertVersionGreaterThan('2.1.0', Version::fromString('2.1.1'));
     }
 
     public static function getComparisonSet()
