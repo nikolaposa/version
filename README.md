@@ -24,6 +24,65 @@ $ php composer.phar install
 
 ## Usage
 
-TODO
+### Creating a Version object and accessing its values
+
+```php
+use Version\Version;
+
+$v = new Version(2, 0, 0, 'alpha');
+
+echo $v->getMajor(); //2
+echo $v->getMinor(); //0
+echo $v->getPatch(); //0
+var_dump($v->getPreRelease()->getIdentifiers()); //array(1) { [0]=> string(1) "alpha" }
+echo $v->getPreRelease(); //alpha
+
+```
+
+### Creating a Version object from a string
+
+```php
+use Version\Version;
+
+$v = Version::fromString('1.10.0');
+
+echo $v->getVersionString(); //1.10.0
+
+```
+
+### Comparing Version objects
+
+```php
+use Version\Version;
+
+$v1 = Version::fromString('1.10.0');
+$v2 = Version::fromString('2.3.3');
+
+var_dump($v1->isLessThan($v2)); //bool(true)
+var_dump($v1->isGreaterThan($v2)); //bool(false)
+var_dump($v1->isEqualTo($v2)); //bool(false)
+
+var_dump($v2->isLessThan($v1)); //bool(false)
+var_dump($v2->isGreaterThan($v1)); //bool(true)
+
+```
+
+### Incrementing Version object
+
+```php
+use Version\Version;
+
+$v = Version::fromString('1.10.0');
+
+$v1101 = $v->incrementPatch(null, '20150919');
+echo $v1101; //1.10.1+20150919
+
+$v1110 = $v1101->incrementMinor();
+echo $v1110; //1.11.0
+
+$v2 = $v1101->incrementMajor('alpha');
+echo $v2; //2.0.0-alpha
+
+```
 
 [semver]: http://semver.org/
