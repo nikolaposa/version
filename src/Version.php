@@ -94,9 +94,9 @@ final class Version
         $minor = (int) $minor;
         $patch = (int) $patch;
 
-        $preRelease = (!empty($parts['preRelease'])) ? PreRelease::fromString($parts['preRelease']) : null;
+        $preRelease = (!empty($parts['preRelease'])) ? new PreRelease($parts['preRelease']) : null;
 
-        $build = (!empty($parts['build'])) ? Build::fromString($parts['build']) : null;
+        $build = (!empty($parts['build'])) ? new Build($parts['build']) : null;
 
         return new self($major, $minor, $patch, $preRelease, $build);
     }
@@ -164,11 +164,15 @@ final class Version
     }
 
     /**
-     * @param self $version
+     * @param self|string $version
      * @return int
      */
-    private function compareTo(Version $version)
+    private function compareTo($version)
     {
+        if (!$version instanceof self) {
+            $version = self::fromString((string) $version);
+        }
+
         if ($this->major > $version->major) {
             return 1;
         }
@@ -213,17 +217,29 @@ final class Version
         return 0;
     }
 
-    public function isEqualTo(Version $version)
+    /**
+     * @param self|string $version
+     * @return bool
+     */
+    public function isEqualTo($version)
     {
         return $this->compareTo($version) == 0;
     }
 
-    public function isGreaterThan(Version $version)
+    /**
+     * @param self|string $version
+     * @return bool
+     */
+    public function isGreaterThan($version)
     {
         return $this->compareTo($version) > 0;
     }
 
-    public function isLessThan(Version $version)
+    /**
+     * @param self|string $version
+     * @return bool
+     */
+    public function isLessThan($version)
     {
         return $this->compareTo($version) < 0;
     }

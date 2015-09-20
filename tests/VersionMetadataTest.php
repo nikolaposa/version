@@ -105,7 +105,7 @@ class VersionMetadataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Version\Exception\InvalidIdentifierException
+     * @expectedException \Version\Exception\InvalidIdentifierValueException
      */
     public function testCreationFailsInCaseOfEmptyMetadata()
     {

@@ -39,7 +39,11 @@ abstract class BaseIdentifier implements Identifier
     protected function validate($value)
     {
         if (!is_string($value)) {
-            throw new InvalidIdentifierValueException(__CLASS__ . ' value must be of type string');
+            throw new InvalidIdentifierValueException('Identifier value must be of type string');
+        }
+
+        if ($value === '') {
+            throw new InvalidIdentifierValueException('Identifier must not be empty');
         }
     }
 

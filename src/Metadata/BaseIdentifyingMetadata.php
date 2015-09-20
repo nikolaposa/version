@@ -10,8 +10,8 @@
 
 namespace Version\Metadata;
 
-use Version\Exception\InvalidIdentifierException;
 use Version\Identifier\Identifier;
+use Version\Exception\InvalidArgumentException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -29,56 +29,35 @@ abstract class BaseIdentifyingMetadata
     protected static $identifierClass = null;
 
     /**
-     * @param array $identifiers
+     * @param array|string $ids Identifiers
      */
-    public function __construct(array $identifiers)
+    public function __construct($ids)
     {
-        $this->validateIdentifiers($identifiers);
+        $identifiers = [];
 
-        $this->identifiers = $identifiers;
-    }
-
-    /**
-     * @param string $identifiersString
-     * @return self
-     * @throws InvalidIdentifierException
-     */
-    public static function fromString($identifiersString)
-    {
         $identifierClass = static::$identifierClass;
 
-        if (strpos($identifiersString, '.') !== false) {
-            $identifiers = [];
+        if (is_string($ids)) {
+            if (strpos($ids, '.') !== false) {
+                $parts = explode('.', $ids);
 
-            $parts = explode('.', $identifiersString);
-            foreach ($parts as $val) {
-                if (empty($val)) {
-                    throw new InvalidIdentifierException('Identifiers must not be empty');
+                foreach ($parts as $val) {
+                    $identifiers[]= new $identifierClass($val);
                 }
-
-                $identifiers[]= new $identifierClass($val);
+            } else {
+                $identifiers = [new $identifierClass($ids)];
+            }
+        } elseif (is_array($ids)) {
+            foreach ($ids as $id) {
+                if (!$id instanceof $identifierClass) {
+                    $identifiers[]= new $identifierClass($id);
+                }
             }
         } else {
-            $identifiers = [new $identifierClass($identifiersString)];
+            throw new InvalidArgumentException('Identifiers parameter should be either string or array');
         }
 
-        return new static($identifiers);
-    }
-
-    /**
-     * @param array $identifiers
-     * @return void
-     * @throws InvalidIdentifierException
-     */
-    protected function validateIdentifiers(array $identifiers)
-    {
-        $identifierClass = static::$identifierClass;
-
-        foreach ($identifiers as $identifier) {
-            if (!$identifier instanceof $identifierClass) {
-                throw new InvalidIdentifierException("Identifier must be instance of $identifierClass");
-            }
-        }
+        $this->identifiers = $identifiers;
     }
 
     /**
