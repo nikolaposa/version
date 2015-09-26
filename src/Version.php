@@ -52,7 +52,7 @@ final class Version
      * @param PreRelease|array|string $preRelease OPTIONAL
      * @param Build|array|string $build OPTIONAL
      */
-    public function __construct($major, $minor, $patch, $preRelease = null, $build = null)
+    public function __construct($major, $minor = 0, $patch = 0, $preRelease = null, $build = null)
     {
         if (!is_int($major) || $major < 0) {
             throw new InvalidArgumentException('Major version must be non-negative integer');
@@ -96,7 +96,11 @@ final class Version
         $parts = [];
 
         if (!preg_match(
-            '#^(?P<core>(?:[0-9]|[1-9][0-9]+)\.(?:[0-9]|[1-9][0-9]+)\.(?:[0-9]|[1-9][0-9]+))(?:\-(?P<preRelease>[0-9A-Za-z\-\.]+))?(?:\+(?P<build>[0-9A-Za-z\-\.]+))?$#',
+            '#^'
+            . '(?P<core>(?:[0-9]|[1-9][0-9]+)(?:\.(?:[0-9]|[1-9][0-9]+)){2})'
+            . '(?:\-(?P<preRelease>[0-9A-Za-z\-\.]+))?'
+            . '(?:\+(?P<build>[0-9A-Za-z\-\.]+))?'
+            . '$#',
             $versionString,
             $parts
         )) {

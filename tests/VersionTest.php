@@ -17,16 +17,47 @@ use Version\Version;
  */
 class VersionTest extends \PHPUnit_Framework_TestCase
 {
+    public function testConstructorCreation()
+    {
+        $v1 = new Version(1);
+        $this->assertEquals($v1->getMajor(), 1);
+        $this->assertEquals($v1->getMinor(), 0);
+        $this->assertEquals($v1->getPatch(), 0);
+
+        $v2 = new Version(2, 1);
+        $this->assertEquals($v2->getMajor(), 2);
+        $this->assertEquals($v2->getMinor(), 1);
+        $this->assertEquals($v2->getPatch(), 0);
+
+        $v3 = new Version(3, 1, 1);
+        $this->assertEquals($v3->getMajor(), 3);
+        $this->assertEquals($v3->getMinor(), 1);
+        $this->assertEquals($v3->getPatch(), 1);
+
+        $v4 = new Version(4, 3, 3, null, '123');
+        $this->assertEquals($v4->getMajor(), 4);
+        $this->assertEquals($v4->getMinor(), 3);
+        $this->assertEquals($v4->getPatch(), 3);
+        $this->assertNull($v4->getPreRelease());
+        $this->assertEquals('123', (string) $v4->getBuild());
+    }
+
     /**
      * @dataProvider getNormalVersionsSet
      */
-    public function testCreationFromNormalVersionString($versionString, $major, $minor, $patch)
+    public function testCreationFromNormalVersionString($versionString, $major, $minor, $patch, $preRelease = null, $build = null)
     {
         $version = Version::fromString($versionString);
 
         $this->assertEquals($version->getMajor(), $major);
         $this->assertEquals($version->getMinor(), $minor);
         $this->assertEquals($version->getPatch(), $patch);
+        if ($preRelease !== null) {
+            $this->assertEquals($preRelease, (string) $version->getPreRelease());
+        }
+        if ($build !== null) {
+            $this->assertEquals($build, (string) $version->getBuild());
+        }
     }
 
     /**
@@ -35,6 +66,14 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testCreationFromStringFailsInCaseOfLeadingZeros()
     {
         Version::fromString('1.05.2');
+    }
+
+    /**
+     * @expectedException \Version\Exception\InvalidVersionStringException
+     */
+    public function testCreationFromStringFailsInCaseInvalidCorePart()
+    {
+        Version::fromString('1.5.2.4.4');
     }
 
     /**
@@ -142,6 +181,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             ['1.10.0', 1, 10, 0],
             ['2.5.4', 2, 5, 4],
             ['2.1.17', 2, 1, 17],
+            ['3.1.0-beta+123', 3, 1, 0, 'beta', '123'],
         ];
     }
 }
