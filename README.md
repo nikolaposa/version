@@ -1,5 +1,6 @@
 # Version
 
+[![Latest Stable Version](https://poser.pugx.org/nikolaposa/version/v/stable)](https://packagist.org/packages/nikolaposa/version)
 [![Build Status](https://travis-ci.org/nikolaposa/version.svg?branch=master)](https://travis-ci.org/nikolaposa/version)
 
 Value Object representing a version number that is in compliance with the [Semantic Versioning specification][semver].
