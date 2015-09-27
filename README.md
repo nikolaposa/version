@@ -86,4 +86,43 @@ echo $v2; //2.0.0-alpha
 
 ```
 
+### Version objects
+
+```php
+use Version\Version;
+use Version\VersionableInterface;
+use Version\VersionableTrait;
+
+class Package implements VersionableInterface
+{
+    use VersionableTrait;
+
+    private $name;
+
+    private $description;
+
+    public function __construct($name, $description = '')
+    {
+        $this->name = $name;
+        $this->description = $description;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+}
+
+$package = new Package('Test');
+$package->setVersion(Version::fromString('2.3.3'));
+
+$package->setVersion($package->getVersion()->incrementMinor());
+
+```
+
 [semver]: http://semver.org/
