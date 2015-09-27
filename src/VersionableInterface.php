@@ -25,4 +25,9 @@ interface VersionableInterface
      * @return Version
      */
     public function getVersion();
+
+    /**
+     * @return Collection\VersionsCollection|null
+     */
+    public function getAvailableVersions();
 }

@@ -8,9 +8,9 @@
  * located at the package root folder.
  */
 
-namespace Version\Tests;
+namespace Version\Tests\Collection;
 
-use Version\VersionsCollection;
+use Version\Collection\VersionsCollection;
 use Version\Version;
 
 /**
@@ -27,7 +27,7 @@ class VersionsCollectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
 
-        $this->assertInstanceOf('Version\VersionsCollection', $versions);
+        $this->assertInstanceOf('Version\Collection\VersionsCollection', $versions);
     }
 
     public function testCollectionCount()
@@ -54,7 +54,7 @@ class VersionsCollectionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testSorting()
+    public function testCollectionSorting()
     {
         $ordered = [
             '1.0.0',
@@ -77,7 +77,7 @@ class VersionsCollectionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testSortingDescending()
+    public function testCollectionSortDescending()
     {
         $ordered = [
             '2.3.3',
