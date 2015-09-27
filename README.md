@@ -86,7 +86,7 @@ echo $v2; //2.0.0-alpha
 
 ```
 
-### Version objects
+### Versionable objects
 
 ```php
 use Version\Version;
