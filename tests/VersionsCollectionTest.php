@@ -8,7 +8,7 @@
  * located at the package root folder.
  */
 
-namespace Version\Tests\Collection;
+namespace Version\Tests;
 
 use Version\VersionsCollection;
 use Version\Version;
