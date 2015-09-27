@@ -13,7 +13,7 @@ namespace Version;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-interface VersionableInterface
+interface VersionAwareInterface
 {
     /**
      * @param Version $version

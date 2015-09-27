@@ -86,16 +86,16 @@ echo $v2; //2.0.0-alpha
 
 ```
 
-### Versionable objects
+### Version-aware objects
 
 ```php
 use Version\Version;
-use Version\VersionableInterface;
-use Version\VersionableTrait;
+use Version\VersionAwareInterface;
+use Version\VersionAwareTrait;
 
-class Package implements VersionableInterface
+class Package implements VersionAwareInterface
 {
-    use VersionableTrait;
+    use VersionAwareTrait;
 
     private $name;
 
