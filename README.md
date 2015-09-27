@@ -125,4 +125,28 @@ $package->setVersion($package->getVersion()->incrementMinor());
 
 ```
 
+### Versions collection
+
+```php
+use Version\VersionsCollection;
+use Version\Version;
+
+$versions = new VersionsCollection([
+    new Version(1),
+    '1.1.0',
+    '2.3.3',
+]);
+
+echo count($versions); //3
+
+//Sort descending
+$versions->sort(true);
+
+//Outputs: 2.3.3, 1.1.0, 1.0.0
+foreach ($versions as $version) {
+    echo (string) $version;
+}
+
+```
+
 [semver]: http://semver.org/

@@ -10,7 +10,7 @@
 
 namespace Version\Tests\Collection;
 
-use Version\Collection\VersionsCollection;
+use Version\VersionsCollection;
 use Version\Version;
 
 /**
@@ -27,7 +27,7 @@ class VersionsCollectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
 
-        $this->assertInstanceOf('Version\Collection\VersionsCollection', $versions);
+        $this->assertInstanceOf('Version\VersionsCollection', $versions);
     }
 
     public function testCollectionCount()

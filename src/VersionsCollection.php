@@ -8,12 +8,11 @@
  * located at the package root folder.
  */
 
-namespace Version\Collection;
+namespace Version;
 
 use Countable;
 use IteratorAggregate;
 use ArrayIterator;
-use Version\Version;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
