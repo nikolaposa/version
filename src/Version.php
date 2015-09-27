@@ -183,9 +183,9 @@ final class Version
 
     /**
      * @param self|string $version
-     * @return int
+     * @return int (1 if $this > $version, -1 if $this < $version, 0 if equal)
      */
-    private function compareTo($version)
+    public function compareTo($version)
     {
         if (!$version instanceof self) {
             $version = self::fromString((string) $version);
@@ -228,7 +228,12 @@ final class Version
         }
 
         if ($this->preRelease && $version->preRelease) {
-            return $this->preRelease->compareTo($version->preRelease);
+            $result = $this->preRelease->compareTo($version->preRelease);
+            if ($result > 0) {
+                return 1;
+            } elseif ($result < 0) {
+                return -1;
+            }
         }
 
         // ... equal

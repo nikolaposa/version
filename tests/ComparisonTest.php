@@ -32,6 +32,19 @@ class ComparisonTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($actual->isLessThan($expected), "$actual is not less than $expected");
     }
 
+    public function testComparisonAcceptsVersionsAsStrings()
+    {
+        $this->assertVersionGreaterThan('2.1.0', Version::fromString('2.1.1'));
+    }
+
+    /**
+     * @dataProvider getComparisonSet
+     */
+    public function testVersionCompareTo($version1, $version2, $result)
+    {
+        $this->assertSame($result, Version::fromString($version1)->compareTo($version2));
+    }
+
     /**
      * @dataProvider getComparisonSet
      */
@@ -44,11 +57,6 @@ class ComparisonTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->assertVersionEqual($version2, Version::fromString($version1));
         }
-    }
-
-    public function testComparisonAcceptsVersionsAsStrings()
-    {
-        $this->assertVersionGreaterThan('2.1.0', Version::fromString('2.1.1'));
     }
 
     public static function getComparisonSet()
