@@ -2,3 +2,4 @@ nbproject
 .project
 vendor
 phpunit.xml
+composer.lock
