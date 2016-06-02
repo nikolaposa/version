@@ -234,36 +234,6 @@ final class Version implements JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getVersionString()
-    {
-        return
-            $this->major
-            . '.' . $this->minor
-            . '.' . $this->patch
-            . ($this->isPreRelease() ? '-' . (string) $this->preRelease : '')
-            . ($this->isBuild() ? '+' . (string) $this->build : '')
-        ;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getVersionString();
-    }
-
-    /**
-     * @return string
-     */
-    public function jsonSerialize()
-    {
-        return $this->getVersionString();
-    }
-
-    /**
      * @param self|string $version
      * @return int (1 if $this > $version, -1 if $this < $version, 0 if equal)
      */
@@ -387,5 +357,35 @@ final class Version implements JsonSerializable
     public function withBuild($build)
     {
         return self::fromAllElements($this->major, $this->minor, $this->patch, $this->preRelease, $build);
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersionString()
+    {
+        return
+            $this->major
+            . '.' . $this->minor
+            . '.' . $this->patch
+            . ($this->isPreRelease() ? '-' . (string) $this->preRelease : '')
+            . ($this->isBuild() ? '+' . (string) $this->build : '')
+            ;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getVersionString();
+    }
+
+    /**
+     * @return string
+     */
+    public function jsonSerialize()
+    {
+        return $this->getVersionString();
     }
 }
