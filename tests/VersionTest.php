@@ -123,35 +123,35 @@ class VersionTest extends PHPUnit_Framework_TestCase
 
     public function testCreationFailsInCaseOfInvalidMajorVersion()
     {
-        $this->expectException(InvalidVersionElementException::class);
+        $this->setExpectedException(InvalidVersionElementException::class);
 
         Version::fromMajor('test');
     }
 
     public function testCreationFailsInCaseOfInvalidMinorVersion()
     {
-        $this->expectException(InvalidVersionElementException::class);
+        $this->setExpectedException(InvalidVersionElementException::class);
 
         Version::fromMinor(0, -5);
     }
 
     public function testCreationFailsInCaseOfInvalidPatchVersion()
     {
-        $this->expectException(InvalidVersionElementException::class);
+        $this->setExpectedException(InvalidVersionElementException::class);
 
         Version::fromPatch(2, 1, 'patch');
     }
 
     public function testCreationFromStringFailsInCaseOfLeadingZeros()
     {
-        $this->expectException(InvalidVersionStringException::class);
+        $this->setExpectedException(InvalidVersionStringException::class);
 
         Version::fromString('1.05.2');
     }
 
     public function testCreationFromStringFailsInCaseInvalidCorePart()
     {
-        $this->expectException(InvalidVersionStringException::class);
+        $this->setExpectedException(InvalidVersionStringException::class);
 
         Version::fromString('1.5.2.4.4');
     }

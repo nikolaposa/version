@@ -113,7 +113,7 @@ class VersionMetadataTest extends PHPUnit_Framework_TestCase
 
     public function testCreationFailsInCaseOfEmptyMetadata()
     {
-        $this->expectException(InvalidIdentifierValueException::class);
+        $this->setExpectedException(InvalidIdentifierValueException::class);
 
         Version::fromString('1.0.0-alpha..1');
     }
