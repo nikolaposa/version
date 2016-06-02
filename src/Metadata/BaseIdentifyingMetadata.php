@@ -24,14 +24,14 @@ abstract class BaseIdentifyingMetadata
      */
     private $identifiers;
 
-    private function __construct($identifiers)
+    private function __construct(array $identifiers = [])
     {
         $this->identifiers = $identifiers;
     }
 
     /**
      * @param array|string $identifiers
-     * @return self
+     * @return static
      * @throws InvalidArgumentException
      */
     public static function create($identifiers)
@@ -83,6 +83,14 @@ abstract class BaseIdentifyingMetadata
     }
 
     /**
+     * @return static
+     */
+    public static function createEmpty()
+    {
+        return new static([]);
+    }
+
+    /**
      * @param string $value
      * @return Identifier
      */
@@ -94,6 +102,14 @@ abstract class BaseIdentifyingMetadata
     public function getIdentifiers()
     {
         return $this->identifiers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->identifiers);
     }
 
     /**

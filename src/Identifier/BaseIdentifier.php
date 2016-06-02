@@ -28,6 +28,11 @@ abstract class BaseIdentifier implements Identifier
         $this->value = $value;
     }
 
+    /**
+     * @param string $value
+     * @return static
+     * @throws InvalidIdentifierValueException
+     */
     public static function create($value)
     {
         if (!is_string($value)) {
