@@ -11,6 +11,7 @@
 
 namespace Version;
 
+use JsonSerializable;
 use Version\Metadata\PreRelease;
 use Version\Metadata\Build;
 use Version\Exception\InvalidVersionElementException;
@@ -19,7 +20,7 @@ use Version\Exception\InvalidVersionStringException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-final class Version
+final class Version implements JsonSerializable
 {
     /**
      * @var int
@@ -250,6 +251,14 @@ final class Version
      * @return string
      */
     public function __toString()
+    {
+        return $this->getVersionString();
+    }
+
+    /**
+     * @return string
+     */
+    public function jsonSerialize()
     {
         return $this->getVersionString();
     }

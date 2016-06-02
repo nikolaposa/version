@@ -111,6 +111,14 @@ class VersionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($output, (string) $version);
     }
 
+    /**
+     * @dataProvider printedVersionStrings
+     */
+    public function testJsonSerialization($output, Version $version)
+    {
+        $this->assertEquals('"' . $output . '"', json_encode($version));
+    }
+
     public static function printedVersionStrings()
     {
         return [
