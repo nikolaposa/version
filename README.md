@@ -73,7 +73,7 @@ $v1110 = $v1101->withMinorIncremented();
 echo $v1110; //1.11.0
 
 $v2 = $v1101->withMajorIncremented();
-echo $v2; //2.0.0-alpha
+echo $v2; //2.0.0
 
 $v2Alpha = $v2->withPreRelease('alpha');
 echo $v2Alpha; //2.0.0-alpha
