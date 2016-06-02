@@ -59,21 +59,27 @@ var_dump($v2->isGreaterThan($v1)); //bool(true)
 
 ```
 
-### Incrementing Version object
+### Modifying version
 
 ```php
 use Version\Version;
 
 $v = Version::fromString('1.10.0');
 
-$v1101 = $v->incrementPatch(null, '20150919');
-echo $v1101; //1.10.1+20150919
+$v1101 = $v->withPatchIncremented();
+echo $v1101; //1.10.1
 
-$v1110 = $v1101->incrementMinor();
+$v1110 = $v1101->withMinorIncremented();
 echo $v1110; //1.11.0
 
-$v2 = $v1101->incrementMajor('alpha');
+$v2 = $v1101->withMajorIncremented();
 echo $v2; //2.0.0-alpha
+
+$v2Alpha = $v2->withPreRelease('alpha');
+echo $v2Alpha; //2.0.0-alpha
+
+$v2Alpha111 = $v2Alpha->withBuild('111');
+echo $v2Alpha111; //2.0.0-alpha+111
 
 ```
 

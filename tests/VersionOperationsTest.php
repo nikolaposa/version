@@ -23,48 +23,56 @@ class VersionOperationsTest extends PHPUnit_Framework_TestCase
     public function testMajorVersionIncrement()
     {
         $version = Version::fromString('1.10.7');
-        $newVersion = $version->incrementMajor();
+        $newVersion = $version->withMajorIncremented();
 
         VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, false, false);
     }
 
-    public function testMajorVersionIncrementWithMetadata()
-    {
-        $version = Version::fromString('1.10.7');
-        $newVersion = $version->incrementMajor(['alpha', '1'], '20150919');
-
-        VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, 'alpha.1', '20150919');
-    }
-
     public function testMinorVersionIncrement()
     {
-        $version = Version::fromString('2.4.3');
-        $newVersion = $version->incrementMinor();
+        $version = Version::fromString('2.0.0');
+        $newVersion = $version->withMinorIncremented();
 
-        VersionTest::assertMatchesVersion($newVersion, 2, 5, 0, false, false);
-    }
-
-    public function testMinorVersionIncrementWithMetadata()
-    {
-        $version = Version::fromString('2.4.3');
-        $newVersion = $version->incrementMinor('alpha');
-
-        VersionTest::assertMatchesVersion($newVersion, 2, 5, 0, 'alpha', false);
+        VersionTest::assertMatchesVersion($newVersion, 2, 1, 0, false, false);
     }
 
     public function testPatchVersionIncrement()
     {
         $version = Version::fromString('2.4.3');
-        $newVersion = $version->incrementPatch();
+        $newVersion = $version->withPatchIncremented();
 
         VersionTest::assertMatchesVersion($newVersion, 2, 4, 4, false, false);
     }
 
-    public function testPatchVersionIncrementWithMetadata()
+    public function testVersionIncrementResetsMetadata()
     {
-        $version = Version::fromString('2.4.3');
-        $newVersion = $version->incrementPatch(null, ['20150919']);
+        $version = Version::fromString('2.0.0-beta+111');
+        $newVersion = $version->withMinorIncremented();
 
-        VersionTest::assertMatchesVersion($newVersion, 2, 4, 4, false, '20150919');
+        VersionTest::assertMatchesVersion($newVersion, 2, 1, 0, false, false);
+    }
+
+    public function testSettingPreRelease()
+    {
+        $version = Version::fromString('2.0.0');
+        $newVersion = $version->withPreRelease('beta');
+
+        VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, 'beta', false);
+    }
+
+    public function testSettingPreReleaseResetsBuild()
+    {
+        $version = Version::fromString('2.0.0+111');
+        $newVersion = $version->withPreRelease('beta');
+
+        VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, 'beta', false);
+    }
+
+    public function testSettingBuild()
+    {
+        $version = Version::fromString('2.0.0-beta');
+        $newVersion = $version->withBuild('111');
+
+        VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, 'beta', '111');
     }
 }

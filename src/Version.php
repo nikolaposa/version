@@ -346,32 +346,44 @@ final class Version
     }
 
     /**
-     * @param PreRelease|array|string $preRelease
-     * @param Build|array|string $build
      * @return self
      */
-    public function incrementMajor($preRelease = null, $build = null)
+    public function withMajorIncremented()
     {
-        return self::fromAllElements($this->major + 1, 0, 0, $preRelease, $build);
+        return self::fromAllElements($this->major + 1, 0, 0, PreRelease::createEmpty(), Build::createEmpty());
+    }
+
+    /**
+     * @return self
+     */
+    public function withMinorIncremented()
+    {
+        return self::fromAllElements($this->major, $this->minor + 1, 0, PreRelease::createEmpty(), Build::createEmpty());
+    }
+
+    /**
+     * @return self
+     */
+    public function withPatchIncremented()
+    {
+        return self::fromAllElements($this->major, $this->minor, $this->patch + 1, PreRelease::createEmpty(), Build::createEmpty());
     }
 
     /**
      * @param PreRelease|array|string $preRelease
-     * @param Build|array|string $build
      * @return self
      */
-    public function incrementMinor($preRelease = null, $build = null)
+    public function withPreRelease($preRelease)
     {
-        return self::fromAllElements($this->major, $this->minor + 1, 0, $preRelease, $build);
+        return self::fromAllElements($this->major, $this->minor, $this->patch, $preRelease, Build::createEmpty());
     }
 
     /**
-     * @param PreRelease|array|string $preRelease
      * @param Build|array|string $build
      * @return self
      */
-    public function incrementPatch($preRelease = null, $build = null)
+    public function withBuild($build)
     {
-        return self::fromAllElements($this->major, $this->minor, $this->patch + 1, $preRelease, $build);
+        return self::fromAllElements($this->major, $this->minor, $this->patch, clone $this->preRelease, $build);
     }
 }
