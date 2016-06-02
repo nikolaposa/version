@@ -377,6 +377,6 @@ final class Version
      */
     public function withBuild($build)
     {
-        return self::fromAllElements($this->major, $this->minor, $this->patch, clone $this->preRelease, $build);
+        return self::fromAllElements($this->major, $this->minor, $this->patch, $this->preRelease, $build);
     }
 }
