@@ -28,7 +28,7 @@ class VersionMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $identifiers);
 
         $identifier = current($identifiers);
-        $this->assertInstanceOf('Version\Identifier\PreRelease', $identifier);
+        $this->assertInstanceOf('Version\Identifier\PreReleaseIdentifier', $identifier);
         $this->assertEquals('alpha', $identifier->getValue());
     }
 
@@ -59,7 +59,7 @@ class VersionMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $identifiers);
 
         $identifier = current($identifiers);
-        $this->assertInstanceOf('Version\Identifier\Build', $identifier);
+        $this->assertInstanceOf('Version\Identifier\BuildIdentifier', $identifier);
         $this->assertEquals('20150919', $identifier->getValue());
     }
 

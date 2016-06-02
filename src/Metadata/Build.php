@@ -11,13 +11,15 @@
 
 namespace Version\Metadata;
 
+use Version\Identifier\BuildIdentifier;
+
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
 final class Build extends BaseIdentifyingMetadata
 {
-    protected static function getIdentifierClass()
+    protected static function createAssociatedIdentifier($value)
     {
-        return 'Version\Identifier\Build';
+        return BuildIdentifier::create($value);
     }
 }

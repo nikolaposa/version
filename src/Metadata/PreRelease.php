@@ -11,14 +11,16 @@
 
 namespace Version\Metadata;
 
+use Version\Identifier\PreReleaseIdentifier;
+
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
 final class PreRelease extends BaseIdentifyingMetadata
 {
-    protected static function getIdentifierClass()
+    protected static function createAssociatedIdentifier($value)
     {
-        return 'Version\Identifier\PreRelease';
+        return PreReleaseIdentifier::create($value);
     }
 
     /**

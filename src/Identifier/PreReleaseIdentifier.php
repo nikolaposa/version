@@ -15,7 +15,7 @@ use Version\Exception\InvalidIdentifierValueException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-final class PreRelease extends BaseIdentifier
+final class PreReleaseIdentifier extends BaseIdentifier
 {
     protected static function validate($value)
     {

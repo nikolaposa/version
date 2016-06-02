@@ -16,7 +16,7 @@ use Version\Exception\InvalidIdentifierValueException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-final class Build extends BaseIdentifier
+final class BuildIdentifier extends BaseIdentifier
 {
     protected static function validate($value)
     {

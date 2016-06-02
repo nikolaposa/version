@@ -73,21 +73,20 @@ abstract class BaseIdentifyingMetadata
         return new static([self::createIdentifier($identifiersString)]);
     }
 
-    private static function createIdentifier($identifier)
+    private static function createIdentifier($value)
     {
-        $identifierClass = static::getIdentifierClass();
-
-        if ($identifier instanceof $identifierClass) {
-            return $identifier;
+        if ($value instanceof Identifier) {
+            return $value;
         }
 
-        return call_user_func([$identifierClass, 'create'], $identifier);
+        return static::createAssociatedIdentifier($value);
     }
 
     /**
-     * @return string
+     * @param string $value
+     * @return Identifier
      */
-    abstract protected static function getIdentifierClass();
+    abstract protected static function createAssociatedIdentifier($value);
 
     /**
      * @return array
