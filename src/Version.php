@@ -14,7 +14,6 @@ namespace Version;
 use Version\Metadata\PreRelease;
 use Version\Metadata\Build;
 use Version\Exception\InvalidVersionElementException;
-use Version\Exception\InvalidArgumentException;
 use Version\Exception\InvalidVersionStringException;
 
 /**
@@ -151,7 +150,6 @@ final class Version
     /**
      * @param string $versionString
      * @return self
-     * @throws InvalidArgumentException
      * @throws InvalidVersionStringException
      */
     public static function fromString($versionString)
@@ -308,7 +306,7 @@ final class Version
 
         if ($this->isPreRelease() && $version->isPreRelease()) {
             $result = $this->preRelease->compareTo($version->preRelease);
-            
+
             if ($result > 0) {
                 return 1;
             } elseif ($result < 0) {
