@@ -7,30 +7,21 @@ Value Object representing a version number that is in compliance with the [Seman
 
 ## Installation
 
-Install the library using [composer](http://getcomposer.org/). Add the following to your `composer.json`:
-
-```json
-{
-    "require": {
-        "nikolaposa/version": "1.*"
-    }
-}
-```
-
-Tell composer to download Version by running `install` command:
+The preferred method of installation is via [Composer](http://getcomposer.org/). Run the following
+command to install the latest version of a package and add it to your project's `composer.json`:
 
 ```bash
-$ php composer.phar install
+composer require nikolaposa/version
 ```
 
 ## Usage
 
-### Creating a Version object and accessing its values
+### Creating a Version object via named constructor and accessing its values
 
 ```php
 use Version\Version;
 
-$v = new Version(2, 0, 0, 'alpha');
+$v = Version::fromPreRelease(2, 0, 0, 'alpha');
 
 echo $v->getMajor(); //2
 echo $v->getMinor(); //0
@@ -132,7 +123,7 @@ use Version\VersionsCollection;
 use Version\Version;
 
 $versions = new VersionsCollection([
-    new Version(1),
+    Version::fromMajor(1),
     '1.1.0',
     '2.3.3',
 ]);
