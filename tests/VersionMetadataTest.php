@@ -13,6 +13,11 @@ namespace Version\Tests;
 
 use PHPUnit_Framework_TestCase;
 use Version\Version;
+use Version\Metadata\PreRelease;
+use Version\Metadata\Build;
+use Version\Identifier\PreReleaseIdentifier;
+use Version\Identifier\BuildIdentifier;
+use Version\Exception\InvalidIdentifierValueException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -23,14 +28,14 @@ class VersionMetadataTest extends PHPUnit_Framework_TestCase
     {
         $version = Version::fromString('1.0.0-alpha');
 
-        $this->assertInstanceOf('Version\Metadata\PreRelease', $version->getPreRelease());
+        $this->assertInstanceOf(PreRelease::class, $version->getPreRelease());
 
         $identifiers = $version->getPreRelease()->getIdentifiers();
         $this->assertInternalType('array', $identifiers);
         $this->assertCount(1, $identifiers);
 
         $identifier = current($identifiers);
-        $this->assertInstanceOf('Version\Identifier\PreReleaseIdentifier', $identifier);
+        $this->assertInstanceOf(PreReleaseIdentifier::class, $identifier);
         $this->assertEquals('alpha', $identifier->getValue());
     }
 
@@ -54,14 +59,14 @@ class VersionMetadataTest extends PHPUnit_Framework_TestCase
     {
         $version = Version::fromString('1.0.0+20150919');
 
-        $this->assertInstanceOf('Version\Metadata\Build', $version->getBuild());
+        $this->assertInstanceOf(Build::class, $version->getBuild());
 
         $identifiers = $version->getBuild()->getIdentifiers();
         $this->assertInternalType('array', $identifiers);
         $this->assertCount(1, $identifiers);
 
         $identifier = current($identifiers);
-        $this->assertInstanceOf('Version\Identifier\BuildIdentifier', $identifier);
+        $this->assertInstanceOf(BuildIdentifier::class, $identifier);
         $this->assertEquals('20150919', $identifier->getValue());
     }
 
@@ -106,11 +111,10 @@ class VersionMetadataTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('5114f85', $bId3->getValue());
     }
 
-    /**
-     * @expectedException \Version\Exception\InvalidIdentifierValueException
-     */
     public function testCreationFailsInCaseOfEmptyMetadata()
     {
+        $this->expectException(InvalidIdentifierValueException::class);
+
         Version::fromString('1.0.0-alpha..1');
     }
 }

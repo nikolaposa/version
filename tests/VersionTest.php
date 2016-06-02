@@ -21,22 +21,22 @@ use Version\Exception\InvalidVersionStringException;
  */
 class VersionTest extends PHPUnit_Framework_TestCase
 {
-    private function assertMatchesVersion(Version $version, $major, $minor, $patch, $preRelease, $build)
+    public static function assertMatchesVersion(Version $version, $major, $minor, $patch, $preRelease, $build)
     {
-        $this->assertEquals($version->getMajor(), $major);
-        $this->assertEquals($version->getMinor(), $minor);
-        $this->assertEquals($version->getPatch(), $patch);
+        self::assertEquals($version->getMajor(), $major);
+        self::assertEquals($version->getMinor(), $minor);
+        self::assertEquals($version->getPatch(), $patch);
 
         if (false === $preRelease) {
-            $this->assertFalse($version->isPreRelease());
+            self::assertFalse($version->isPreRelease());
         } else {
-            $this->assertEquals((string) $version->getPreRelease(), $preRelease);
+            self::assertEquals((string) $version->getPreRelease(), $preRelease);
         }
 
         if (false === $build) {
-            $this->assertFalse($version->isBuild());
+            self::assertFalse($version->isBuild());
         } else {
-            $this->assertEquals((string) $version->getBuild(), $build);
+            self::assertEquals((string) $version->getBuild(), $build);
         }
     }
 
@@ -119,54 +119,6 @@ class VersionTest extends PHPUnit_Framework_TestCase
             ['1.0.0+exp.sha.5114f85', Version::fromString('1.0.0+exp.sha.5114f85')],
             ['1.0.0-alpha.1+exp.sha.5114f85', Version::fromString('1.0.0-alpha.1+exp.sha.5114f85')],
         ];
-    }
-
-    public function testMajorVersionIncrement()
-    {
-        $version = Version::fromString('1.10.7');
-        $newVersion = $version->incrementMajor();
-
-        $this->assertMatchesVersion($newVersion, 2, 0, 0, false, false);
-    }
-
-    public function testMajorVersionIncrementWithMetadata()
-    {
-        $version = Version::fromString('1.10.7');
-        $newVersion = $version->incrementMajor(['alpha', '1'], '20150919');
-
-        $this->assertMatchesVersion($newVersion, 2, 0, 0, 'alpha.1', '20150919');
-    }
-
-    public function testMinorVersionIncrement()
-    {
-        $version = Version::fromString('2.4.3');
-        $newVersion = $version->incrementMinor();
-
-        $this->assertMatchesVersion($newVersion, 2, 5, 0, false, false);
-    }
-
-    public function testMinorVersionIncrementWithMetadata()
-    {
-        $version = Version::fromString('2.4.3');
-        $newVersion = $version->incrementMinor('alpha');
-
-        $this->assertMatchesVersion($newVersion, 2, 5, 0, 'alpha', false);
-    }
-
-    public function testPatchVersionIncrement()
-    {
-        $version = Version::fromString('2.4.3');
-        $newVersion = $version->incrementPatch();
-
-        $this->assertMatchesVersion($newVersion, 2, 4, 4, false, false);
-    }
-
-    public function testPatchVersionIncrementWithMetadata()
-    {
-        $version = Version::fromString('2.4.3');
-        $newVersion = $version->incrementPatch(null, ['20150919']);
-
-        $this->assertMatchesVersion($newVersion, 2, 4, 4, false, '20150919');
     }
 
     public function testCreationFailsInCaseOfInvalidMajorVersion()

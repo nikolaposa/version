@@ -17,7 +17,7 @@ use Version\Version;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class ComparisonTest extends PHPUnit_Framework_TestCase
+class VersionComparisonTest extends PHPUnit_Framework_TestCase
 {
     private function assertVersionEqual($expected, Version $actual)
     {
