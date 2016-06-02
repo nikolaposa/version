@@ -292,8 +292,6 @@ final class Version
             return -1;
         }
 
-        //... major, minor, and patch are equal, compare pre-releases
-
         if (!$this->isPreRelease() && $version->isPreRelease()) {
             // normal version has greater precedence than a pre-release version version
             return 1;
@@ -314,7 +312,6 @@ final class Version
             }
         }
 
-        // ... equal
         return 0;
     }
 
