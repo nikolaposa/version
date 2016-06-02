@@ -14,13 +14,6 @@ namespace Version\Exception;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidVersionElementException extends InvalidArgumentException
+class LogicException extends \LogicException implements Exception
 {
-    public static function forElement($element)
-    {
-        return new self(sprintf(
-            '%s version must be non-negative integer',
-            ucfirst($element)
-        ));
-    }
 }

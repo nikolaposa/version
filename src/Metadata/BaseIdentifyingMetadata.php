@@ -13,6 +13,7 @@ namespace Version\Metadata;
 
 use Version\Identifier\Identifier;
 use Version\Exception\InvalidArgumentException;
+use Version\Exception\LogicException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -94,7 +95,10 @@ abstract class BaseIdentifyingMetadata
      * @param string $value
      * @return Identifier
      */
-    abstract protected static function createAssociatedIdentifier($value);
+    protected static function createAssociatedIdentifier($value)
+    {
+        throw new LogicException(__METHOD__ . ' not implemented');
+    }
 
     /**
      * @return array
