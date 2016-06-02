@@ -1,7 +1,7 @@
 # Version
 
-[![Latest Stable Version](https://poser.pugx.org/nikolaposa/version/v/stable)](https://packagist.org/packages/nikolaposa/version)
 [![Build Status](https://travis-ci.org/nikolaposa/version.svg?branch=master)](https://travis-ci.org/nikolaposa/version)
+[![Latest Stable Version](https://poser.pugx.org/nikolaposa/version/v/stable)](https://packagist.org/packages/nikolaposa/version)
 
 Value Object representing a version number that is in compliance with the [Semantic Versioning specification][semver].
 
@@ -28,7 +28,6 @@ echo $v->getMinor(); //0
 echo $v->getPatch(); //0
 var_dump($v->getPreRelease()->getIdentifiers()); //array(1) { [0]=> string(1) "alpha" }
 echo $v->getPreRelease(); //alpha
-
 ```
 
 ### Creating a Version object from a string
@@ -56,7 +55,6 @@ var_dump($v1->isEqualTo($v2)); //bool(false)
 
 var_dump($v2->isLessThan($v1)); //bool(false)
 var_dump($v2->isGreaterThan($v1)); //bool(true)
-
 ```
 
 ### Modifying version
@@ -80,7 +78,6 @@ echo $v2Alpha; //2.0.0-alpha
 
 $v2Alpha111 = $v2Alpha->withBuild('111');
 echo $v2Alpha111; //2.0.0-alpha+111
-
 ```
 
 ### Version-aware objects
@@ -117,7 +114,6 @@ class Package implements VersionAwareInterface
 
 $package = new Package('Test');
 $package->setVersion(Version::fromString('2.3.3'));
-
 ```
 
 ### Versions collection
@@ -141,7 +137,17 @@ $versions->sort(true);
 foreach ($versions as $version) {
     echo (string) $version;
 }
-
 ```
+
+## Author
+
+**Nikola Poša**
+
+* https://twitter.com/nikolaposa
+* https://github.com/nikolaposa
+
+## Copyright and license
+
+Copyright 2016 Nikola Poša. Released under MIT License - see the `LICENSE` file for details.
 
 [semver]: http://semver.org/
