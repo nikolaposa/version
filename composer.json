@@ -6,7 +6,8 @@
     "keywords": [
         "version",
         "semantic",
-		"versioning"
+		"versioning",
+        "semver"
     ],
     "homepage": "https://github.com/nikolaposa/version",
     "authors": [
