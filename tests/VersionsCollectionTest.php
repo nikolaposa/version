@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -10,22 +11,22 @@
 
 namespace Version\Tests;
 
+use PHPUnit_Framework_TestCase;
 use Version\VersionsCollection;
 use Version\Version;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionsCollectionTest extends \PHPUnit_Framework_TestCase
+class VersionsCollectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreateCollection()
     {
         $versions = new VersionsCollection([
-            new Version(1),
+            Version::fromMajor(1),
             '1.1.0',
             '2.3.3',
         ]);
-
 
         $this->assertInstanceOf('Version\VersionsCollection', $versions);
     }
@@ -33,7 +34,7 @@ class VersionsCollectionTest extends \PHPUnit_Framework_TestCase
     public function testCollectionCount()
     {
         $versions = new VersionsCollection([
-            new Version(1),
+            Version::fromMajor(1),
             '1.1.0',
             '2.3.3',
         ]);
@@ -44,7 +45,7 @@ class VersionsCollectionTest extends \PHPUnit_Framework_TestCase
     public function testCollectionIteration()
     {
         $versions = new VersionsCollection([
-            new Version(1),
+            Version::fromMajor(1),
             '1.1.0',
             '2.3.3',
         ]);
@@ -65,7 +66,7 @@ class VersionsCollectionTest extends \PHPUnit_Framework_TestCase
 
         $versions = new VersionsCollection([
             '2.3.3',
-            new Version(1),
+            Version::fromMajor(1),
             '1.1.0',
             '2.3.3-beta',
         ]);
@@ -87,7 +88,7 @@ class VersionsCollectionTest extends \PHPUnit_Framework_TestCase
 
         $versions = new VersionsCollection([
             '2.3.3',
-            new Version(1),
+            Version::fromMajor(1),
             '1.1.0',
         ]);
 

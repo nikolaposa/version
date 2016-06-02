@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -10,10 +11,15 @@
 
 namespace Version\Metadata;
 
+use Version\Identifier\BuildIdentifier;
+
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
 final class Build extends BaseIdentifyingMetadata
 {
-    protected static $identifierClass = 'Version\Identifier\Build';
+    protected static function createAssociatedIdentifier($value)
+    {
+        return BuildIdentifier::create($value);
+    }
 }

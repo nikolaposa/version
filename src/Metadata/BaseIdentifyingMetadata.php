@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -21,44 +22,79 @@ abstract class BaseIdentifyingMetadata
     /**
      * @var Identifier[]
      */
-    protected $identifiers;
+    private $identifiers;
+
+    private function __construct(array $identifiers = [])
+    {
+        $this->identifiers = $identifiers;
+    }
 
     /**
-     * @var string
+     * @param array|string $identifiers
+     * @return static
+     * @throws InvalidArgumentException
      */
-    protected static $identifierClass = null;
+    public static function create($identifiers)
+    {
+        if (is_array($identifiers)) {
+            return self::createFromArray($identifiers);
+        } elseif (is_string($identifiers)) {
+            return self::createFromString($identifiers);
+        } else {
+            throw new InvalidArgumentException('Identifiers parameter should be either array or string');
+        }
+    }
 
-    /**
-     * @param array|string $ids Identifiers
-     */
-    public function __construct($ids)
+    private static function createFromArray(array $identifiersArray)
     {
         $identifiers = [];
 
-        $identifierClass = static::$identifierClass;
-
-        if (is_string($ids)) {
-            if (strpos($ids, '.') !== false) {
-                $parts = explode('.', $ids);
-
-                foreach ($parts as $val) {
-                    $identifiers[]= new $identifierClass($val);
-                }
-            } else {
-                $identifiers = [new $identifierClass($ids)];
-            }
-        } elseif (is_array($ids)) {
-            foreach ($ids as $id) {
-                if (!$id instanceof $identifierClass) {
-                    $identifiers[]= new $identifierClass($id);
-                }
-            }
-        } else {
-            throw new InvalidArgumentException('Identifiers parameter should be either string or array');
+        foreach ($identifiersArray as $id) {
+            $identifiers[]= self::createIdentifier($id);
         }
 
-        $this->identifiers = $identifiers;
+        return new static($identifiers);
     }
+
+    private static function createFromString($identifiersString)
+    {
+        if (strpos($identifiersString, '.') !== false) {
+            $identifiers = [];
+
+            $ids = explode('.', $identifiersString);
+
+            foreach ($ids as $id) {
+                $identifiers[]= self::createIdentifier($id);
+            }
+
+            return new static($identifiers);
+        }
+
+        return new static([self::createIdentifier($identifiersString)]);
+    }
+
+    private static function createIdentifier($value)
+    {
+        if ($value instanceof Identifier) {
+            return $value;
+        }
+
+        return static::createAssociatedIdentifier($value);
+    }
+
+    /**
+     * @return static
+     */
+    public static function createEmpty()
+    {
+        return new static([]);
+    }
+
+    /**
+     * @param string $value
+     * @return Identifier
+     */
+    abstract protected static function createAssociatedIdentifier($value);
 
     /**
      * @return array
@@ -66,6 +102,14 @@ abstract class BaseIdentifyingMetadata
     public function getIdentifiers()
     {
         return $this->identifiers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->identifiers);
     }
 
     /**

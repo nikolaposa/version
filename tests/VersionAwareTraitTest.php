@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -10,29 +11,30 @@
 
 namespace Version\Tests;
 
+use PHPUnit_Framework_TestCase;
 use Version\Version;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionAwareTraitTest extends \PHPUnit_Framework_TestCase
+class VersionAwareTraitTest extends PHPUnit_Framework_TestCase
 {
     public function testSetVersion()
     {
         $object = $this->getObjectForTrait('\Version\VersionAwareTrait');
         $this->assertAttributeEquals(null, 'version', $object);
 
-        $version = new Version(1);
+        $version = Version::fromMajor(1);
         $object->setVersion($version);
         $this->assertAttributeEquals($version, 'version', $object);
     }
-    
+
     public function testGetVersion()
     {
         $object = $this->getObjectForTrait('\Version\VersionAwareTrait');
         $this->assertNull($object->getVersion());
 
-        $version = new Version(1);
+        $version = Version::fromMajor(1);
         $object->setVersion($version);
         $this->assertSame($version, $object->getVersion());
     }

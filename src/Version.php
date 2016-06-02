@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -12,7 +13,7 @@ namespace Version;
 
 use Version\Metadata\PreRelease;
 use Version\Metadata\Build;
-use Version\Exception\InvalidArgumentException;
+use Version\Exception\InvalidVersionElementException;
 use Version\Exception\InvalidVersionStringException;
 
 /**
@@ -38,42 +39,15 @@ final class Version
     /**
      * @var PreRelease
      */
-    private $preRelease = null;
+    private $preRelease;
 
     /**
      * @var Build
      */
-    private $build = null;
+    private $build;
 
-    /**
-     * @param int $major
-     * @param int $minor
-     * @param int $patch
-     * @param PreRelease|array|string $preRelease OPTIONAL
-     * @param Build|array|string $build OPTIONAL
-     */
-    public function __construct($major, $minor = 0, $patch = 0, $preRelease = null, $build = null)
+    private function __construct($major, $minor, $patch, PreRelease $preRelease, Build $build)
     {
-        if (!is_int($major) || $major < 0) {
-            throw new InvalidArgumentException('Major version must be non-negative integer');
-        }
-
-        if (!is_int($minor) || $minor < 0) {
-            throw new InvalidArgumentException('Minor version must be non-negative integer');
-        }
-
-        if (!is_int($patch) || $patch < 0) {
-            throw new InvalidArgumentException('Patch version must be non-negative integer');
-        }
-
-        if ($preRelease !== null && !$preRelease instanceof PreRelease) {
-            $preRelease = new PreRelease($preRelease);
-        }
-
-        if ($build !== null && !$build instanceof Build) {
-            $build = new Build($build);
-        }
-
         $this->major = $major;
         $this->minor = $minor;
         $this->patch = $patch;
@@ -82,17 +56,104 @@ final class Version
     }
 
     /**
+     * @param int $major
+     * @param int $minor
+     * @param int $patch
+     * @param PreRelease|array|string $preRelease
+     * @param Build|array|string $build
+     * @return self
+     */
+    public static function fromAllElements($major, $minor, $patch, $preRelease, $build)
+    {
+        self::validateVersionElement('major', $major);
+
+        self::validateVersionElement('minor', $minor);
+
+        self::validateVersionElement('patch', $patch);
+
+        if (is_null($preRelease)) {
+            $preRelease = PreRelease::createEmpty();
+        } elseif (!$preRelease instanceof PreRelease) {
+            $preRelease = PreRelease::create($preRelease);
+        }
+
+        if (is_null($build)) {
+            $build = Build::createEmpty();
+        } elseif (!$build instanceof Build) {
+            $build = Build::create($build);
+        }
+
+        return new self($major, $minor, $patch, $preRelease, $build);
+    }
+
+    private static function validateVersionElement($element, $value)
+    {
+        if (!is_int($value) || $value < 0) {
+            throw InvalidVersionElementException::forElement($element);
+        }
+    }
+
+    /**
+     * @param int $major
+     * @return self
+     */
+    public static function fromMajor($major)
+    {
+        return self::fromAllElements($major, 0, 0, null, null);
+    }
+
+    /**
+     * @param int $major
+     * @param int $minor
+     * @return self
+     */
+    public static function fromMinor($major, $minor)
+    {
+        return self::fromAllElements($major, $minor, 0, null, null);
+    }
+
+    /**
+     * @param int $major
+     * @param int $minor
+     * @param int $patch
+     * @return self
+     */
+    public static function fromPatch($major, $minor, $patch)
+    {
+        return self::fromAllElements($major, $minor, $patch, null, null);
+    }
+
+    /**
+     * @param int $major
+     * @param int $minor
+     * @param int $patch
+     * @param @param PreRelease|array|string $preRelease
+     * @return self
+     */
+    public static function fromPreRelease($major, $minor, $patch, $preRelease)
+    {
+        return self::fromAllElements($major, $minor, $patch, $preRelease, null);
+    }
+
+    /**
+     * @param int $major
+     * @param int $minor
+     * @param int $patch
+     * @param Build|array|string $build
+     * @return self
+     */
+    public static function fromBuild($major, $minor, $patch, $build)
+    {
+        return self::fromAllElements($major, $minor, $patch, null, $build);
+    }
+
+    /**
      * @param string $versionString
      * @return self
-     * @throws InvalidArgumentException
      * @throws InvalidVersionStringException
      */
     public static function fromString($versionString)
     {
-        if (!is_string($versionString)) {
-            throw new InvalidArgumentException(__METHOD__ . ' expects a string');
-        }
-
         $parts = [];
 
         if (!preg_match(
@@ -101,7 +162,7 @@ final class Version
             . '(?:\-(?P<preRelease>[0-9A-Za-z\-\.]+))?'
             . '(?:\+(?P<build>[0-9A-Za-z\-\.]+))?'
             . '$#',
-            $versionString,
+            (string) $versionString,
             $parts
         )) {
             throw new InvalidVersionStringException("Version string is not valid and cannot be parsed");
@@ -116,7 +177,7 @@ final class Version
 
         $build = (!empty($parts['build'])) ? $parts['build'] : null;
 
-        return new self($major, $minor, $patch, $preRelease, $build);
+        return self::fromAllElements($major, $minor, $patch, $preRelease, $build);
     }
 
     /**
@@ -160,6 +221,22 @@ final class Version
     }
 
     /**
+     * @return bool
+     */
+    public function isPreRelease()
+    {
+        return !$this->preRelease->isEmpty();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBuild()
+    {
+        return !$this->build->isEmpty();
+    }
+
+    /**
      * @return string
      */
     public function getVersionString()
@@ -168,8 +245,8 @@ final class Version
             $this->major
             . '.' . $this->minor
             . '.' . $this->patch
-            . (isset($this->preRelease) ? '-' . (string) $this->preRelease : '')
-            . (isset($this->build) ? '+' . (string) $this->build : '')
+            . ($this->isPreRelease() ? '-' . (string) $this->preRelease : '')
+            . ($this->isBuild() ? '+' . (string) $this->build : '')
         ;
     }
 
@@ -217,18 +294,19 @@ final class Version
 
         //... major, minor, and patch are equal, compare pre-releases
 
-        if (!$this->preRelease && $version->preRelease) {
+        if (!$this->isPreRelease() && $version->isPreRelease()) {
             // normal version has greater precedence than a pre-release version version
             return 1;
         }
 
-        if ($this->preRelease && !$version->preRelease) {
+        if ($this->isPreRelease() && !$version->isPreRelease()) {
             // pre-release version has lower precedence than a normal version
             return -1;
         }
 
-        if ($this->preRelease && $version->preRelease) {
+        if ($this->isPreRelease() && $version->isPreRelease()) {
             $result = $this->preRelease->compareTo($version->preRelease);
+
             if ($result > 0) {
                 return 1;
             } elseif ($result < 0) {
@@ -268,32 +346,44 @@ final class Version
     }
 
     /**
-     * @param PreRelease|array|string $preRelease
-     * @param Build|array|string $build
      * @return self
      */
-    public function incrementMajor($preRelease = null, $build = null)
+    public function withMajorIncremented()
     {
-        return new self($this->major + 1, 0, 0, $preRelease, $build);
+        return self::fromAllElements($this->major + 1, 0, 0, PreRelease::createEmpty(), Build::createEmpty());
+    }
+
+    /**
+     * @return self
+     */
+    public function withMinorIncremented()
+    {
+        return self::fromAllElements($this->major, $this->minor + 1, 0, PreRelease::createEmpty(), Build::createEmpty());
+    }
+
+    /**
+     * @return self
+     */
+    public function withPatchIncremented()
+    {
+        return self::fromAllElements($this->major, $this->minor, $this->patch + 1, PreRelease::createEmpty(), Build::createEmpty());
     }
 
     /**
      * @param PreRelease|array|string $preRelease
-     * @param Build|array|string $build
      * @return self
      */
-    public function incrementMinor($preRelease = null, $build = null)
+    public function withPreRelease($preRelease)
     {
-        return new self($this->major, $this->minor + 1, 0, $preRelease, $build);
+        return self::fromAllElements($this->major, $this->minor, $this->patch, $preRelease, Build::createEmpty());
     }
 
     /**
-     * @param PreRelease|array|string $preRelease
      * @param Build|array|string $build
      * @return self
      */
-    public function incrementPatch($preRelease = null, $build = null)
+    public function withBuild($build)
     {
-        return new self($this->major, $this->minor, $this->patch + 1, $preRelease, $build);
+        return self::fromAllElements($this->major, $this->minor, $this->patch, clone $this->preRelease, $build);
     }
 }

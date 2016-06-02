@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -10,12 +11,17 @@
 
 namespace Version\Metadata;
 
+use Version\Identifier\PreReleaseIdentifier;
+
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
 final class PreRelease extends BaseIdentifyingMetadata
 {
-    protected static $identifierClass = 'Version\Identifier\PreRelease';
+    protected static function createAssociatedIdentifier($value)
+    {
+        return PreReleaseIdentifier::create($value);
+    }
 
     /**
      * @param self $preRelease

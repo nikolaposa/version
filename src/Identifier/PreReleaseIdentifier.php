@@ -15,16 +15,10 @@ use Version\Exception\InvalidIdentifierValueException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-final class Build extends BaseIdentifier
+final class PreReleaseIdentifier extends BaseIdentifier
 {
-    /**
-     * @param string $value
-     * @throws InvalidIdentifierValueException
-     */
-    protected function validate($value)
+    protected static function validate($value)
     {
-        parent::validate($value);
-
         if (!preg_match('/^[0-9A-Za-z\-]+$/', $value)) {
             throw new InvalidIdentifierValueException(__CLASS__ . ' value must contain only alphanumerics and hyphen');
         }
