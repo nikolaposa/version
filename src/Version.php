@@ -71,15 +71,11 @@ final class Version
 
         self::validateVersionElement('patch', $patch);
 
-        if (is_null($preRelease)) {
-            $preRelease = PreRelease::createEmpty();
-        } elseif (!$preRelease instanceof PreRelease) {
+        if (!$preRelease instanceof PreRelease) {
             $preRelease = PreRelease::create($preRelease);
         }
 
-        if (is_null($build)) {
-            $build = Build::createEmpty();
-        } elseif (!$build instanceof Build) {
+        if (!$build instanceof Build) {
             $build = Build::create($build);
         }
 
@@ -99,7 +95,7 @@ final class Version
      */
     public static function fromMajor($major)
     {
-        return self::fromAllElements($major, 0, 0, null, null);
+        return self::fromAllElements($major, 0, 0, PreRelease::createEmpty(), Build::createEmpty());
     }
 
     /**
@@ -109,7 +105,7 @@ final class Version
      */
     public static function fromMinor($major, $minor)
     {
-        return self::fromAllElements($major, $minor, 0, null, null);
+        return self::fromAllElements($major, $minor, 0, PreRelease::createEmpty(), Build::createEmpty());
     }
 
     /**
@@ -120,7 +116,7 @@ final class Version
      */
     public static function fromPatch($major, $minor, $patch)
     {
-        return self::fromAllElements($major, $minor, $patch, null, null);
+        return self::fromAllElements($major, $minor, $patch, PreRelease::createEmpty(), Build::createEmpty());
     }
 
     /**
@@ -132,7 +128,7 @@ final class Version
      */
     public static function fromPreRelease($major, $minor, $patch, $preRelease)
     {
-        return self::fromAllElements($major, $minor, $patch, $preRelease, null);
+        return self::fromAllElements($major, $minor, $patch, $preRelease, Build::createEmpty());
     }
 
     /**
@@ -144,7 +140,7 @@ final class Version
      */
     public static function fromBuild($major, $minor, $patch, $build)
     {
-        return self::fromAllElements($major, $minor, $patch, null, $build);
+        return self::fromAllElements($major, $minor, $patch, PreRelease::createEmpty(), $build);
     }
 
     /**
@@ -173,9 +169,9 @@ final class Version
         $minor = (int) $minor;
         $patch = (int) $patch;
 
-        $preRelease = (!empty($parts['preRelease'])) ? $parts['preRelease'] : null;
+        $preRelease = (!empty($parts['preRelease'])) ? $parts['preRelease'] : PreRelease::createEmpty();
 
-        $build = (!empty($parts['build'])) ? $parts['build'] : null;
+        $build = (!empty($parts['build'])) ? $parts['build'] : Build::createEmpty();
 
         return self::fromAllElements($major, $minor, $patch, $preRelease, $build);
     }
