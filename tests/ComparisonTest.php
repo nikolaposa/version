@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -10,24 +11,25 @@
 
 namespace Version\Tests;
 
+use PHPUnit_Framework_TestCase;
 use Version\Version;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class ComparisonTest extends \PHPUnit_Framework_TestCase
+class ComparisonTest extends PHPUnit_Framework_TestCase
 {
-    protected function assertVersionEqual($expected, Version $actual)
+    private function assertVersionEqual($expected, Version $actual)
     {
         $this->assertTrue($actual->isEqualTo($expected), "$actual is not equal to $expected");
     }
 
-    protected function assertVersionGreaterThan($expected, Version $actual)
+    private function assertVersionGreaterThan($expected, Version $actual)
     {
         $this->assertTrue($actual->isGreaterThan($expected), "$actual is not greater than $expected");
     }
 
-    protected function assertVersionLessThan($expected, Version $actual)
+    private function assertVersionLessThan($expected, Version $actual)
     {
         $this->assertTrue($actual->isLessThan($expected), "$actual is not less than $expected");
     }
@@ -38,7 +40,7 @@ class ComparisonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getComparisonSet
+     * @dataProvider versionsCompareList
      */
     public function testVersionCompareTo($version1, $version2, $result)
     {
@@ -46,7 +48,7 @@ class ComparisonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getComparisonSet
+     * @dataProvider versionsCompareList
      */
     public function testVersionComparison($version1, $version2, $result)
     {
@@ -59,7 +61,7 @@ class ComparisonTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public static function getComparisonSet()
+    public static function versionsCompareList()
     {
         return [
             ['2.1.1', '2.1.0', 1],

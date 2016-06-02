@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -10,12 +11,13 @@
 
 namespace Version\Tests;
 
+use PHPUnit_Framework_TestCase;
 use Version\Version;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionMetadataTest extends \PHPUnit_Framework_TestCase
+class VersionMetadataTest extends PHPUnit_Framework_TestCase
 {
     public function testVersionPreReleaseMetadata()
     {
