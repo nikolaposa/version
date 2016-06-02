@@ -67,11 +67,11 @@ final class Version
         }
 
         if ($preRelease !== null && !$preRelease instanceof PreRelease) {
-            $preRelease = new PreRelease($preRelease);
+            $preRelease = PreRelease::create($preRelease);
         }
 
         if ($build !== null && !$build instanceof Build) {
-            $build = new Build($build);
+            $build = Build::create($build);
         }
 
         $this->major = $major;

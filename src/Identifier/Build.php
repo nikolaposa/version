@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -17,14 +18,8 @@ use Version\Exception\InvalidIdentifierValueException;
  */
 final class Build extends BaseIdentifier
 {
-    /**
-     * @param string $value
-     * @throws InvalidIdentifierValueException
-     */
-    protected function validate($value)
+    protected static function validate($value)
     {
-        parent::validate($value);
-
         if (!preg_match('/^[0-9A-Za-z\-]+$/', $value)) {
             throw new InvalidIdentifierValueException(__CLASS__ . ' value must contain only alphanumerics and hyphen');
         }

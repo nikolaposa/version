@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -15,7 +16,10 @@ namespace Version\Metadata;
  */
 final class PreRelease extends BaseIdentifyingMetadata
 {
-    protected static $identifierClass = 'Version\Identifier\PreRelease';
+    protected static function getIdentifierClass()
+    {
+        return 'Version\Identifier\PreRelease';
+    }
 
     /**
      * @param self $preRelease

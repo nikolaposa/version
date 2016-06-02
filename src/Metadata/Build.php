@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -15,5 +16,8 @@ namespace Version\Metadata;
  */
 final class Build extends BaseIdentifyingMetadata
 {
-    protected static $identifierClass = 'Version\Identifier\Build';
+    protected static function getIdentifierClass()
+    {
+        return 'Version\Identifier\Build';
+    }
 }

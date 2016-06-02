@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -20,23 +21,14 @@ abstract class BaseIdentifier implements Identifier
     /**
      * @var string
      */
-    protected $value;
+    private $value;
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    private function __construct($value)
     {
-        $this->validate($value);
-
         $this->value = $value;
     }
 
-    /**
-     * @param string $value
-     * @throws InvalidIdentifierValueException
-     */
-    protected function validate($value)
+    public static function create($value)
     {
         if (!is_string($value)) {
             throw new InvalidIdentifierValueException('Identifier value must be of type string');
@@ -45,19 +37,25 @@ abstract class BaseIdentifier implements Identifier
         if ($value === '') {
             throw new InvalidIdentifierValueException('Identifier must not be empty');
         }
+
+        static::validate($value);
+
+        return new static($value);
     }
 
     /**
-     * @return string
+     * @param string $value
+     * @throws InvalidIdentifierValueException
      */
+    protected static function validate($value)
+    {
+    }
+
     public function getValue()
     {
         return $this->value;
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return $this->getValue();
