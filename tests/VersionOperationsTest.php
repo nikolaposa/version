@@ -13,7 +13,6 @@ namespace Version\Tests;
 
 use PHPUnit_Framework_TestCase;
 use Version\Version;
-use Version\Tests\VersionTest;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>

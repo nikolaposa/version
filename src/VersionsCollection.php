@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Version package.
  *
@@ -59,7 +60,7 @@ final class VersionsCollection implements Countable, IteratorAggregate
      */
     public function sort($descending = false)
     {
-        usort($this->versions, function(Version $a, Version $b) use ($descending) {
+        usort($this->versions, function (Version $a, Version $b) use ($descending) {
             $result = $a->compareTo($b);
 
             if ($descending) {
