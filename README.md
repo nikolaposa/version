@@ -118,8 +118,6 @@ class Package implements VersionAwareInterface
 $package = new Package('Test');
 $package->setVersion(Version::fromString('2.3.3'));
 
-$package->setVersion($package->getVersion()->incrementMinor());
-
 ```
 
 ### Versions collection
