@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## 2.0.1 - 2016-06-02
 ### Added
 - Hooked [PHP Coding Standards Fixer](http://cs.sensiolabs.org/) into the Travis CI.
 
@@ -25,4 +25,4 @@ All notable changes to this project will be documented in this file.
 ## 1.2.x
 This release is abandoned, please consider upgrading to 2.0.x.
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/2.0.1...HEAD
