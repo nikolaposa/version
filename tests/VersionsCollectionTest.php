@@ -55,7 +55,7 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCollectionSorting()
+    public function testCollectionSortedInAscendingOrderByDefault()
     {
         $ordered = [
             '1.0.0',
@@ -78,7 +78,7 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCollectionSortDescending()
+    public function testCollectionSortedInDescendingOrder()
     {
         $ordered = [
             '2.3.3',
@@ -92,7 +92,7 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
             '1.1.0',
         ]);
 
-        $versions->sort(true);
+        $versions->sort(VersionsCollection::SORT_DESC);
 
         foreach ($versions as $key => $version) {
             $this->assertEquals($ordered[$key], (string) $version);

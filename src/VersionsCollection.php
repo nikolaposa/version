@@ -20,6 +20,9 @@ use ArrayIterator;
  */
 final class VersionsCollection implements Countable, IteratorAggregate
 {
+    const SORT_ASC = 'ASC';
+    const SORT_DESC = 'DESC';
+
     /**
      * @var Version[]
      */
@@ -55,15 +58,20 @@ final class VersionsCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @param bool $descending OPTIONAL
+     * @param string|bool $direction OPTIONAL
      * @return void
      */
-    public function sort($descending = false)
+    public function sort($direction = self::SORT_ASC)
     {
-        usort($this->versions, function (Version $a, Version $b) use ($descending) {
+        if (is_bool($direction)) {
+            //backwards-compatibility
+            $direction = (true === $direction) ? self::SORT_DESC : self::SORT_ASC;
+        }
+
+        usort($this->versions, function (Version $a, Version $b) use ($direction) {
             $result = $a->compareTo($b);
 
-            if ($descending) {
+            if ($direction == self::SORT_DESC) {
                 $result *= -1;
             }
 
