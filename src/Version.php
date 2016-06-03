@@ -379,4 +379,18 @@ final class Version
     {
         return self::fromAllElements($this->major, $this->minor, $this->patch, $this->preRelease, $build);
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'major' => $this->major,
+            'minor' => $this->minor,
+            'patch' => $this->patch,
+            'preRelease' => $this->preRelease->toArray(),
+            'build' => $this->build->toArray(),
+        ];
+    }
 }

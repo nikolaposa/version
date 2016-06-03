@@ -83,6 +83,38 @@ class VersionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider versionArrays
+     */
+    public function testVersionToArrayConversion($versionString, $versionArray)
+    {
+        $version = Version::fromString($versionString);
+
+        $this->assertEquals($versionArray, $version->toArray());
+    }
+
+    public static function versionArrays()
+    {
+        return [
+            [
+                '1.7.3',
+                ['major' => 1, 'minor' => 7, 'patch' => 3, 'preRelease' => [], 'build' => []]
+            ],
+            [
+                '2.0.0-alpha',
+                ['major' => 2, 'minor' => 0, 'patch' => 0, 'preRelease' => ['alpha'], 'build' => []]
+            ],
+            [
+                '1.11.3+111',
+                ['major' => 1, 'minor' => 11, 'patch' => 3, 'preRelease' => [], 'build' => ['111']]
+            ],
+            [
+                '3.0.0-beta.1+1.2.3',
+                ['major' => 3, 'minor' => 0, 'patch' => 0, 'preRelease' => ['beta', '1'], 'build' => ['1', '2', '3']]
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider versionStrings
      */
     public function testCreationFromVersionString($versionString, $major, $minor, $patch, $preRelease, $build)
