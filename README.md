@@ -122,7 +122,7 @@ $package->setVersion(Version::fromString('2.3.3'));
 use Version\VersionsCollection;
 use Version\Version;
 
-$versions = new VersionsCollection([
+$versions = VersionsCollection::fromArray([
     Version::fromMajor(1),
     '1.1.0',
     '2.3.3',
@@ -130,8 +130,7 @@ $versions = new VersionsCollection([
 
 echo count($versions); //3
 
-//Sort descending
-$versions->sort(true);
+$versions->sort(VersionsCollection::SORT_DESC);
 
 //Outputs: 2.3.3, 1.1.0, 1.0.0
 foreach ($versions as $version) {

@@ -14,12 +14,16 @@ namespace Version;
 use Countable;
 use IteratorAggregate;
 use ArrayIterator;
+use Version\Exception\InvalidArgumentException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
 final class VersionsCollection implements Countable, IteratorAggregate
 {
+    const SORT_ASC = 'ASC';
+    const SORT_DESC = 'DESC';
+
     /**
      * @var Version[]
      */
@@ -31,11 +35,26 @@ final class VersionsCollection implements Countable, IteratorAggregate
     public function __construct(array $versions)
     {
         foreach ($versions as $version) {
-            if (!$version instanceof Version) {
-                $version = Version::fromString((string) $version);
+            if (is_string($version)) {
+                $version = Version::fromString($version);
+            } elseif (!$version instanceof Version) {
+                throw new InvalidArgumentException(sprintf(
+                    'Item in the versions array should be either string or Version instance, %s given',
+                    gettype($version)
+                ));
             }
+
             $this->versions[] = $version;
         }
+    }
+
+    /**
+     * @param array $versions
+     * @return self
+     */
+    public static function fromArray(array $versions)
+    {
+        return new self($versions);
     }
 
     /**
@@ -55,15 +74,20 @@ final class VersionsCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @param bool $descending OPTIONAL
+     * @param string|bool $direction OPTIONAL
      * @return void
      */
-    public function sort($descending = false)
+    public function sort($direction = self::SORT_ASC)
     {
-        usort($this->versions, function (Version $a, Version $b) use ($descending) {
+        if (is_bool($direction)) {
+            //backwards-compatibility
+            $direction = (true === $direction) ? self::SORT_DESC : self::SORT_ASC;
+        }
+
+        usort($this->versions, function (Version $a, Version $b) use ($direction) {
             $result = $a->compareTo($b);
 
-            if ($descending) {
+            if ($direction == self::SORT_DESC) {
                 $result *= -1;
             }
 
