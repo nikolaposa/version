@@ -41,9 +41,9 @@ abstract class BaseIdentifyingMetadata
             return self::createFromArray($identifiers);
         } elseif (is_string($identifiers)) {
             return self::createFromString($identifiers);
-        } else {
-            throw new InvalidArgumentException('Identifiers parameter should be either array or string');
         }
+
+        throw new InvalidArgumentException('Identifiers parameter should be either array or string');
     }
 
     private static function createFromArray(array $identifiersArray)

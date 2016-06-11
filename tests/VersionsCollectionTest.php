@@ -14,6 +14,7 @@ namespace Version\Tests;
 use PHPUnit_Framework_TestCase;
 use Version\VersionsCollection;
 use Version\Version;
+use Version\Exception\InvalidArgumentException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -28,12 +29,23 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
             '2.3.3',
         ]);
 
-        $this->assertInstanceOf('Version\VersionsCollection', $versions);
+        $this->assertInstanceOf(VersionsCollection::class, $versions);
+    }
+
+    public function testCreationViaStaticFactory()
+    {
+        $versions = VersionsCollection::fromArray([
+            Version::fromMajor(1),
+            '1.1.0',
+            '2.3.3',
+        ]);
+
+        $this->assertInstanceOf(VersionsCollection::class, $versions);
     }
 
     public function testCollectionCount()
     {
-        $versions = new VersionsCollection([
+        $versions = VersionsCollection::fromArray([
             Version::fromMajor(1),
             '1.1.0',
             '2.3.3',
@@ -44,7 +56,7 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
 
     public function testCollectionIteration()
     {
-        $versions = new VersionsCollection([
+        $versions = VersionsCollection::fromArray([
             Version::fromMajor(1),
             '1.1.0',
             '2.3.3',
@@ -55,7 +67,7 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCollectionSorting()
+    public function testCollectionSortedInAscendingOrderByDefault()
     {
         $ordered = [
             '1.0.0',
@@ -64,7 +76,7 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
             '2.3.3',
         ];
 
-        $versions = new VersionsCollection([
+        $versions = VersionsCollection::fromArray([
             '2.3.3',
             Version::fromMajor(1),
             '1.1.0',
@@ -78,7 +90,7 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testCollectionSortDescending()
+    public function testCollectionSortedInDescendingOrder()
     {
         $ordered = [
             '2.3.3',
@@ -86,16 +98,30 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
             '1.0.0',
         ];
 
-        $versions = new VersionsCollection([
+        $versions = VersionsCollection::fromArray([
             '2.3.3',
             Version::fromMajor(1),
             '1.1.0',
         ]);
 
-        $versions->sort(true);
+        $versions->sort(VersionsCollection::SORT_DESC);
 
         foreach ($versions as $key => $version) {
             $this->assertEquals($ordered[$key], (string) $version);
         }
+    }
+
+    public function testExceptionIsRaisedInCaseOfInvalidVersionItem()
+    {
+        $this->setExpectedException(
+            InvalidArgumentException::class,
+            'Item in the versions array should be either string or Version instance, boolean given'
+        );
+
+        VersionsCollection::fromArray([
+            '1.1.0',
+            false,
+            '2.3.3',
+        ]);
     }
 }
