@@ -388,4 +388,18 @@ final class Version implements JsonSerializable
     {
         return $this->getVersionString();
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'major' => $this->major,
+            'minor' => $this->minor,
+            'patch' => $this->patch,
+            'preRelease' => $this->preRelease->toArray(),
+            'build' => $this->build->toArray(),
+        ];
+    }
 }

@@ -117,6 +117,16 @@ abstract class BaseIdentifyingMetadata
     }
 
     /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return array_map(function ($identifier) {
+            return $identifier->getValue();
+        }, $this->identifiers);
+    }
+
+    /**
      * @return string
      */
     public function __toString()
