@@ -83,6 +83,53 @@ class VersionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider versionStrings
+     */
+    public function testCreationFromVersionString($versionString, $major, $minor, $patch, $preRelease, $build)
+    {
+        $version = Version::fromString($versionString);
+
+        $this->assertMatchesVersion($version, $major, $minor, $patch, $preRelease, $build);
+    }
+
+    public static function versionStrings()
+    {
+        return [
+            ['0.9.7', 0, 9, 7, false, false],
+            ['1.10.0', 1, 10, 0, false, false],
+            ['2.5.4', 2, 5, 4, false, false],
+            ['2.1.17', 2, 1, 17, false, false],
+            ['3.1.0-beta+123', 3, 1, 0, 'beta', '123'],
+        ];
+    }
+
+    /**
+     * @dataProvider printedVersionStrings
+     */
+    public function testVersionToStringConversion($output, Version $version)
+    {
+        $this->assertEquals($output, (string) $version);
+    }
+
+    /**
+     * @dataProvider printedVersionStrings
+     */
+    public function testJsonSerialization($output, Version $version)
+    {
+        $this->assertEquals('"' . $output . '"', json_encode($version));
+    }
+
+    public static function printedVersionStrings()
+    {
+        return [
+            ['2.1.0', Version::fromPatch(2, 1, 0)],
+            ['1.0.0+20150919', Version::fromString('1.0.0+20150919')],
+            ['1.0.0+exp.sha.5114f85', Version::fromString('1.0.0+exp.sha.5114f85')],
+            ['1.0.0-alpha.1+exp.sha.5114f85', Version::fromString('1.0.0-alpha.1+exp.sha.5114f85')],
+        ];
+    }
+
+    /**
      * @dataProvider versionArrays
      */
     public function testVersionToArrayConversion($versionString, $versionArray)
@@ -111,27 +158,6 @@ class VersionTest extends PHPUnit_Framework_TestCase
                 '3.0.0-beta.1+1.2.3',
                 ['major' => 3, 'minor' => 0, 'patch' => 0, 'preRelease' => ['beta', '1'], 'build' => ['1', '2', '3']]
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider versionStrings
-     */
-    public function testCreationFromVersionString($versionString, $major, $minor, $patch, $preRelease, $build)
-    {
-        $version = Version::fromString($versionString);
-
-        $this->assertMatchesVersion($version, $major, $minor, $patch, $preRelease, $build);
-    }
-
-    public static function versionStrings()
-    {
-        return [
-            ['0.9.7', 0, 9, 7, false, false],
-            ['1.10.0', 1, 10, 0, false, false],
-            ['2.5.4', 2, 5, 4, false, false],
-            ['2.1.17', 2, 1, 17, false, false],
-            ['3.1.0-beta+123', 3, 1, 0, 'beta', '123'],
         ];
     }
 
@@ -168,31 +194,5 @@ class VersionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException(InvalidVersionStringException::class);
 
         Version::fromString('1.5.2.4.4');
-    }
-
-    /**
-     * @dataProvider printedVersionStrings
-     */
-    public function testVersionToStringConversion($output, Version $version)
-    {
-        $this->assertEquals($output, (string) $version);
-    }
-
-    /**
-     * @dataProvider printedVersionStrings
-     */
-    public function testJsonSerialization($output, Version $version)
-    {
-        $this->assertEquals('"' . $output . '"', json_encode($version));
-    }
-
-    public static function printedVersionStrings()
-    {
-        return [
-            ['2.1.0', Version::fromPatch(2, 1, 0)],
-            ['1.0.0+20150919', Version::fromString('1.0.0+20150919')],
-            ['1.0.0+exp.sha.5114f85', Version::fromString('1.0.0+exp.sha.5114f85')],
-            ['1.0.0-alpha.1+exp.sha.5114f85', Version::fromString('1.0.0-alpha.1+exp.sha.5114f85')],
-        ];
     }
 }

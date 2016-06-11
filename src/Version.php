@@ -387,6 +387,9 @@ final class Version implements JsonSerializable
     public function jsonSerialize()
     {
         return $this->getVersionString();
+    }
+
+    /**
      * @return array
      */
     public function toArray()
