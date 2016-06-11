@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 2.1.0 - 2016-06-11
+### Added
+- [5: Version is now JsonSerializable](https://github.com/nikolaposa/version/pull/5).
+- [6: Capability for converting Version into array](https://github.com/nikolaposa/version/pull/6).
+- Static factory method (`fromArray`) for creating VersionsCollection.
+
 ## 2.0.1 - 2016-06-02
 ### Added
 - Hooked [PHP Coding Standards Fixer](http://cs.sensiolabs.org/) into the Travis CI.
