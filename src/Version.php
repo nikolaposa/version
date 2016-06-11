@@ -11,6 +11,7 @@
 
 namespace Version;
 
+use JsonSerializable;
 use Version\Metadata\PreRelease;
 use Version\Metadata\Build;
 use Version\Exception\InvalidVersionElementException;
@@ -19,7 +20,7 @@ use Version\Exception\InvalidVersionStringException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-final class Version
+final class Version implements JsonSerializable
 {
     /**
      * @var int
@@ -233,28 +234,6 @@ final class Version
     }
 
     /**
-     * @return string
-     */
-    public function getVersionString()
-    {
-        return
-            $this->major
-            . '.' . $this->minor
-            . '.' . $this->patch
-            . ($this->isPreRelease() ? '-' . (string) $this->preRelease : '')
-            . ($this->isBuild() ? '+' . (string) $this->build : '')
-        ;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getVersionString();
-    }
-
-    /**
      * @param self|string $version
      * @return int (1 if $this > $version, -1 if $this < $version, 0 if equal)
      */
@@ -378,5 +357,35 @@ final class Version
     public function withBuild($build)
     {
         return self::fromAllElements($this->major, $this->minor, $this->patch, $this->preRelease, $build);
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersionString()
+    {
+        return
+            $this->major
+            . '.' . $this->minor
+            . '.' . $this->patch
+            . ($this->isPreRelease() ? '-' . (string) $this->preRelease : '')
+            . ($this->isBuild() ? '+' . (string) $this->build : '')
+            ;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getVersionString();
+    }
+
+    /**
+     * @return string
+     */
+    public function jsonSerialize()
+    {
+        return $this->getVersionString();
     }
 }
