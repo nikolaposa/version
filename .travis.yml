@@ -16,8 +16,12 @@ matrix:
     - php: 7
     - php: hhvm
 
+before_install:
+  - phpenv config-rm xdebug.ini
+  
 install:
   - travis_retry composer install --no-interaction
 
 script:
+  - ./vendor/bin/phpunit --disallow-test-output
   - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then ./vendor/bin/php-cs-fixer fix -v --diff --dry-run ; fi
