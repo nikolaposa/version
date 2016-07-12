@@ -77,13 +77,19 @@ class Constraint implements ConstraintInterface
             return self::$validOperators;
         }
 
-        return self::$validOperators = array_filter(
-            (new ReflectionClass(__CLASS__))->getConstants(),
-            function ($value, $name) {
-                return strpos($name, 'OPERATOR_') === 0;
-            },
-            ARRAY_FILTER_USE_BOTH
-        );
+        $validOperators = [];
+
+        $constants = (new ReflectionClass(__CLASS__))->getConstants();
+
+        foreach ($constants as $name => $value) {
+            if (strpos($name, 'OPERATOR_') !== 0) {
+                continue;
+            }
+
+            $validOperators[] = $value;
+        }
+
+        return self::$validOperators = $validOperators;
     }
 
     /**
