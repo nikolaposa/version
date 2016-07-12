@@ -79,4 +79,14 @@ class VersionComparisonTest extends PHPUnit_Framework_TestCase
             ['1.0.0-alpha+20150919', '1.0.0-alpha+exp.sha.5114f85', 0],
         ];
     }
+
+    public function testVersionGreaterOrEqualComparison()
+    {
+        $this->assertTrue(Version::fromString('1.0.0')->isGreaterOrEqualTo('1.0.0'));
+    }
+
+    public function testVersionLessOrEqualComparison()
+    {
+        $this->assertTrue(Version::fromString('1.0.0')->isLessOrEqualTo('1.0.0'));
+    }
 }
