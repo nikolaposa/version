@@ -41,7 +41,14 @@ class Constraint implements ConstraintInterface
     /**
      * @var array
      */
-    private static $validOperators;
+    private static $validOperators = [
+        self::OPERATOR_EQ,
+        self::OPERATOR_NEQ,
+        self::OPERATOR_GT,
+        self::OPERATOR_GTE,
+        self::OPERATOR_LT,
+        self::OPERATOR_LTE,
+    ];
 
     private function __construct($operator, Version $operand)
     {
@@ -65,28 +72,7 @@ class Constraint implements ConstraintInterface
 
     protected static function isOperatorValid($operator)
     {
-        return in_array($operator, self::getValidOperators());
-    }
-
-    protected static function getValidOperators()
-    {
-        if (isset(self::$validOperators)) {
-            return self::$validOperators;
-        }
-
-        $validOperators = [];
-
-        $constants = (new ReflectionClass(__CLASS__))->getConstants();
-
-        foreach ($constants as $name => $value) {
-            if (strpos($name, 'OPERATOR_') !== 0) {
-                continue;
-            }
-
-            $validOperators[] = $value;
-        }
-
-        return self::$validOperators = $validOperators;
+        return in_array($operator, self::$validOperators);
     }
 
     /**
@@ -134,8 +120,6 @@ class Constraint implements ConstraintInterface
                 return $version->isLessThan($this->operand);
             case self::OPERATOR_LTE :
                 return $version->isLessOrEqualTo($this->operand);
-            default :
-                throw InvalidConstraintException::forOperator($this->operator);
         }
     }
 }

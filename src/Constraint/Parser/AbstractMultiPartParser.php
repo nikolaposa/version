@@ -60,8 +60,6 @@ abstract class AbstractMultiPartParser extends AbstractParser
                     $compositeOrConstraints[] = CompositeConstraint::fromAndConstraints($compositeAndConstraints);
                     $compositeAndConstraints = [];
                     break;
-                default :
-                    $this->error();
             }
         }
 
