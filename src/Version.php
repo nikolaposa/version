@@ -16,6 +16,8 @@ use Version\Metadata\PreRelease;
 use Version\Metadata\Build;
 use Version\Exception\InvalidVersionElementException;
 use Version\Exception\InvalidVersionStringException;
+use Version\Constraint\ConstraintInterface;
+use Version\Constraint\Constraint;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -312,9 +314,40 @@ final class Version implements JsonSerializable
      * @param self|string $version
      * @return bool
      */
+    public function isGreaterOrEqualTo($version)
+    {
+        return $this->compareTo($version) >= 0;
+    }
+
+    /**
+     * @param self|string $version
+     * @return bool
+     */
     public function isLessThan($version)
     {
         return $this->compareTo($version) < 0;
+    }
+
+    /**
+     * @param self|string $version
+     * @return bool
+     */
+    public function isLessOrEqualTo($version)
+    {
+        return $this->compareTo($version) <= 0;
+    }
+
+    /**
+     * @param ConstraintInterface|string $constraint
+     * @return bool
+     */
+    public function matches($constraint)
+    {
+        if (!$constraint instanceof ConstraintInterface) {
+            $constraint = Constraint::fromString($constraint);
+        }
+
+        return $constraint->assert($this);
     }
 
     /**
