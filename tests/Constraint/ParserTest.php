@@ -149,4 +149,11 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
         $this->parser->parse('>100');
     }
+
+    public function testExceptionIsRaisedIfConstraintStringContainsInvalidLogicalOperation()
+    {
+        $this->setExpectedException(InvalidConstraintStringException::class);
+
+        $this->parser->parse('>=1.0.0 <1.1.0 ||');
+    }
 }
