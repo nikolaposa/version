@@ -143,6 +143,13 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->parser->parse('invalid');
     }
 
+    public function testExceptionIsRaisedIfConstraintContainsOperatorThatCannotBeParsed()
+    {
+        $this->setExpectedException(InvalidConstraintStringException::class);
+
+        $this->parser->parse('"100');
+    }
+
     public function testExceptionIsRaisedIfConstraintContainsVersionThatCannotBeParsed()
     {
         $this->setExpectedException(InvalidConstraintStringException::class);
