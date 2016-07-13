@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 2.2.0 - [Unreleased]
+### Added
+- [8: Mechanism for matching versions against constraints](https://github.com/nikolaposa/version/pull/8).
+
 ## 2.1.0 - 2016-06-11
 ### Added
 - [5: Version is now JsonSerializable](https://github.com/nikolaposa/version/pull/5).
@@ -29,6 +33,6 @@ All notable changes to this project will be documented in this file.
 - `Version\Identifier\Build` renamed to `Version\Identifier\BuildIdentifier`.
 
 ## 1.2.x
-This release is abandoned, please consider upgrading to 2.0.x.
+This release is abandoned, please consider upgrading to 2.x.
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/2.0.1...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/2.1.0...HEAD
