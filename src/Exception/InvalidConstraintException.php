@@ -11,10 +11,12 @@
 
 namespace Version\Exception;
 
+use DomainException;
+
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidConstraintException extends InvalidArgumentException
+class InvalidConstraintException extends DomainException implements Exception
 {
     public static function forOperator($operator)
     {

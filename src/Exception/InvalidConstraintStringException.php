@@ -11,10 +11,12 @@
 
 namespace Version\Exception;
 
+use DomainException;
+
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidConstraintStringException extends InvalidArgumentException
+class InvalidConstraintStringException extends DomainException implements Exception
 {
     public static function forInvalidType($constraintString)
     {

@@ -12,6 +12,7 @@
 namespace Version\Constraint;
 
 use Version\Version;
+use Version\Exception\InvalidCompositeConstraintException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -40,15 +41,15 @@ class CompositeConstraint implements ConstraintInterface
      * @param array $constraints
      * @return self
      */
-    public static function create($type, array $constraints)
+    public static function fromProperties($type, array $constraints)
     {
         if (!in_array($type, [self::TYPE_AND, self::TYPE_OR])) {
-
+            throw InvalidCompositeConstraintException::forType($type);
         }
 
         foreach ($constraints as $constraint) {
             if (!$constraint instanceof ConstraintInterface) {
-
+                throw InvalidCompositeConstraintException::forConstraint($constraint);
             }
         }
 
@@ -58,6 +59,24 @@ class CompositeConstraint implements ConstraintInterface
         $compositeConstraint->constraints = $constraints;
 
         return $compositeConstraint;
+    }
+
+    /**
+     * @param array $constraints
+     * @return self
+     */
+    public static function fromAndConstraints(array $constraints)
+    {
+        return self::fromProperties(self::TYPE_AND, $constraints);
+    }
+
+    /**
+     * @param array $constraints
+     * @return self
+     */
+    public static function fromOrConstraints(array $constraints)
+    {
+        return self::fromProperties(self::TYPE_OR, $constraints);
     }
 
     /**
@@ -81,17 +100,33 @@ class CompositeConstraint implements ConstraintInterface
      */
     public function assert(Version $version)
     {
+        if ($this->type == self::TYPE_AND) {
+            return $this->assertAnd($version);
+        }
+
+        return $this->assertOr($version);
+    }
+
+    protected function assertAnd(Version $version)
+    {
         foreach ($this->constraints as $constraint) {
             /* @var $constraint ConstraintInterface */
 
-            $assert = $constraint->assert($version);
-
-            if ($assert && $this->type == self::TYPE_OR) {
-                return true;
-            }
-
-            if (!$assert && $this->type == self::TYPE_AND) {
+            if (!$constraint->assert($version)) {
                 return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected function assertOr(Version $version)
+    {
+        foreach ($this->constraints as $constraint) {
+            /* @var $constraint ConstraintInterface */
+
+            if ($constraint->assert($version)) {
+                return true;
             }
         }
 
