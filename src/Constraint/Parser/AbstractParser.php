@@ -15,8 +15,7 @@ use Version\Constraint\ConstraintInterface;
 use Version\Constraint\Constraint;
 use Version\Version;
 use Version\Exception\InvalidConstraintStringException;
-use Version\Exception\InvalidVersionStringException;
-use Version\Exception\InvalidConstraintException;
+use Version\Exception\Exception;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -72,20 +71,12 @@ abstract class AbstractParser implements ParserInterface
             $this->error();
         }
 
-        $operand = null;
         try {
-            $operand = Version::fromString($operandString);
-        } catch (InvalidVersionStringException $ex) {
-            $this->error();
-        }
-
-        if (empty($operator)) {
-            $operator = Constraint::OPERATOR_EQ;
-        }
-
-        try {
-            return Constraint::fromProperties($operator, $operand);
-        } catch (InvalidConstraintException $ex) {
+            return Constraint::fromProperties(
+                $operator ?: Constraint::OPERATOR_EQ,
+                Version::fromString($operandString)
+            );
+        } catch (Exception $ex) {
             $this->error();
         }
     }
