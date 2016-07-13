@@ -35,7 +35,7 @@ final class PreRelease extends BaseIdentifyingMetadata
         $pr1Count = count($pr1Ids);
         $pr2Count = count($pr2Ids);
 
-        $limit = ($pr1Count < $pr2Count) ? $pr1Count : $pr2Count;
+        $limit = min($pr1Count, $pr2Count);
 
         for ($i = 0; $i < $limit; $i++) {
             $pr1IdVal = $pr1Ids[$i]->getValue();
@@ -45,24 +45,29 @@ final class PreRelease extends BaseIdentifyingMetadata
                 continue;
             }
 
-            $pr1IsAlpha = ctype_alpha($pr1IdVal);
-            $pr2IsAlpha = ctype_alpha($pr2IdVal);
-
-            if ($pr1IsAlpha && !$pr2IsAlpha) {
-                return 1;
-            }
-
-            if ($pr2IsAlpha && !$pr1IsAlpha) {
-                return -1;
-            }
-
-            if (ctype_digit($pr1IdVal) && ctype_digit($pr2IdVal)) {
-                return (int) $pr1IdVal - (int) $pr2IdVal;
-            }
-
-            return strcmp($pr1IdVal, $pr2IdVal);
+            return $this->comparePreReleaseIdentifierValues($pr1IdVal, $pr2IdVal);
         }
 
         return $pr1Count - $pr2Count;
+    }
+
+    private function comparePreReleaseIdentifierValues($pr1IdVal, $pr2IdVal)
+    {
+        $pr1IsAlpha = ctype_alpha($pr1IdVal);
+        $pr2IsAlpha = ctype_alpha($pr2IdVal);
+
+        if ($pr1IsAlpha && !$pr2IsAlpha) {
+            return 1;
+        }
+
+        if ($pr2IsAlpha && !$pr1IsAlpha) {
+            return -1;
+        }
+
+        if (ctype_digit($pr1IdVal) && ctype_digit($pr2IdVal)) {
+            return (int) $pr1IdVal - (int) $pr2IdVal;
+        }
+
+        return strcmp($pr1IdVal, $pr2IdVal);
     }
 }
