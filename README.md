@@ -57,6 +57,20 @@ var_dump($v2->isLessThan($v1)); //bool(false)
 var_dump($v2->isGreaterThan($v1)); //bool(true)
 ```
 
+### Matching Version objects against constraints
+
+```php
+use Version\Version;
+
+$v = Version::fromString('2.2.0');
+
+var_dump($v->matches('2.2.0')); //bool(true)
+var_dump($v->matches('=2.2.0')); //bool(true)
+var_dump($v->matches('!=2.1.0')); //bool(true)
+var_dump($v->matches('>=2.0.0 <2.3.0')); //bool(true)
+var_dump($v->matches('>=2.0.0 <2.1.0 || 2.2.0')); //bool(true)
+```
+
 ### Modifying version
 
 ```php
