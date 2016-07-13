@@ -62,9 +62,11 @@ abstract class AbstractParser implements ParserInterface
      * @param string $constraintStringUnit
      * @return Constraint
      */
-    protected function buildConstraintStringUnit($constraintStringUnit)
+    protected function buildConstraintFromStringUnit($constraintStringUnit)
     {
-        list($operator, $operandString) = array_values($this->parseConstraintStringUnit($constraintStringUnit));
+        list($operator, $operandString) = array_values(
+            $this->parseConstraintStringUnit($constraintStringUnit)
+        );
 
         if (empty($operandString)) {
             $this->error();
