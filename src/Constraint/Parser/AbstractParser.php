@@ -77,7 +77,6 @@ abstract class AbstractParser implements ParserInterface
         try {
             $operand = Version::fromString($operandString);
         } catch (InvalidVersionStringException $ex) {
-            var_dump($operandString, $ex->getMessage());exit;
             $this->error();
         }
 

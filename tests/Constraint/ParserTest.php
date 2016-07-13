@@ -102,4 +102,11 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
         $this->parser->parse('invalid');
     }
+
+    public function testExceptionIsRaisedIfConstraintContainsVersionThatCannotBeParsed()
+    {
+        $this->setExpectedException(InvalidConstraintStringException::class);
+
+        $this->parser->parse('>100');
+    }
 }
