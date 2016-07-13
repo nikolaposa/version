@@ -14,7 +14,7 @@ namespace Version\Constraint;
 use Version\Version;
 use ReflectionClass;
 use Version\Exception\InvalidConstraintException;
-use Version\Exception\InvalidConstraintStringException;
+use Version\Constraint\Parser\StandardParser;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -43,8 +43,10 @@ class Constraint implements ConstraintInterface
      */
     private static $validOperators;
 
-    private function __construct()
+    private function __construct($operator, Version $operand)
     {
+        $this->operator = $operator;
+        $this->operand = $operand;
     }
 
     /**
@@ -52,18 +54,13 @@ class Constraint implements ConstraintInterface
      * @param Version $operand
      * @return self
      */
-    public static function create($operator, Version $operand)
+    public static function fromProperties($operator, Version $operand)
     {
         if (!self::isOperatorValid($operator)) {
             throw InvalidConstraintException::forOperator($operator);
         }
 
-        $constraint = new self();
-
-        $constraint->operator = $operator;
-        $constraint->operand = $operand;
-
-        return $constraint;
+        return new self($operator, $operand);
     }
 
     protected static function isOperatorValid($operator)
@@ -98,17 +95,9 @@ class Constraint implements ConstraintInterface
      */
     public static function fromString($constraintString)
     {
-        if (!is_string($constraintString)) {
-            throw InvalidConstraintStringException::forInvalidType($constraintString);
-        }
+        $parser = new StandardParser();
 
-        $constraintString = trim($constraintString);
-
-        if ($constraintString == '') {
-            throw InvalidConstraintStringException::forEmptyCostraintString();
-        }
-
-        throw InvalidConstraintStringException::forConstraintString($constraintString);
+        return $parser->parse($constraintString);
     }
 
     /**

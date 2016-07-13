@@ -13,6 +13,7 @@ namespace Version\Tests;
 
 use PHPUnit_Framework_TestCase;
 use Version\Version;
+use Version\Constraint\Constraint;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -88,5 +89,15 @@ class VersionComparisonTest extends PHPUnit_Framework_TestCase
     public function testVersionLessOrEqualComparison()
     {
         $this->assertTrue(Version::fromString('1.0.0')->isLessOrEqualTo('1.0.0'));
+    }
+
+    public function testMatchesConstraint()
+    {
+        $this->assertTrue(Version::fromString('1.1.0')->matches(Constraint::fromString('>1.0.0')));
+    }
+
+    public function testMatchesConstraintString()
+    {
+        $this->assertFalse(Version::fromString('2.1.0')->matches('<=2.0.0'));
     }
 }

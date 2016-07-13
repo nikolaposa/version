@@ -341,7 +341,7 @@ final class Version implements JsonSerializable
      * @param ConstraintInterface|string $constraint
      * @return bool
      */
-    public function matches(ConstraintInterface $constraint)
+    public function matches($constraint)
     {
         if (!$constraint instanceof ConstraintInterface) {
             $constraint = Constraint::fromString($constraint);
