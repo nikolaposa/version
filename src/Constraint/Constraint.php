@@ -12,7 +12,6 @@
 namespace Version\Constraint;
 
 use Version\Version;
-use ReflectionClass;
 use Version\Exception\InvalidConstraintException;
 use Version\Constraint\Parser\StandardParser;
 
