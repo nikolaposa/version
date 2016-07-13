@@ -16,6 +16,7 @@ use Version\Constraint\Constraint;
 use Version\Version;
 use Version\Exception\InvalidConstraintStringException;
 use Version\Exception\InvalidVersionStringException;
+use Version\Exception\InvalidConstraintException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -57,17 +58,13 @@ abstract class AbstractParser implements ParserInterface
         throw InvalidConstraintStringException::forConstraintString($this->constraintString);
     }
 
-    protected function parseSingleConstraint($constraintString)
+    /**
+     * @param string $constraintStringUnit
+     * @return Constraint
+     */
+    protected function buildConstraintStringUnit($constraintStringUnit)
     {
-        $operator = $operandString = '';
-
-        $i = 0;
-        while (isset($constraintString[$i]) && !ctype_digit($constraintString[$i])) {
-            $i++;
-        }
-
-        $operator = substr($constraintString, 0, $i);
-        $operandString = substr($constraintString, $i);
+        list($operator, $operandString) = array_values($this->parseConstraintStringUnit($constraintStringUnit));
 
         if (empty($operandString)) {
             $this->error();
@@ -84,6 +81,32 @@ abstract class AbstractParser implements ParserInterface
             $operator = Constraint::OPERATOR_EQ;
         }
 
-        return Constraint::fromProperties($operator, $operand);
+        try {
+            return Constraint::fromProperties($operator, $operand);
+        } catch (InvalidConstraintException $ex) {
+            $this->error();
+        }
+    }
+
+    /**
+     * @param string $constraintStringUnit
+     * @return array
+     */
+    protected function parseConstraintStringUnit($constraintStringUnit)
+    {
+        $operator = $operand = '';
+
+        $i = 0;
+        while (isset($constraintStringUnit[$i]) && !ctype_digit($constraintStringUnit[$i])) {
+            $i++;
+        }
+
+        $operator = substr($constraintStringUnit, 0, $i);
+        $operand = substr($constraintStringUnit, $i);
+
+        return [
+            'operator' => $operator,
+            'operand' => $operand,
+        ];
     }
 }

@@ -38,8 +38,25 @@ class ParserTest extends PHPUnit_Framework_TestCase
     public static function assertCompositeConstraint($type, array $constraints, CompositeConstraint $constraint)
     {
         self::assertEquals($type, $constraint->getType());
+
         $actualConstraints = $constraint->getConstraints();
-        self::assertCount(count($constraints), $actualConstraints);
+
+        foreach ($actualConstraints as $i => $constraint) {
+            if ($constraint instanceof CompositeConstraint) {
+                self::assertCompositeConstraint(
+                    $constraints[$i]['type'],
+                    $constraints[$i]['constraints'],
+                    $constraint
+                );
+                continue;
+            }
+
+            self::assertConstraint(
+                $constraints[$i]['operator'],
+                $constraints[$i]['operand'],
+                $constraint
+            );
+        }
     }
 
     public function testParsingSimpleConstraint()
@@ -50,10 +67,16 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertConstraint('>=', '1.2.0', $constraint);
     }
 
+    public function testParsingConstraintWithoutOperatorShouldUseEqualAsOperator()
+    {
+        $constraint = $this->parser->parse('1.2.0');
+
+        $this->assertInstanceOf(Constraint::class, $constraint);
+        $this->assertConstraint('=', '1.2.0', $constraint);
+    }
+
     public function testParsingRangeConstraint()
     {
-        $this->markTestIncomplete();
-
         $constraint = $this->parser->parse('>=1.2.3 <1.3.0');
 
         $this->assertInstanceOf(CompositeConstraint::class, $constraint);
@@ -69,11 +92,28 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     public function testParsingConstraintWithLogicalOperators()
     {
-        $this->markTestIncomplete();
-
-        $constraint = $this->parser->parse('>=1.0 <1.1 || >=1.2');
+        $constraint = $this->parser->parse('>=1.0.0 <1.1.0 || >=1.2.0');
 
         $this->assertInstanceOf(CompositeConstraint::class, $constraint);
+        $this->assertCompositeConstraint(
+            CompositeConstraint::TYPE_OR,
+            [
+                [
+                    'type' => CompositeConstraint::TYPE_AND,
+                    'constraints' => [
+                        ['operator' => '>=', 'operand' => '1.0.0'],
+                        ['operator' => '<', 'operand' => '1.1.0'],
+                    ]
+                ],
+                [
+                    'type' => CompositeConstraint::TYPE_AND,
+                    'constraints' => [
+                        ['operator' => '>=', 'operand' => '1.2.0'],
+                    ]
+                ],
+            ],
+            $constraint
+        );
     }
 
     public function testExceptionIsRaisedIfConstraintStringIsNotString()
