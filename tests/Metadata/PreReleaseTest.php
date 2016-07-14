@@ -92,5 +92,6 @@ class PreReleaseTest extends BaseMetadataTest
         $this->assertEquals(0, PreRelease::create('beta')->compareTo(PreRelease::create('beta')));
         $this->assertEquals(-1, PreRelease::create('beta1')->compareTo(PreRelease::create('beta2')));
         $this->assertEquals(1, PreRelease::create('beta')->compareTo(PreRelease::create('alpha')));
+        $this->assertEquals(-1, PreRelease::create('beta.1')->compareTo(PreRelease::create('beta.test')));
     }
 }
