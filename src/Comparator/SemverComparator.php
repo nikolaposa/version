@@ -52,26 +52,23 @@ final class SemverComparator implements ComparatorInterface
 
     private function compareMeta(Version $version1, Version $version2)
     {
-        if (!$version1->isPreRelease() && $version2->isPreRelease()) {
-            // normal version has greater precedence than a pre-release version version
+        $v1IsPreRelease = $version1->isPreRelease();
+        $v2IsPreRelease = $version2->isPreRelease();
+
+        if ($v1IsPreRelease xor $v2IsPreRelease) {
+            return !$v1IsPreRelease
+                ? 1 // normal version has greater precedence than a pre-release version version
+                : -1; // pre-release version has lower precedence than a normal version
+        }
+
+        $result = $version1->getPreRelease()->compareTo($version2->getPreRelease());
+
+        if ($result > 0) {
             return 1;
         }
 
-        if ($version1->isPreRelease() && !$version2->isPreRelease()) {
-            // pre-release version has lower precedence than a normal version
+        if ($result < 0) {
             return -1;
-        }
-
-        if ($version1->isPreRelease() && $version2->isPreRelease()) {
-            $result = $version1->getPreRelease()->compareTo($version2->getPreRelease());
-
-            if ($result > 0) {
-                return 1;
-            }
-
-            if ($result < 0) {
-                return -1;
-            }
         }
 
         return 0;
