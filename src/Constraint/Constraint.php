@@ -13,6 +13,7 @@ namespace Version\Constraint;
 
 use Version\Version;
 use Version\Exception\InvalidConstraintException;
+use Version\Constraint\Parser\ParserInterface;
 use Version\Constraint\Parser\StandardParser;
 
 /**
@@ -49,6 +50,11 @@ class Constraint implements ConstraintInterface
         self::OPERATOR_LTE,
     ];
 
+    /**
+     * @var ParserInterface
+     */
+    private static $parser;
+
     private function __construct($operator, Version $operand)
     {
         $this->operator = $operator;
@@ -80,9 +86,28 @@ class Constraint implements ConstraintInterface
      */
     public static function fromString($constraintString)
     {
-        $parser = new StandardParser();
+        return self::getParser()->parse($constraintString);
+    }
 
-        return $parser->parse($constraintString);
+    /**
+     * @return ParserInterface
+     */
+    public static function getParser()
+    {
+        if (!isset(self::$parser)) {
+            self::setParser(new StandardParser());
+        }
+
+        return self::$parser;
+    }
+
+    /**
+     * @param ParserInterface $parser
+     * @return void
+     */
+    public static function setParser(ParserInterface $parser)
+    {
+        self::$parser = $parser;
     }
 
     /**
