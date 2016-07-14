@@ -77,4 +77,12 @@ class PreReleaseTest extends BaseMetadataTest
             '_invalid#',
         ]);
     }
+
+    public function testComparison()
+    {
+        $this->assertEquals(1, PreRelease::create('rc.2')->compareTo(PreRelease::create('rc.1')));
+        $this->assertEquals(0, PreRelease::create('beta')->compareTo(PreRelease::create('beta')));
+        $this->assertEquals(-1, PreRelease::create('beta1')->compareTo(PreRelease::create('beta2')));
+        $this->assertEquals(1, PreRelease::create('beta')->compareTo(PreRelease::create('alpha')));
+    }
 }
