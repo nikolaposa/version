@@ -16,6 +16,8 @@ use Version\Metadata\PreRelease;
 use Version\Metadata\Build;
 use Version\Exception\InvalidVersionElementException;
 use Version\Exception\InvalidVersionStringException;
+use Version\Comparator\ComparatorInterface;
+use Version\Comparator\SemverComparator;
 use Version\Constraint\ConstraintInterface;
 use Version\Constraint\Constraint;
 
@@ -48,6 +50,11 @@ final class Version implements JsonSerializable
      * @var Build
      */
     private $build;
+
+    /**
+     * @var ComparatorInterface
+     */
+    private static $comparator;
 
     private function __construct($major, $minor, $patch, PreRelease $preRelease, Build $build)
     {
@@ -245,51 +252,28 @@ final class Version implements JsonSerializable
             $version = self::fromString((string) $version);
         }
 
-        if ($this->major > $version->major) {
-            return 1;
+        return self::getComparator()->compare($this, $version);
+    }
+
+    /**
+     * @param ComparatorInterface $comparator
+     * @return void
+     */
+    public static function setComparator(ComparatorInterface $comparator)
+    {
+        self::$comparator = $comparator;
+    }
+
+    /**
+     * @return ComparatorInterface
+     */
+    public static function getComparator()
+    {
+        if (!isset(self::$comparator)) {
+            self::setComparator(new SemverComparator());
         }
 
-        if ($this->major < $version->major) {
-            return -1;
-        }
-
-        if ($this->minor > $version->minor) {
-            return 1;
-        }
-
-        if ($this->minor < $version->minor) {
-            return -1;
-        }
-
-        if ($this->patch > $version->patch) {
-            return 1;
-        }
-
-        if ($this->patch < $version->patch) {
-            return -1;
-        }
-
-        if (!$this->isPreRelease() && $version->isPreRelease()) {
-            // normal version has greater precedence than a pre-release version version
-            return 1;
-        }
-
-        if ($this->isPreRelease() && !$version->isPreRelease()) {
-            // pre-release version has lower precedence than a normal version
-            return -1;
-        }
-
-        if ($this->isPreRelease() && $version->isPreRelease()) {
-            $result = $this->preRelease->compareTo($version->preRelease);
-
-            if ($result > 0) {
-                return 1;
-            } elseif ($result < 0) {
-                return -1;
-            }
-        }
-
-        return 0;
+        return self::$comparator;
     }
 
     /**
@@ -299,6 +283,15 @@ final class Version implements JsonSerializable
     public function isEqualTo($version)
     {
         return $this->compareTo($version) == 0;
+    }
+
+    /**
+     * @param self|string $version
+     * @return bool
+     */
+    public function isNotEqualTo($version)
+    {
+        return !$this->isEqualTo($version);
     }
 
     /**
