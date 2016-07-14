@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## 2.2.0 - [Unreleased]
 ### Added
 - [8: Mechanism for matching versions against constraints](https://github.com/nikolaposa/version/pull/8).
-- [9: Extracted version comparison logic to a separate Comparator component](https://github.com/nikolaposa/version/pull/9).
+- [9: Support for having custom version comparison strategies](https://github.com/nikolaposa/version/pull/9).
 
 ## 2.1.0 - 2016-06-11
 ### Added

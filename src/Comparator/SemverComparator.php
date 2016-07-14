@@ -23,31 +23,34 @@ final class SemverComparator implements ComparatorInterface
      */
     public function compare(Version $version1, Version $version2)
     {
-        if ($version1->getMajor() > $version2->getMajor()) {
-            return 1;
+        if (0 != ($majorCompareResult = $this->compareNumberPart($version1->getMajor(), $version2->getMajor()))) {
+            return $majorCompareResult;
         }
 
-        if ($version1->getMajor() < $version2->getMajor()) {
-            return -1;
+        if (0 != ($minorCompareResult = $this->compareNumberPart($version1->getMinor(), $version2->getMinor()))) {
+            return $minorCompareResult;
         }
 
-        if ($version1->getMinor() > $version2->getMinor()) {
-            return 1;
-        }
-
-        if ($version1->getMinor() < $version2->getMinor()) {
-            return -1;
-        }
-
-        if ($version1->getPatch() > $version2->getPatch()) {
-            return 1;
-        }
-
-        if ($version1->getPatch() < $version2->getPatch()) {
-            return -1;
+        if (0 != ($patchCompareResult = $this->compareNumberPart($version1->getPatch(), $version2->getPatch()))) {
+            return $patchCompareResult;
         }
 
         return $this->compareMeta($version1, $version2);
+    }
+
+    private function compareNumberPart($number1, $number2)
+    {
+        $diff = $number1 - $number2;
+
+        if ($diff > 0) {
+            return 1;
+        }
+
+        if ($diff < 0) {
+            return -1;
+        }
+
+        return 0;
     }
 
     private function compareMeta(Version $version1, Version $version2)
