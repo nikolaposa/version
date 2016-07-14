@@ -14,6 +14,7 @@ namespace Version\Tests\Metadata;
 use Version\Metadata\PreRelease;
 use Version\Identifier\PreReleaseIdentifier;
 use Version\Exception\InvalidIdentifierValueException;
+use Version\Exception\InvalidArgumentException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -67,6 +68,13 @@ class PreReleaseTest extends BaseMetadataTest
         ]);
 
         $this->assertEquals('rc.2', (string) $preRelese);
+    }
+
+    public function testExceptionIsRaisedInCaseOfInvalidIdentifiersArgument()
+    {
+        $this->setExpectedException(InvalidArgumentException::class);
+
+        PreRelease::create(false);
     }
 
     public function testExceptionIsRaisedInCaseOfInvalidIdentifier()

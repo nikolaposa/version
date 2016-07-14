@@ -111,6 +111,48 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testSortingCollectionUsingBooleanTrueMeansDescending()
+    {
+        $ordered = [
+            '2.3.3',
+            '1.1.0',
+            '1.0.0',
+        ];
+
+        $versions = VersionsCollection::fromArray([
+            '2.3.3',
+            Version::fromMajor(1),
+            '1.1.0',
+        ]);
+
+        $versions->sort(true);
+
+        foreach ($versions as $key => $version) {
+            $this->assertEquals($ordered[$key], (string) $version);
+        }
+    }
+
+    public function testSortingCollectionUsingBooleanFalseMeansAscending()
+    {
+        $ordered = [
+            '1.0.0',
+            '1.1.0',
+            '2.3.3',
+        ];
+
+        $versions = VersionsCollection::fromArray([
+            '2.3.3',
+            Version::fromMajor(1),
+            '1.1.0',
+        ]);
+
+        $versions->sort(false);
+
+        foreach ($versions as $key => $version) {
+            $this->assertEquals($ordered[$key], (string) $version);
+        }
+    }
+
     public function testExceptionIsRaisedInCaseOfInvalidVersionItem()
     {
         $this->setExpectedException(
