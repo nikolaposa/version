@@ -256,15 +256,6 @@ final class Version implements JsonSerializable
     }
 
     /**
-     * @param ComparatorInterface $comparator
-     * @return void
-     */
-    public static function setComparator(ComparatorInterface $comparator)
-    {
-        self::$comparator = $comparator;
-    }
-
-    /**
      * @return ComparatorInterface
      */
     public static function getComparator()
@@ -274,6 +265,15 @@ final class Version implements JsonSerializable
         }
 
         return self::$comparator;
+    }
+
+    /**
+     * @param ComparatorInterface $comparator
+     * @return void
+     */
+    public static function setComparator(ComparatorInterface $comparator)
+    {
+        self::$comparator = $comparator;
     }
 
     /**
