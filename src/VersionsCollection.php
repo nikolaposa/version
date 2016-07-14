@@ -15,6 +15,7 @@ use Countable;
 use IteratorAggregate;
 use ArrayIterator;
 use Version\Exception\InvalidArgumentException;
+use Version\Constraint\ConstraintInterface;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -93,5 +94,15 @@ final class VersionsCollection implements Countable, IteratorAggregate
 
             return $result;
         });
+    }
+
+    public function matching(ConstraintInterface $constraint)
+    {
+        return new self(array_filter(
+            $this->versions,
+            function (Version $version) use ($constraint) {
+                return $version->matches($constraint);
+            }
+        ));
     }
 }

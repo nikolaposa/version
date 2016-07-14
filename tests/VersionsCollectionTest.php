@@ -15,6 +15,7 @@ use PHPUnit_Framework_TestCase;
 use Version\VersionsCollection;
 use Version\Version;
 use Version\Exception\InvalidArgumentException;
+use Version\Constraint\Constraint;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -41,6 +42,20 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
         ]);
 
         $this->assertInstanceOf(VersionsCollection::class, $versions);
+    }
+
+    public function testExceptionIsRaisedInCaseOfInvalidVersionItem()
+    {
+        $this->setExpectedException(
+            InvalidArgumentException::class,
+            'Item in the versions array should be either string or Version instance, boolean given'
+        );
+
+        VersionsCollection::fromArray([
+            '1.1.0',
+            false,
+            '2.3.3',
+        ]);
     }
 
     public function testCollectionCount()
@@ -153,17 +168,19 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testExceptionIsRaisedInCaseOfInvalidVersionItem()
+    public function testMatchingCollectionItemsByConstraint()
     {
-        $this->setExpectedException(
-            InvalidArgumentException::class,
-            'Item in the versions array should be either string or Version instance, boolean given'
-        );
-
-        VersionsCollection::fromArray([
+        $versions = VersionsCollection::fromArray([
+            '1.0.0',
+            '1.0.1',
             '1.1.0',
-            false,
-            '2.3.3',
+            '2.0.0',
+            '2.0.1',
         ]);
+
+        $versions2 = $versions->matching(Constraint::fromString('>=2.0.0'));
+
+        $this->assertCount(5, $versions);
+        $this->assertCount(2, $versions2);
     }
 }
