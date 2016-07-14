@@ -56,12 +56,8 @@ final class PreRelease extends BaseIdentifyingMetadata
         $pr1IsAlpha = ctype_alpha($pr1IdVal);
         $pr2IsAlpha = ctype_alpha($pr2IdVal);
 
-        if ($pr1IsAlpha && !$pr2IsAlpha) {
-            return 1;
-        }
-
-        if ($pr2IsAlpha && !$pr1IsAlpha) {
-            return -1;
+        if ($pr1IsAlpha xor $pr2IsAlpha) {
+            return $pr1IsAlpha ? 1 : -1;
         }
 
         if (ctype_digit($pr1IdVal) && ctype_digit($pr2IdVal)) {
