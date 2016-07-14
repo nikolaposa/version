@@ -289,6 +289,15 @@ final class Version implements JsonSerializable
      * @param self|string $version
      * @return bool
      */
+    public function isNotEqualTo($version)
+    {
+        return !$this->isEqualTo($version);
+    }
+
+    /**
+     * @param self|string $version
+     * @return bool
+     */
     public function isGreaterThan($version)
     {
         return $this->compareTo($version) > 0;
