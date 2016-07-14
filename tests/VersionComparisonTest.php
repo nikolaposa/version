@@ -20,65 +20,19 @@ use Version\Constraint\Constraint;
  */
 class VersionComparisonTest extends PHPUnit_Framework_TestCase
 {
-    private function assertVersionEqual($expected, Version $actual)
+    public static function assertVersionGreaterThan($expected, Version $actual)
     {
-        $this->assertTrue($actual->isEqualTo($expected), "$actual is not equal to $expected");
+        self::assertTrue($actual->isGreaterThan($expected), "$actual is not greater than $expected");
     }
 
-    private function assertVersionGreaterThan($expected, Version $actual)
+    public function testVersionCompareTo()
     {
-        $this->assertTrue($actual->isGreaterThan($expected), "$actual is not greater than $expected");
-    }
-
-    private function assertVersionLessThan($expected, Version $actual)
-    {
-        $this->assertTrue($actual->isLessThan($expected), "$actual is not less than $expected");
+        $this->assertEquals(1, Version::fromString('2.1.1')->compareTo(Version::fromString('2.1.0')));
     }
 
     public function testComparisonAcceptsVersionsAsStrings()
     {
-        $this->assertVersionGreaterThan('2.1.0', Version::fromString('2.1.1'));
-    }
-
-    /**
-     * @dataProvider versionsCompareList
-     */
-    public function testVersionCompareTo($version1, $version2, $result)
-    {
-        $this->assertSame($result, Version::fromString($version1)->compareTo($version2));
-    }
-
-    /**
-     * @dataProvider versionsCompareList
-     */
-    public function testVersionComparison($version1, $version2, $result)
-    {
-        if ($result > 0) {
-            $this->assertVersionGreaterThan($version2, Version::fromString($version1));
-        } elseif ($result < 0) {
-            $this->assertVersionLessThan($version2, Version::fromString($version1));
-        } else {
-            $this->assertVersionEqual($version2, Version::fromString($version1));
-        }
-    }
-
-    public static function versionsCompareList()
-    {
-        return [
-            ['2.1.1', '2.1.0', 1],
-            ['1.10.1', '2.1.0', -1],
-            ['1.0.0', '1.0.0', 0],
-            ['1.0.0', '1.0.0-alpha', 1],
-            ['1.0.0-alpha', '1.0.0-beta', -1],
-            ['1.0.0-alpha.1', '1.0.0-alpha', 1],
-            ['1.0.0-alpha.1', '1.0.0-alpha', 1],
-            ['1.0.0-alpha.beta', '1.0.0-alpha.1', 1],
-            ['1.0.0-beta', '1.0.0-alpha.beta', 1],
-            ['1.0.0-beta.11', '1.0.0-beta.2', 1],
-            ['1.0.0-rc.1', '1.0.0-beta.11', 1],
-            ['1.0.0', '1.0.0-rc.1', 1],
-            ['1.0.0-alpha+20150919', '1.0.0-alpha+exp.sha.5114f85', 0],
-        ];
+        $this->assertEquals(0, Version::fromString('2.0.0')->compareTo('2.0.0'));
     }
 
     public function testVersionGreaterOrEqualComparison()
