@@ -40,7 +40,7 @@ abstract class AbstractMultiPartParser extends AbstractParser
 
     protected function splitConstraintParts()
     {
-        $this->constraintParts = explode(' ' , $this->constraintString);
+        $this->constraintParts = explode(' ', $this->constraintString);
     }
 
     protected function buildCompositeConstraint()
@@ -64,7 +64,7 @@ abstract class AbstractMultiPartParser extends AbstractParser
         }
 
         if (!empty($compositeOrConstraints)) {
-             if (empty($compositeAndConstraints)) {
+            if (empty($compositeAndConstraints)) {
                 //invalid OR constraint; no right side
                 $this->error();
             }
