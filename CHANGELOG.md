@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 2.2.1 - 2017-01-01
+### Fixed
+- Coding standard fixes
+- Using friendsofphp/php-cs-fixer instead of abandoned fabpot/php-cs-fixer.
+
 ## 2.2.0 - 2016-07-14
 ### Added
 - [8: Mechanism for matching versions against constraints](https://github.com/nikolaposa/version/pull/8).
