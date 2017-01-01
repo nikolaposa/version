@@ -127,22 +127,22 @@ class Constraint implements ConstraintInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function assert(Version $version)
     {
         switch ($this->operator) {
-            case self::OPERATOR_EQ :
+            case self::OPERATOR_EQ:
                 return $version->isEqualTo($this->operand);
-            case self::OPERATOR_NEQ :
+            case self::OPERATOR_NEQ:
                 return !$version->isEqualTo($this->operand);
-            case self::OPERATOR_GT :
+            case self::OPERATOR_GT:
                 return $version->isGreaterThan($this->operand);
-            case self::OPERATOR_GTE :
+            case self::OPERATOR_GTE:
                 return $version->isGreaterOrEqualTo($this->operand);
-            case self::OPERATOR_LT :
+            case self::OPERATOR_LT:
                 return $version->isLessThan($this->operand);
-            case self::OPERATOR_LTE :
+            case self::OPERATOR_LTE:
                 return $version->isLessOrEqualTo($this->operand);
         }
     }

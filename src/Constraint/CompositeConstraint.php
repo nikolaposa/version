@@ -96,7 +96,7 @@ class CompositeConstraint implements ConstraintInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function assert(Version $version)
     {

@@ -56,7 +56,7 @@ abstract class AbstractMultiPartParser extends AbstractParser
             $constraintOperator = $constraintPart;
 
             switch ($constraintOperator) {
-                case self::OPERATOR_OR :
+                case self::OPERATOR_OR:
                     $compositeOrConstraints[] = CompositeConstraint::fromAndConstraints($compositeAndConstraints);
                     $compositeAndConstraints = [];
                     break;

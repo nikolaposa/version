@@ -28,7 +28,7 @@ abstract class AbstractParser implements ParserInterface
     protected $constraintString;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function parse($constraintString)
     {
@@ -87,8 +87,6 @@ abstract class AbstractParser implements ParserInterface
      */
     protected function parseConstraintStringUnit($constraintStringUnit)
     {
-        $operator = $operand = '';
-
         $i = 0;
         while (isset($constraintStringUnit[$i]) && !ctype_digit($constraintStringUnit[$i])) {
             $i++;

@@ -19,7 +19,7 @@ use Version\Version;
 final class SemverComparator implements ComparatorInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function compare(Version $version1, Version $version2)
     {
