@@ -182,17 +182,30 @@ class VersionTest extends PHPUnit_Framework_TestCase
         Version::fromPatch(2, 1, 'patch');
     }
 
-    public function testCreationFromStringFailsInCaseOfLeadingZeros()
+    public function invalidVersionStringProvider()
     {
-        $this->setExpectedException(InvalidVersionStringException::class);
-
-        Version::fromString('1.05.2');
+        return [
+            'tooManySubVersions' => ['1.5.2.4.4'],
+            'leadingZeroIsInvalid' => ['1.05.2'],
+            'integersAreInvalid' => [123],
+            'floatsAreInvalid' => [1.23],
+            'nullIsNotValid' => [null],
+            'falseIsNotValid' => [false],
+            'trueIsNotValid' => [true],
+        ];
     }
 
-    public function testCreationFromStringFailsInCaseInvalidCorePart()
+    /**
+     * @param mixed $invalidVersion
+     * @dataProvider invalidVersionStringProvider
+     */
+    public function testCreationFromStringFailsInCaseInvalidCorePart($invalidVersion)
     {
-        $this->setExpectedException(InvalidVersionStringException::class);
+        $this->setExpectedException(
+            InvalidVersionStringException::class,
+            sprintf("Version string '%s' is not valid and cannot be parsed", $invalidVersion)
+        );
 
-        Version::fromString('1.5.2.4.4');
+        Version::fromString($invalidVersion);
     }
 }

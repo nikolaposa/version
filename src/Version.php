@@ -171,7 +171,9 @@ final class Version implements JsonSerializable
             (string) $versionString,
             $parts
         )) {
-            throw new InvalidVersionStringException("Version string is not valid and cannot be parsed");
+            throw new InvalidVersionStringException(
+                sprintf("Version string '%s' is not valid and cannot be parsed", $versionString)
+            );
         }
 
         list($major, $minor, $patch) = explode('.', $parts['core']);
