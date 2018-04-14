@@ -16,4 +16,21 @@ namespace Version\Exception;
  */
 class InvalidVersionStringException extends \DomainException implements Exception
 {
+    /**
+     * @var string
+     */
+    protected $versionString;
+
+    public static function forVersionString($versionString)
+    {
+        $exception = new self(sprintf("Version string '%s' is not valid and cannot be parsed", $versionString));
+        $exception->versionString = $versionString;
+
+        return $exception;
+    }
+
+    public function getVersionString()
+    {
+        return $this->versionString;
+    }
 }
