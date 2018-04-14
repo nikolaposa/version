@@ -1,6 +1,6 @@
 {
     "name": "nikolaposa/version",
-    "description": "Value Object representing a version number that is in compliance with the SemVer specification.",
+    "description": "Value Object that represents a SemVer-compliant version number.",
     "type": "library",
     "license": "MIT",
     "keywords": [

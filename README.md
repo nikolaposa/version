@@ -6,7 +6,7 @@
 [![Latest Stable Version](https://poser.pugx.org/nikolaposa/version/v/stable)](https://packagist.org/packages/nikolaposa/version)
 [![PDS Skeleton](https://img.shields.io/badge/pds-skeleton-blue.svg)](https://github.com/php-pds/skeleton)
 
-Value Object representing a version number that is in compliance with the [Semantic Versioning specification][semver].
+Value Object that represents a [SemVer][semver]-compliant version number.
 
 ## Installation
 
@@ -165,5 +165,6 @@ foreach ($versions as $version) {
 ## Copyright and license
 
 Copyright 2017 Nikola Poša. Released under MIT License - see the `LICENSE` file for details.
+
 
 [semver]: http://semver.org/
