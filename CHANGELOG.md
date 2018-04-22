@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 2.2.2 - 2017-01-01
+### Fixed
+- [11: Include version string in the exception message](https://github.com/nikolaposa/version/pull/11)
+
 ## 2.2.1 - 2017-01-01
 ### Fixed
 - Coding standard fixes
