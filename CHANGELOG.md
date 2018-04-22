@@ -1,6 +1,8 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
 ## 2.2.2 - 2017-01-01
 ### Fixed
 - [11: Include version string in the exception message](https://github.com/nikolaposa/version/pull/11)
@@ -46,4 +48,5 @@ All notable changes to this project will be documented in this file.
 ## 1.2.x
 This release is abandoned, please consider upgrading to 2.x.
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/2.1.0...HEAD
+
+[Unreleased]: https://github.com/nikolaposa/version/compare/2.2.2...HEAD

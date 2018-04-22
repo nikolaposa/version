@@ -1,6 +1,4 @@
-nbproject
-.project
-vendor
-phpunit.xml
+vendor/
 composer.lock
-.idea
+phpunit.xml
+.php_cs.cache

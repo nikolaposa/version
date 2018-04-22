@@ -11,7 +11,7 @@
 
 namespace Version\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Version\Version;
 use Version\Exception\InvalidVersionElementException;
 use Version\Exception\InvalidVersionStringException;
@@ -19,7 +19,7 @@ use Version\Exception\InvalidVersionStringException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionTest extends PHPUnit_Framework_TestCase
+class VersionTest extends TestCase
 {
     public static function assertMatchesVersion(Version $version, $major, $minor, $patch, $preRelease, $build)
     {
@@ -163,21 +163,21 @@ class VersionTest extends PHPUnit_Framework_TestCase
 
     public function testCreationFailsInCaseOfInvalidMajorVersion()
     {
-        $this->setExpectedException(InvalidVersionElementException::class);
+        $this->expectException(InvalidVersionElementException::class);
 
         Version::fromMajor('test');
     }
 
     public function testCreationFailsInCaseOfInvalidMinorVersion()
     {
-        $this->setExpectedException(InvalidVersionElementException::class);
+        $this->expectException(InvalidVersionElementException::class);
 
         Version::fromMinor(0, -5);
     }
 
     public function testCreationFailsInCaseOfInvalidPatchVersion()
     {
-        $this->setExpectedException(InvalidVersionElementException::class);
+        $this->expectException(InvalidVersionElementException::class);
 
         Version::fromPatch(2, 1, 'patch');
     }
@@ -201,7 +201,7 @@ class VersionTest extends PHPUnit_Framework_TestCase
      */
     public function testCreationFromStringFailsInCaseInvalidCorePart($invalidVersion)
     {
-        $this->setExpectedException(
+        $this->expectException(
             InvalidVersionStringException::class,
             sprintf("Version string '%s' is not valid and cannot be parsed", $invalidVersion)
         );

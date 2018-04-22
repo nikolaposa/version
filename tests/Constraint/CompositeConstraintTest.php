@@ -11,7 +11,7 @@
 
 namespace Version\Tests\Constraint;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Version\Constraint\CompositeConstraint;
 use Version\Constraint\Constraint;
 use Version\Version;
@@ -20,7 +20,7 @@ use Version\Exception\InvalidCompositeConstraintException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class CompositeConstraintTest extends PHPUnit_Framework_TestCase
+class CompositeConstraintTest extends TestCase
 {
     public function testCreatingCompositeConstraintUsingFromPropertiesNamedConstructor()
     {
@@ -58,7 +58,7 @@ class CompositeConstraintTest extends PHPUnit_Framework_TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidType()
     {
-        $this->setExpectedException(
+        $this->expectException(
             InvalidCompositeConstraintException::class,
             'Unsupported type: invalid'
         );
@@ -70,7 +70,7 @@ class CompositeConstraintTest extends PHPUnit_Framework_TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidConstraint()
     {
-        $this->setExpectedException(InvalidCompositeConstraintException::class);
+        $this->expectException(InvalidCompositeConstraintException::class);
 
         CompositeConstraint::fromProperties(CompositeConstraint::TYPE_AND, [
             Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),

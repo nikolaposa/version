@@ -11,13 +11,13 @@
 
 namespace Version\Tests\Metadata;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Version\Metadata\BaseIdentifyingMetadata;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-abstract class BaseMetadataTest extends PHPUnit_Framework_TestCase
+abstract class BaseMetadataTest extends TestCase
 {
     public static function assertMetadata($identifiers, BaseIdentifyingMetadata $metadata)
     {

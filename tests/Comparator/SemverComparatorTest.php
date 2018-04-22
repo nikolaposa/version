@@ -11,15 +11,19 @@
 
 namespace Version\Tests\Comparator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
+use Version\Comparator\ComparatorInterface;
 use Version\Comparator\SemverComparator;
 use Version\Version;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class SemverComparatorTest extends PHPUnit_Framework_TestCase
+class SemverComparatorTest extends TestCase
 {
+    /**
+     * @var ComparatorInterface
+     */
     protected $comparator;
 
     protected function setUp()

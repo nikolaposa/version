@@ -11,7 +11,7 @@
 
 namespace Version\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Version\VersionsCollection;
 use Version\Version;
 use Version\Exception\InvalidArgumentException;
@@ -20,7 +20,7 @@ use Version\Constraint\Constraint;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionsCollectionTest extends PHPUnit_Framework_TestCase
+class VersionsCollectionTest extends TestCase
 {
     public function testCreateCollection()
     {
@@ -46,7 +46,7 @@ class VersionsCollectionTest extends PHPUnit_Framework_TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidVersionItem()
     {
-        $this->setExpectedException(
+        $this->expectException(
             InvalidArgumentException::class,
             'Item in the versions array should be either string or Version instance, boolean given'
         );

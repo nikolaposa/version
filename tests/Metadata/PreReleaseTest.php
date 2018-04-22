@@ -72,14 +72,14 @@ class PreReleaseTest extends BaseMetadataTest
 
     public function testExceptionIsRaisedInCaseOfInvalidIdentifiersArgument()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         PreRelease::create(false);
     }
 
     public function testExceptionIsRaisedInCaseOfInvalidIdentifier()
     {
-        $this->setExpectedException(InvalidIdentifierValueException::class);
+        $this->expectException(InvalidIdentifierValueException::class);
 
         PreRelease::create([
             '_invalid#',

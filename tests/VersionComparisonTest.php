@@ -11,14 +11,14 @@
 
 namespace Version\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Version\Version;
 use Version\Constraint\Constraint;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionComparisonTest extends PHPUnit_Framework_TestCase
+class VersionComparisonTest extends TestCase
 {
     public static function assertVersionGreaterThan($expected, Version $actual)
     {

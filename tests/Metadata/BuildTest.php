@@ -72,14 +72,14 @@ class BuildTest extends BaseMetadataTest
 
     public function testExceptionIsRaisedInCaseOfInvalidIdentifiersArgument()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         Build::create(false);
     }
 
     public function testExceptionIsRaisedInCaseOfInvalidIdentifier()
     {
-        $this->setExpectedException(InvalidIdentifierValueException::class);
+        $this->expectException(InvalidIdentifierValueException::class);
 
         Build::create([
             '_invalid#',
@@ -88,7 +88,7 @@ class BuildTest extends BaseMetadataTest
 
     public function testExceptionIsRaisedInCaseOfInvalidIdentifierType()
     {
-        $this->setExpectedException(
+        $this->expectException(
             InvalidIdentifierValueException::class,
             'Identifier value must be of type string'
         );

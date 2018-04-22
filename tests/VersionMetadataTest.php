@@ -11,7 +11,7 @@
 
 namespace Version\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Version\Version;
 use Version\Metadata\PreRelease;
 use Version\Metadata\Build;
@@ -22,7 +22,7 @@ use Version\Exception\InvalidIdentifierValueException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionMetadataTest extends PHPUnit_Framework_TestCase
+class VersionMetadataTest extends TestCase
 {
     public function testVersionPreReleaseMetadata()
     {
@@ -113,7 +113,7 @@ class VersionMetadataTest extends PHPUnit_Framework_TestCase
 
     public function testCreationFailsInCaseOfEmptyMetadata()
     {
-        $this->setExpectedException(InvalidIdentifierValueException::class);
+        $this->expectException(InvalidIdentifierValueException::class);
 
         Version::fromString('1.0.0-alpha..1');
     }

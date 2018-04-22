@@ -11,13 +11,13 @@
 
 namespace Version\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Version\Version;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionOperationsTest extends PHPUnit_Framework_TestCase
+class VersionOperationsTest extends TestCase
 {
     public function testMajorVersionIncrement()
     {

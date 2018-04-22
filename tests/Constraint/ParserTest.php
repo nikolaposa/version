@@ -11,7 +11,8 @@
 
 namespace Version\Tests\Constraint;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
+use Version\Constraint\Parser\ParserInterface;
 use Version\Constraint\Parser\StandardParser;
 use Version\Constraint\Constraint;
 use Version\Constraint\CompositeConstraint;
@@ -20,8 +21,11 @@ use Version\Exception\InvalidConstraintStringException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class ParserTest extends PHPUnit_Framework_TestCase
+class ParserTest extends TestCase
 {
+    /**
+     * @var ParserInterface
+     */
     protected $parser;
 
     protected function setUp()
@@ -118,7 +122,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     public function testExceptionIsRaisedIfConstraintStringIsNotString()
     {
-        $this->setExpectedException(
+        $this->expectException(
             InvalidConstraintStringException::class,
             'Constraint string should be of type string; integer given'
         );
@@ -128,7 +132,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     public function testExceptionIsRaisedIfConstraintStringIsEmpty()
     {
-        $this->setExpectedException(
+        $this->expectException(
             InvalidConstraintStringException::class,
             'Constraint string must not be empty'
         );
@@ -138,28 +142,28 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     public function testExceptionIsRaisedIfConstraintStringCannotBeParsed()
     {
-        $this->setExpectedException(InvalidConstraintStringException::class);
+        $this->expectException(InvalidConstraintStringException::class);
 
         $this->parser->parse('invalid');
     }
 
     public function testExceptionIsRaisedIfConstraintContainsOperatorThatCannotBeParsed()
     {
-        $this->setExpectedException(InvalidConstraintStringException::class);
+        $this->expectException(InvalidConstraintStringException::class);
 
         $this->parser->parse('"100');
     }
 
     public function testExceptionIsRaisedIfConstraintContainsVersionThatCannotBeParsed()
     {
-        $this->setExpectedException(InvalidConstraintStringException::class);
+        $this->expectException(InvalidConstraintStringException::class);
 
         $this->parser->parse('>100');
     }
 
     public function testExceptionIsRaisedIfConstraintStringContainsInvalidLogicalOperation()
     {
-        $this->setExpectedException(InvalidConstraintStringException::class);
+        $this->expectException(InvalidConstraintStringException::class);
 
         $this->parser->parse('>=1.0.0 <1.1.0 ||');
     }

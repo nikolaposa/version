@@ -11,7 +11,7 @@
 
 namespace Version\Tests\Constraint;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Version\Constraint\Constraint;
 use Version\Version;
 use Version\Exception\InvalidConstraintException;
@@ -19,7 +19,7 @@ use Version\Exception\InvalidConstraintException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class ConstraintTest extends PHPUnit_Framework_TestCase
+class ConstraintTest extends TestCase
 {
     public function testCreatingConstraintUsingFromPropertiesNamedConstructor()
     {
@@ -33,7 +33,7 @@ class ConstraintTest extends PHPUnit_Framework_TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidOperator()
     {
-        $this->setExpectedException(
+        $this->expectException(
             InvalidConstraintException::class,
             'Unsupported operator: invalid'
         );

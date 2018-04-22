@@ -11,13 +11,13 @@
 
 namespace Version\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Version\Version;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionAwareTraitTest extends PHPUnit_Framework_TestCase
+class VersionAwareTraitTest extends TestCase
 {
     public function testSetVersion()
     {
