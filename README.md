@@ -6,7 +6,7 @@
 [![Latest Stable Version](https://poser.pugx.org/nikolaposa/version/v/stable)](https://packagist.org/packages/nikolaposa/version)
 [![PDS Skeleton](https://img.shields.io/badge/pds-skeleton-blue.svg)](https://github.com/php-pds/skeleton)
 
-Value Object that represents a [SemVer][semver]-compliant version number.
+Value Object that represents a [SemVer][link-semver]-compliant version number.
 
 ## Installation
 
@@ -81,13 +81,13 @@ use Version\Version;
 
 $v = Version::fromString('1.10.0');
 
-$v1101 = $v->withPatchIncremented();
+$v1101 = $v->incrementPatch();
 echo $v1101; //1.10.1
 
-$v1110 = $v1101->withMinorIncremented();
+$v1110 = $v1101->incrementMinor();
 echo $v1110; //1.11.0
 
-$v2 = $v1101->withMajorIncremented();
+$v2 = $v1101->incrementMajor();
 echo $v2; //2.0.0
 
 $v2Alpha = $v2->withPreRelease('alpha');
@@ -155,16 +155,16 @@ foreach ($versions as $version) {
 }
 ```
 
-## Author
+## Credits
 
-**Nikola Poša**
+- [Nikola Poša][link-author]
+- [All Contributors][link-contributors]
 
-* https://twitter.com/nikolaposa
-* https://github.com/nikolaposa
+## License
 
-## Copyright and license
-
-Copyright 2017 Nikola Poša. Released under MIT License - see the `LICENSE` file for details.
+Released under MIT License - see the [License File](LICENSE) for details.
 
 
-[semver]: http://semver.org/
+[link-semver]: http://semver.org/
+[link-author]: https://github.com/nikolaposa
+[link-contributors]: ../../contributors
