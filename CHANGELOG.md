@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Added
+- Strict typing wherever possible
+
+### Changed
+- Renamed `Version::fromElements()` to `Version::fromParts()`
+- `Version::fromParts()` requires `PreRelease` and `Build` instances
+- Renamed `Version::withMajorIncremented()` to `Version::incrementMajor()`
+- Renamed `Version::withMinorIncremented()` to `Version::incrementMinor()`
+- Renamed `Version::withPatchIncremented()` to `Version::incrementPatch()`
 
 ## 2.2.2 - 2017-01-01
 ### Fixed

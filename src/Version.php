@@ -49,7 +49,7 @@ class Version implements JsonSerializable
      */
     protected static $comparator;
 
-    private function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
+    protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
     {
         $this->major = $major;
         $this->minor = $minor;
@@ -125,7 +125,7 @@ class Version implements JsonSerializable
         return self::fromParts($major, $minor, $patch, $preRelease, $build);
     }
 
-    private static function validatePart(string $part, int $value)
+    protected static function validatePart(string $part, int $value)
     {
         if ($value < 0) {
             throw InvalidVersionElementException::forElement($part);
