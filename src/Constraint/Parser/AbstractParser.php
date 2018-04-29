@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Constraint\Parser;
 
@@ -15,7 +8,7 @@ use Version\Constraint\ConstraintInterface;
 use Version\Constraint\Constraint;
 use Version\Version;
 use Version\Exception\InvalidConstraintStringException;
-use Version\Exception\Exception;
+use Version\Exception\ExceptionInterface;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -27,19 +20,12 @@ abstract class AbstractParser implements ParserInterface
      */
     protected $constraintString;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function parse($constraintString)
+    public function parse(string $constraintString) : ConstraintInterface
     {
-        if (!is_string($constraintString)) {
-            throw InvalidConstraintStringException::forInvalidType($constraintString);
-        }
-
         $constraintString = trim($constraintString);
 
-        if ($constraintString == '') {
-            throw InvalidConstraintStringException::forEmptyCostraintString();
+        if ('' === $constraintString) {
+            throw InvalidConstraintStringException::forEmptyConstraintString();
         }
 
         $this->constraintString = $constraintString;
@@ -47,25 +33,16 @@ abstract class AbstractParser implements ParserInterface
         return $this->doParse();
     }
 
-    /**
-     * @return ConstraintInterface
-     */
-    abstract protected function doParse();
+    abstract protected function doParse() : ConstraintInterface;
 
-    protected function error()
+    protected function error() : void
     {
         throw InvalidConstraintStringException::forConstraintString($this->constraintString);
     }
 
-    /**
-     * @param string $constraintStringUnit
-     * @return Constraint
-     */
-    protected function buildConstraintFromStringUnit($constraintStringUnit)
+    protected function buildConstraintFromStringUnit(string $constraintStringUnit) : ConstraintInterface
     {
-        list($operator, $operandString) = array_values(
-            $this->parseConstraintStringUnit($constraintStringUnit)
-        );
+        [$operator, $operandString] = array_values($this->parseConstraintStringUnit($constraintStringUnit));
 
         if (empty($operandString)) {
             $this->error();
@@ -76,16 +53,12 @@ abstract class AbstractParser implements ParserInterface
                 $operator ?: Constraint::OPERATOR_EQ,
                 Version::fromString($operandString)
             );
-        } catch (Exception $ex) {
+        } catch (ExceptionInterface $ex) {
             $this->error();
         }
     }
 
-    /**
-     * @param string $constraintStringUnit
-     * @return array
-     */
-    protected function parseConstraintStringUnit($constraintStringUnit)
+    protected function parseConstraintStringUnit(string $constraintStringUnit) : array
     {
         $i = 0;
         while (isset($constraintStringUnit[$i]) && !ctype_digit($constraintStringUnit[$i])) {

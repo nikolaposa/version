@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Tests\Constraint;
 
@@ -33,10 +26,7 @@ class ConstraintTest extends TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidOperator()
     {
-        $this->expectException(
-            InvalidConstraintException::class,
-            'Unsupported operator: invalid'
-        );
+        $this->expectException(InvalidConstraintException::class);
 
         Constraint::fromProperties('invalid', Version::fromString('1.0.0'));
     }

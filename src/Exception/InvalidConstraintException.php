@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Exception;
 
@@ -16,9 +9,9 @@ use DomainException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidConstraintException extends DomainException implements Exception
+class InvalidConstraintException extends DomainException implements ExceptionInterface
 {
-    public static function forOperator($operator)
+    public static function forOperator(string $operator) : self
     {
         return new self(sprintf('Unsupported operator: %s', $operator));
     }

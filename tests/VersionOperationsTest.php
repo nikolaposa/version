@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Tests;
 
@@ -22,7 +15,7 @@ class VersionOperationsTest extends TestCase
     public function testMajorVersionIncrement()
     {
         $version = Version::fromString('1.10.7');
-        $newVersion = $version->withMajorIncremented();
+        $newVersion = $version->incrementMajor();
 
         VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, false, false);
     }
@@ -30,7 +23,7 @@ class VersionOperationsTest extends TestCase
     public function testMinorVersionIncrement()
     {
         $version = Version::fromString('2.0.0');
-        $newVersion = $version->withMinorIncremented();
+        $newVersion = $version->incrementMinor();
 
         VersionTest::assertMatchesVersion($newVersion, 2, 1, 0, false, false);
     }
@@ -38,7 +31,7 @@ class VersionOperationsTest extends TestCase
     public function testPatchVersionIncrement()
     {
         $version = Version::fromString('2.4.3');
-        $newVersion = $version->withPatchIncremented();
+        $newVersion = $version->incrementPatch();
 
         VersionTest::assertMatchesVersion($newVersion, 2, 4, 4, false, false);
     }
@@ -46,7 +39,7 @@ class VersionOperationsTest extends TestCase
     public function testVersionIncrementResetsMetadata()
     {
         $version = Version::fromString('2.0.0-beta+111');
-        $newVersion = $version->withMinorIncremented();
+        $newVersion = $version->incrementMinor();
 
         VersionTest::assertMatchesVersion($newVersion, 2, 1, 0, false, false);
     }

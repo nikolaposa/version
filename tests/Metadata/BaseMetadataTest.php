@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Tests\Metadata;
 
@@ -26,6 +19,7 @@ abstract class BaseMetadataTest extends TestCase
         self::assertCount(count($identifiers), $metadata->getIdentifiers());
 
         foreach ($actualIdentifiers as $i => $identifier) {
+            /* @var $identifier \Version\Identifier\Identifier */
             self::assertEquals($identifiers[$i], $identifier->getValue());
         }
     }

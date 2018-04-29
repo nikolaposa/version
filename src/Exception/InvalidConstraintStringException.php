@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Exception;
 
@@ -16,22 +9,14 @@ use DomainException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidConstraintStringException extends DomainException implements Exception
+class InvalidConstraintStringException extends DomainException implements ExceptionInterface
 {
-    public static function forInvalidType($constraintString)
-    {
-        return new self(sprintf(
-            'Constraint string should be of type string; %s given',
-            gettype($constraintString)
-        ));
-    }
-
-    public static function forEmptyCostraintString()
+    public static function forEmptyConstraintString() : self
     {
         return new self('Constraint string must not be empty');
     }
 
-    public static function forConstraintString($constraintString)
+    public static function forConstraintString(string $constraintString) : self
     {
         return new self(sprintf(
             "Constraint string: '%s' seems to be invalid and it cannot be parsed",

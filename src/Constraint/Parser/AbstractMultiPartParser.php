@@ -1,30 +1,27 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Constraint\Parser;
 
 use Version\Constraint\CompositeConstraint;
+use Version\Constraint\ConstraintInterface;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
 abstract class AbstractMultiPartParser extends AbstractParser
 {
-    const OPERATOR_OR = '||';
+    protected const OPERATOR_OR = '||';
 
+    /**
+     * @var array
+     */
     protected $constraintParts = [];
 
-    protected function doParse()
+    protected function doParse() : ConstraintInterface
     {
-        if (!$this->isMultiPartConstraint()) {
+        if (! $this->isMultiPartConstraint()) {
             return $this->buildConstraintFromStringUnit($this->constraintString);
         }
 
@@ -33,17 +30,17 @@ abstract class AbstractMultiPartParser extends AbstractParser
         return $this->buildCompositeConstraint();
     }
 
-    protected function isMultiPartConstraint()
+    protected function isMultiPartConstraint() : bool
     {
         return (false !== strpos($this->constraintString, ' '));
     }
 
-    protected function splitConstraintParts()
+    protected function splitConstraintParts() : void
     {
         $this->constraintParts = explode(' ', $this->constraintString);
     }
 
-    protected function buildCompositeConstraint()
+    protected function buildCompositeConstraint() : ConstraintInterface
     {
         $compositeAndConstraints = $compositeOrConstraints = [];
 
@@ -57,7 +54,7 @@ abstract class AbstractMultiPartParser extends AbstractParser
 
             switch ($constraintOperator) {
                 case self::OPERATOR_OR:
-                    $compositeOrConstraints[] = CompositeConstraint::fromAndConstraints($compositeAndConstraints);
+                    $compositeOrConstraints[] = CompositeConstraint::fromAndConstraints(...$compositeAndConstraints);
                     $compositeAndConstraints = [];
                     break;
             }
@@ -69,18 +66,18 @@ abstract class AbstractMultiPartParser extends AbstractParser
                 $this->error();
             }
 
-            $compositeOrConstraints[] = CompositeConstraint::fromAndConstraints($compositeAndConstraints);
+            $compositeOrConstraints[] = CompositeConstraint::fromAndConstraints(...$compositeAndConstraints);
 
-            return CompositeConstraint::fromOrConstraints($compositeOrConstraints);
+            return CompositeConstraint::fromOrConstraints(...$compositeOrConstraints);
         }
 
-        return CompositeConstraint::fromAndConstraints($compositeAndConstraints);
+        return CompositeConstraint::fromAndConstraints(...$compositeAndConstraints);
     }
 
-    protected function isOperator($constraintPart)
+    protected function isOperator(string $constraintPart) : bool
     {
         return in_array($constraintPart, [
             self::OPERATOR_OR,
-        ]);
+        ], true);
     }
 }

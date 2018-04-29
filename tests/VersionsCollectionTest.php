@@ -1,20 +1,12 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Version\VersionsCollection;
 use Version\Version;
-use Version\Exception\InvalidArgumentException;
 use Version\Constraint\Constraint;
 
 /**
@@ -42,20 +34,6 @@ class VersionsCollectionTest extends TestCase
         ]);
 
         $this->assertInstanceOf(VersionsCollection::class, $versions);
-    }
-
-    public function testExceptionIsRaisedInCaseOfInvalidVersionItem()
-    {
-        $this->expectException(
-            InvalidArgumentException::class,
-            'Item in the versions array should be either string or Version instance, boolean given'
-        );
-
-        VersionsCollection::fromArray([
-            '1.1.0',
-            false,
-            '2.3.3',
-        ]);
     }
 
     public function testCollectionCount()
@@ -120,48 +98,6 @@ class VersionsCollectionTest extends TestCase
         ]);
 
         $versions->sort(VersionsCollection::SORT_DESC);
-
-        foreach ($versions as $key => $version) {
-            $this->assertEquals($ordered[$key], (string) $version);
-        }
-    }
-
-    public function testSortingCollectionUsingBooleanTrueMeansDescending()
-    {
-        $ordered = [
-            '2.3.3',
-            '1.1.0',
-            '1.0.0',
-        ];
-
-        $versions = VersionsCollection::fromArray([
-            '2.3.3',
-            Version::fromMajor(1),
-            '1.1.0',
-        ]);
-
-        $versions->sort(true);
-
-        foreach ($versions as $key => $version) {
-            $this->assertEquals($ordered[$key], (string) $version);
-        }
-    }
-
-    public function testSortingCollectionUsingBooleanFalseMeansAscending()
-    {
-        $ordered = [
-            '1.0.0',
-            '1.1.0',
-            '2.3.3',
-        ];
-
-        $versions = VersionsCollection::fromArray([
-            '2.3.3',
-            Version::fromMajor(1),
-            '1.1.0',
-        ]);
-
-        $versions->sort(false);
 
         foreach ($versions as $key => $version) {
             $this->assertEquals($ordered[$key], (string) $version);

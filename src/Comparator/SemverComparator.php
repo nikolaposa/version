@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Comparator;
 
@@ -18,27 +11,24 @@ use Version\Version;
  */
 final class SemverComparator implements ComparatorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function compare(Version $version1, Version $version2)
+    public function compare(Version $version1, Version $version2) : int
     {
-        if (0 != ($majorCompareResult = $this->compareNumberPart($version1->getMajor(), $version2->getMajor()))) {
+        if (0 !== ($majorCompareResult = $this->compareNumberPart($version1->getMajor(), $version2->getMajor()))) {
             return $majorCompareResult;
         }
 
-        if (0 != ($minorCompareResult = $this->compareNumberPart($version1->getMinor(), $version2->getMinor()))) {
+        if (0 !== ($minorCompareResult = $this->compareNumberPart($version1->getMinor(), $version2->getMinor()))) {
             return $minorCompareResult;
         }
 
-        if (0 != ($patchCompareResult = $this->compareNumberPart($version1->getPatch(), $version2->getPatch()))) {
+        if (0 !== ($patchCompareResult = $this->compareNumberPart($version1->getPatch(), $version2->getPatch()))) {
             return $patchCompareResult;
         }
 
         return $this->compareMeta($version1, $version2);
     }
 
-    private function compareNumberPart($number1, $number2)
+    private function compareNumberPart(int $number1, int $number2) : int
     {
         $diff = $number1 - $number2;
 
@@ -53,7 +43,7 @@ final class SemverComparator implements ComparatorInterface
         return 0;
     }
 
-    private function compareMeta(Version $version1, Version $version2)
+    private function compareMeta(Version $version1, Version $version2) : int
     {
         $v1IsPreRelease = $version1->isPreRelease();
         $v2IsPreRelease = $version2->isPreRelease();

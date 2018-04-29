@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Identifier;
 
@@ -23,7 +16,7 @@ abstract class BaseIdentifier implements Identifier
      */
     private $value;
 
-    private function __construct($value)
+    protected function __construct(string $value)
     {
         $this->value = $value;
     }
@@ -33,13 +26,9 @@ abstract class BaseIdentifier implements Identifier
      * @return static
      * @throws InvalidIdentifierValueException
      */
-    public static function create($value)
+    public static function create(string $value) : Identifier
     {
-        if (!is_string($value)) {
-            throw new InvalidIdentifierValueException('Identifier value must be of type string');
-        }
-
-        if ($value === '') {
+        if ('' === $value) {
             throw new InvalidIdentifierValueException('Identifier must not be empty');
         }
 
@@ -52,16 +41,16 @@ abstract class BaseIdentifier implements Identifier
      * @param string $value
      * @throws InvalidIdentifierValueException
      */
-    protected static function validate($value)
+    protected static function validate(string $value) : void
     {
     }
 
-    public function getValue()
+    public function getValue() : string
     {
         return $this->value;
     }
 
-    public function __toString()
+    public function __toString() : string
     {
         return $this->getValue();
     }

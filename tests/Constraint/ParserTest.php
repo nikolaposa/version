@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Tests\Constraint;
 
@@ -118,16 +111,6 @@ class ParserTest extends TestCase
             ],
             $constraint
         );
-    }
-
-    public function testExceptionIsRaisedIfConstraintStringIsNotString()
-    {
-        $this->expectException(
-            InvalidConstraintStringException::class,
-            'Constraint string should be of type string; integer given'
-        );
-
-        $this->parser->parse(123);
     }
 
     public function testExceptionIsRaisedIfConstraintStringIsEmpty()

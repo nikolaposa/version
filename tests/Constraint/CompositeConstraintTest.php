@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Tests\Constraint;
 
@@ -24,7 +17,7 @@ class CompositeConstraintTest extends TestCase
 {
     public function testCreatingCompositeConstraintUsingFromPropertiesNamedConstructor()
     {
-        $constraint = CompositeConstraint::fromProperties(CompositeConstraint::TYPE_AND, [
+        $constraint = CompositeConstraint::fromProperties(CompositeConstraint::TYPE_AND, ...[
             Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
             Constraint::fromProperties(Constraint::OPERATOR_LT, Version::fromString('1.1.0')),
         ]);
@@ -36,7 +29,7 @@ class CompositeConstraintTest extends TestCase
 
     public function testCreatingCompositeConstraintUsingFromAndConstraintsNamedConstructor()
     {
-        $constraint = CompositeConstraint::fromAndConstraints([
+        $constraint = CompositeConstraint::fromAndConstraints(...[
             Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
             Constraint::fromProperties(Constraint::OPERATOR_LT, Version::fromString('1.1.0')),
         ]);
@@ -47,7 +40,7 @@ class CompositeConstraintTest extends TestCase
 
     public function testCreatingCompositeConstraintUsingFromOrConstraintsNamedConstructor()
     {
-        $constraint = CompositeConstraint::fromOrConstraints([
+        $constraint = CompositeConstraint::fromOrConstraints(...[
             Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
             Constraint::fromProperties(Constraint::OPERATOR_LT, Version::fromString('1.1.0')),
         ]);
@@ -58,29 +51,16 @@ class CompositeConstraintTest extends TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidType()
     {
-        $this->expectException(
-            InvalidCompositeConstraintException::class,
-            'Unsupported type: invalid'
-        );
-
-        CompositeConstraint::fromProperties('invalid', [
-            Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
-        ]);
-    }
-
-    public function testExceptionIsRaisedInCaseOfInvalidConstraint()
-    {
         $this->expectException(InvalidCompositeConstraintException::class);
 
-        CompositeConstraint::fromProperties(CompositeConstraint::TYPE_AND, [
+        CompositeConstraint::fromProperties('invalid', ...[
             Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
-            'invalid',
         ]);
     }
 
     public function testAssertingCompositeConstraintOfAndType()
     {
-        $constraint = CompositeConstraint::fromAndConstraints([
+        $constraint = CompositeConstraint::fromAndConstraints(...[
             Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
             Constraint::fromProperties(Constraint::OPERATOR_LT, Version::fromString('1.1.0')),
         ]);
@@ -93,7 +73,7 @@ class CompositeConstraintTest extends TestCase
 
     public function testAssertingCompositeConstraintOfOrType()
     {
-        $constraint = CompositeConstraint::fromOrConstraints([
+        $constraint = CompositeConstraint::fromOrConstraints(...[
             Constraint::fromProperties(Constraint::OPERATOR_EQ, Version::fromString('4.7.1')),
             Constraint::fromProperties(Constraint::OPERATOR_EQ, Version::fromString('5.0.0')),
         ]);

@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Constraint;
 
@@ -19,8 +12,8 @@ use Version\Exception\InvalidCompositeConstraintException;
  */
 class CompositeConstraint implements ConstraintInterface
 {
-    const TYPE_AND = 'AND';
-    const TYPE_OR = 'OR';
+    public const TYPE_AND = 'AND';
+    public const TYPE_OR = 'OR';
 
     /**
      * @var string
@@ -32,87 +25,57 @@ class CompositeConstraint implements ConstraintInterface
      */
     protected $constraints;
 
-    private function __construct()
+    protected function __construct()
     {
     }
 
-    /**
-     * @param string $type
-     * @param array $constraints
-     * @return self
-     */
-    public static function fromProperties($type, array $constraints)
+    public static function fromProperties(string $type, ConstraintInterface $firstConstraint, ConstraintInterface ...$constraints) : CompositeConstraint
     {
-        if (!in_array($type, [self::TYPE_AND, self::TYPE_OR])) {
+        if (! in_array($type, [self::TYPE_AND, self::TYPE_OR], true)) {
             throw InvalidCompositeConstraintException::forType($type);
         }
 
-        foreach ($constraints as $constraint) {
-            if (!$constraint instanceof ConstraintInterface) {
-                throw InvalidCompositeConstraintException::forConstraint($constraint);
-            }
-        }
-
-        $compositeConstraint = new self();
+        $compositeConstraint = new static();
 
         $compositeConstraint->type = $type;
-        $compositeConstraint->constraints = $constraints;
+        $compositeConstraint->constraints = array_merge([$firstConstraint], $constraints);
 
         return $compositeConstraint;
     }
 
-    /**
-     * @param array $constraints
-     * @return self
-     */
-    public static function fromAndConstraints(array $constraints)
+    public static function fromAndConstraints(ConstraintInterface $firstConstraint, ConstraintInterface ...$constraints) : CompositeConstraint
     {
-        return self::fromProperties(self::TYPE_AND, $constraints);
+        return self::fromProperties(self::TYPE_AND, $firstConstraint, ...$constraints);
     }
 
-    /**
-     * @param array $constraints
-     * @return self
-     */
-    public static function fromOrConstraints(array $constraints)
+    public static function fromOrConstraints(ConstraintInterface $firstConstraint, ConstraintInterface ...$constraints) : CompositeConstraint
     {
-        return self::fromProperties(self::TYPE_OR, $constraints);
+        return self::fromProperties(self::TYPE_OR, $firstConstraint, ...$constraints);
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType() : string
     {
         return $this->type;
     }
 
-    /**
-     * @return array
-     */
-    public function getConstraints()
+    public function getConstraints() : array
     {
         return $this->constraints;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function assert(Version $version)
+    public function assert(Version $version) : bool
     {
-        if ($this->type == self::TYPE_AND) {
+        if ($this->type === self::TYPE_AND) {
             return $this->assertAnd($version);
         }
 
         return $this->assertOr($version);
     }
 
-    protected function assertAnd(Version $version)
+    protected function assertAnd(Version $version) : bool
     {
         foreach ($this->constraints as $constraint) {
-            /* @var $constraint ConstraintInterface */
-
-            if (!$constraint->assert($version)) {
+            if (! $constraint->assert($version)) {
                 return false;
             }
         }
@@ -120,11 +83,9 @@ class CompositeConstraint implements ConstraintInterface
         return true;
     }
 
-    protected function assertOr(Version $version)
+    protected function assertOr(Version $version) : bool
     {
         foreach ($this->constraints as $constraint) {
-            /* @var $constraint ConstraintInterface */
-
             if ($constraint->assert($version)) {
                 return true;
             }
