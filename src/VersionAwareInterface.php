@@ -9,7 +9,5 @@ namespace Version;
  */
 interface VersionAwareInterface
 {
-    public function setVersion(Version $version) : void;
-
     public function getVersion() : Version;
 }
