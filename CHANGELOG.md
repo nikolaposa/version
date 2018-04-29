@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Renamed `Version::withMajorIncremented()` to `Version::incrementMajor()`
 - Renamed `Version::withMinorIncremented()` to `Version::incrementMinor()`
 - Renamed `Version::withPatchIncremented()` to `Version::incrementPatch()`
+- [14: Simplified modeling of extension parts - pre-release and build](https://github.com/nikolaposa/version/pull/14)
 
 ## 2.2.2 - 2017-01-01
 ### Fixed
