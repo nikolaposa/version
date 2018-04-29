@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 - Renamed `Version::withPatchIncremented()` to `Version::incrementPatch()`
 - [14: Simplified modeling of extension parts - pre-release and build](https://github.com/nikolaposa/version/pull/14)
 
+### Removed
+- Setter method from the `VersionAwareInterface`
+
 ## 2.2.2 - 2017-01-01
 ### Fixed
 - [11: Include version string in the exception message](https://github.com/nikolaposa/version/pull/11)
