@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Version\Metadata\Build;
-use Version\Metadata\PreRelease;
+use Version\Extension\Build;
+use Version\Extension\PreRelease;
 use Version\Version;
 use Version\Exception\InvalidVersionElementException;
 use Version\Exception\InvalidVersionStringException;
@@ -58,21 +58,21 @@ class VersionTest extends TestCase
 
     public function testCreatingFromPreRelease()
     {
-        $version = Version::fromPreRelease(2, 0, 0, PreRelease::create('alpha'));
+        $version = Version::fromPreRelease(2, 0, 0, PreRelease::fromIdentifiersString('alpha'));
 
         $this->assertMatchesVersion($version, 2, 0, 0, 'alpha', false);
     }
 
     public function testCreatingFromBuild()
     {
-        $version = Version::fromBuild(4, 3, 3, Build::create('123'));
+        $version = Version::fromBuild(4, 3, 3, Build::fromIdentifiersString('123'));
 
         $this->assertMatchesVersion($version, 4, 3, 3, false, '123');
     }
 
     public function testCreatingFromAllElements()
     {
-        $version = Version::fromParts(1, 0, 0, PreRelease::create('beta'), Build::create('11'));
+        $version = Version::fromParts(1, 0, 0, PreRelease::fromIdentifiersString('beta'), Build::fromIdentifiersString('11'));
 
         $this->assertMatchesVersion($version, 1, 0, 0, 'beta', '11');
     }
