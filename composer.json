@@ -6,7 +6,7 @@
     "keywords": [
         "version",
         "semantic",
-		"versioning",
+        "versioning",
         "semver"
     ],
     "homepage": "https://github.com/nikolaposa/version",
@@ -14,7 +14,7 @@
         {
             "name": "Nikola Poša",
             "email": "posa.nikola@gmail.com",
-            "homepage": "http://www.nikolaposa.in.rs"
+            "homepage": "https://www.nikolaposa.in.rs"
         }
     ],
     "require": {
