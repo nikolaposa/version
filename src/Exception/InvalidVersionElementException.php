@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Exception;
 
@@ -16,11 +9,11 @@ namespace Version\Exception;
  */
 class InvalidVersionElementException extends InvalidArgumentException
 {
-    public static function forElement($element)
+    public static function forElement(string $part) : self
     {
         return new self(sprintf(
             '%s version must be non-negative integer',
-            ucfirst($element)
+            ucfirst($part)
         ));
     }
 }

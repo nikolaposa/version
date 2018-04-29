@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Metadata;
 
@@ -25,7 +18,7 @@ abstract class BaseIdentifyingMetadata
      */
     private $identifiers;
 
-    private function __construct(array $identifiers = [])
+    private function __construct(Identifier ...$identifiers)
     {
         $this->identifiers = $identifiers;
     }
@@ -37,9 +30,15 @@ abstract class BaseIdentifyingMetadata
      */
     public static function create($identifiers)
     {
+        if ($identifiers instanceof self) {
+            return $identifiers;
+        }
+
         if (is_array($identifiers)) {
             return self::createFromArray($identifiers);
-        } elseif (is_string($identifiers)) {
+        }
+
+        if (is_string($identifiers)) {
             return self::createFromString($identifiers);
         }
 
@@ -54,10 +53,10 @@ abstract class BaseIdentifyingMetadata
             $identifiers[]= self::createIdentifier($id);
         }
 
-        return new static($identifiers);
+        return new static(...$identifiers);
     }
 
-    private static function createFromString($identifiersString)
+    private static function createFromString(string $identifiersString)
     {
         if (strpos($identifiersString, '.') !== false) {
             $identifiers = [];
@@ -68,13 +67,13 @@ abstract class BaseIdentifyingMetadata
                 $identifiers[]= self::createIdentifier($id);
             }
 
-            return new static($identifiers);
+            return new static(...$identifiers);
         }
 
-        return new static([self::createIdentifier($identifiersString)]);
+        return new static(...[self::createIdentifier($identifiersString)]);
     }
 
-    private static function createIdentifier($value)
+    protected static function createIdentifier($value) : Identifier
     {
         if ($value instanceof Identifier) {
             return $value;
@@ -83,53 +82,34 @@ abstract class BaseIdentifyingMetadata
         return static::createAssociatedIdentifier($value);
     }
 
-    /**
-     * @return static
-     */
     public static function createEmpty()
     {
-        return new static([]);
+        return new static();
     }
 
-    /**
-     * @param string $value
-     * @return Identifier
-     */
-    protected static function createAssociatedIdentifier($value)
+    protected static function createAssociatedIdentifier(string $value) : Identifier
     {
         throw new LogicException(__METHOD__ . ' not implemented');
     }
 
-    /**
-     * @return array
-     */
-    public function getIdentifiers()
+    public function getIdentifiers() : array
     {
         return $this->identifiers;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEmpty()
+    public function isEmpty() : bool
     {
         return empty($this->identifiers);
     }
 
-    /**
-     * @return array
-     */
-    public function toArray()
+    public function toArray() : array
     {
-        return array_map(function ($identifier) {
+        return array_map(function (Identifier $identifier) {
             return $identifier->getValue();
         }, $this->identifiers);
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString() : string
     {
         return implode('.', $this->getIdentifiers());
     }

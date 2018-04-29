@@ -7,6 +7,6 @@ namespace Version\Exception;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidIdentifierValueException extends InvalidArgumentException
+interface ExceptionInterface
 {
 }

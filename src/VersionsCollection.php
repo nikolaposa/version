@@ -1,34 +1,27 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version;
 
 use Countable;
 use IteratorAggregate;
 use ArrayIterator;
-use Version\Exception\InvalidArgumentException;
+use Traversable;
 use Version\Constraint\ConstraintInterface;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-final class VersionsCollection implements Countable, IteratorAggregate
+class VersionsCollection implements Countable, IteratorAggregate
 {
-    const SORT_ASC = 'ASC';
-    const SORT_DESC = 'DESC';
+    public const SORT_ASC = 'ASC';
+    public const SORT_DESC = 'DESC';
 
     /**
      * @var Version[]
      */
-    private $versions = [];
+    protected $versions = [];
 
     /**
      * @param array $versions
@@ -38,57 +31,33 @@ final class VersionsCollection implements Countable, IteratorAggregate
         foreach ($versions as $version) {
             if (is_string($version)) {
                 $version = Version::fromString($version);
-            } elseif (!$version instanceof Version) {
-                throw new InvalidArgumentException(sprintf(
-                    'Item in the versions array should be either string or Version instance, %s given',
-                    gettype($version)
-                ));
             }
 
             $this->versions[] = $version;
         }
     }
 
-    /**
-     * @param array $versions
-     * @return self
-     */
-    public static function fromArray(array $versions)
+    public static function fromArray(array $versions) : VersionsCollection
     {
-        return new self($versions);
+        return new static($versions);
     }
 
-    /**
-     * @return int
-     */
-    public function count()
+    public function count(): int
     {
         return count($this->versions);
     }
 
-    /**
-     * @return \Iterator
-     */
-    public function getIterator()
+    public function getIterator() : Traversable
     {
         return new ArrayIterator($this->versions);
     }
 
-    /**
-     * @param string|bool $direction OPTIONAL
-     * @return void
-     */
-    public function sort($direction = self::SORT_ASC)
+    public function sort(string $direction = self::SORT_ASC) : void
     {
-        if (is_bool($direction)) {
-            //backwards-compatibility
-            $direction = (true === $direction) ? self::SORT_DESC : self::SORT_ASC;
-        }
-
         usort($this->versions, function (Version $a, Version $b) use ($direction) {
             $result = $a->compareTo($b);
 
-            if ($direction == self::SORT_DESC) {
+            if ($direction === self::SORT_DESC) {
                 $result *= -1;
             }
 
@@ -96,9 +65,9 @@ final class VersionsCollection implements Countable, IteratorAggregate
         });
     }
 
-    public function matching(ConstraintInterface $constraint)
+    public function matching(ConstraintInterface $constraint) : VersionsCollection
     {
-        return new self(array_filter(
+        return new static(array_filter(
             $this->versions,
             function (Version $version) use ($constraint) {
                 return $version->matches($constraint);

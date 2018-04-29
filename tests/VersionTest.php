@@ -1,17 +1,12 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Version\Metadata\Build;
+use Version\Metadata\PreRelease;
 use Version\Version;
 use Version\Exception\InvalidVersionElementException;
 use Version\Exception\InvalidVersionStringException;
@@ -63,21 +58,21 @@ class VersionTest extends TestCase
 
     public function testCreatingFromPreRelease()
     {
-        $version = Version::fromPreRelease(2, 0, 0, 'alpha');
+        $version = Version::fromPreRelease(2, 0, 0, PreRelease::create('alpha'));
 
         $this->assertMatchesVersion($version, 2, 0, 0, 'alpha', false);
     }
 
     public function testCreatingFromBuild()
     {
-        $version = Version::fromBuild(4, 3, 3, '123');
+        $version = Version::fromBuild(4, 3, 3, Build::create('123'));
 
         $this->assertMatchesVersion($version, 4, 3, 3, false, '123');
     }
 
     public function testCreatingFromAllElements()
     {
-        $version = Version::fromAllElements(1, 0, 0, 'beta', '11');
+        $version = Version::fromParts(1, 0, 0, PreRelease::create('beta'), Build::create('11'));
 
         $this->assertMatchesVersion($version, 1, 0, 0, 'beta', '11');
     }
@@ -165,7 +160,7 @@ class VersionTest extends TestCase
     {
         $this->expectException(InvalidVersionElementException::class);
 
-        Version::fromMajor('test');
+        Version::fromMajor(-10);
     }
 
     public function testCreationFailsInCaseOfInvalidMinorVersion()
@@ -179,7 +174,7 @@ class VersionTest extends TestCase
     {
         $this->expectException(InvalidVersionElementException::class);
 
-        Version::fromPatch(2, 1, 'patch');
+        Version::fromPatch(2, 1, -3);
     }
 
     public function invalidVersionStringProvider()
@@ -187,11 +182,6 @@ class VersionTest extends TestCase
         return [
             'tooManySubVersions' => ['1.5.2.4.4'],
             'leadingZeroIsInvalid' => ['1.05.2'],
-            'integersAreInvalid' => [123],
-            'floatsAreInvalid' => [1.23],
-            'nullIsNotValid' => [null],
-            'falseIsNotValid' => [false],
-            'trueIsNotValid' => [true],
         ];
     }
 
@@ -201,10 +191,8 @@ class VersionTest extends TestCase
      */
     public function testCreationFromStringFailsInCaseInvalidCorePart($invalidVersion)
     {
-        $this->expectException(
-            InvalidVersionStringException::class,
-            sprintf("Version string '%s' is not valid and cannot be parsed", $invalidVersion)
-        );
+        $this->expectException(InvalidVersionStringException::class);
+        $this->expectExceptionMessage(sprintf("Version string '%s' is not valid and cannot be parsed", $invalidVersion));
 
         Version::fromString($invalidVersion);
     }

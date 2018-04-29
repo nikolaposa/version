@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version\Constraint;
 
@@ -21,12 +14,12 @@ use Version\Constraint\Parser\StandardParser;
  */
 class Constraint implements ConstraintInterface
 {
-    const OPERATOR_EQ = '=';
-    const OPERATOR_NEQ = '!=';
-    const OPERATOR_GT = '>';
-    const OPERATOR_GTE = '>=';
-    const OPERATOR_LT = '<';
-    const OPERATOR_LTE = '<=';
+    public const OPERATOR_EQ = '=';
+    public const OPERATOR_NEQ = '!=';
+    public const OPERATOR_GT = '>';
+    public const OPERATOR_GTE = '>=';
+    public const OPERATOR_LT = '<';
+    public const OPERATOR_LTE = '<=';
 
     /**
      * @var string
@@ -55,81 +48,56 @@ class Constraint implements ConstraintInterface
      */
     private static $parser;
 
-    private function __construct($operator, Version $operand)
+    protected function __construct(string $operator, Version $operand)
     {
         $this->operator = $operator;
         $this->operand = $operand;
     }
 
-    /**
-     * @param string $operator
-     * @param Version $operand
-     * @return self
-     */
-    public static function fromProperties($operator, Version $operand)
+    public static function fromProperties(string $operator, Version $operand) : Constraint
     {
-        if (!self::isOperatorValid($operator)) {
-            throw InvalidConstraintException::forOperator($operator);
-        }
+        self::validateOperator($operator);
 
         return new self($operator, $operand);
     }
 
-    protected static function isOperatorValid($operator)
-    {
-        return in_array($operator, self::$validOperators);
-    }
-
-    /**
-     * @param string $constraintString
-     * @return self
-     */
-    public static function fromString($constraintString)
+    public static function fromString(string $constraintString) : Constraint
     {
         return self::getParser()->parse($constraintString);
     }
 
-    /**
-     * @return ParserInterface
-     */
-    public static function getParser()
+    protected static function validateOperator(string $operator) : void
     {
-        if (!isset(self::$parser)) {
+        if (! in_array($operator, self::$validOperators, true)) {
+            throw InvalidConstraintException::forOperator($operator);
+        }
+    }
+
+    public static function getParser() : ParserInterface
+    {
+        if (null === self::$parser) {
             self::setParser(new StandardParser());
         }
 
         return self::$parser;
     }
 
-    /**
-     * @param ParserInterface $parser
-     * @return void
-     */
-    public static function setParser(ParserInterface $parser)
+    public static function setParser(ParserInterface $parser) : void
     {
         self::$parser = $parser;
     }
 
-    /**
-     * @return string
-     */
-    public function getOperator()
+    public function getOperator() : string
     {
         return $this->operator;
     }
 
-    /**
-     * @return Version
-     */
-    public function getOperand()
+    public function getOperand() : Version
     {
         return $this->operand;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function assert(Version $version)
+    public function assert(Version $version) : bool
     {
         switch ($this->operator) {
             case self::OPERATOR_EQ:
@@ -144,6 +112,8 @@ class Constraint implements ConstraintInterface
                 return $version->isLessThan($this->operand);
             case self::OPERATOR_LTE:
                 return $version->isLessOrEqualTo($this->operand);
+            default:
+                return false;
         }
     }
 }

@@ -1,13 +1,6 @@
 <?php
 
-/**
- * This file is part of the Version package.
- *
- * Copyright (c) Nikola Posa <posa.nikola@gmail.com>
- *
- * For full copyright and license information, please refer to the LICENSE file,
- * located at the package root folder.
- */
+declare(strict_types=1);
 
 namespace Version;
 
@@ -24,39 +17,39 @@ use Version\Constraint\Constraint;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-final class Version implements JsonSerializable
+class Version implements JsonSerializable
 {
     /**
      * @var int
      */
-    private $major;
+    protected $major;
 
     /**
      * @var int
      */
-    private $minor;
+    protected $minor;
 
     /**
      * @var int
      */
-    private $patch;
+    protected $patch;
 
     /**
      * @var PreRelease
      */
-    private $preRelease;
+    protected $preRelease;
 
     /**
      * @var Build
      */
-    private $build;
+    protected $build;
 
     /**
      * @var ComparatorInterface
      */
-    private static $comparator;
+    protected static $comparator;
 
-    private function __construct($major, $minor, $patch, PreRelease $preRelease, Build $build)
+    private function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
     {
         $this->major = $major;
         $this->minor = $minor;
@@ -65,100 +58,46 @@ final class Version implements JsonSerializable
         $this->build = $build;
     }
 
-    /**
-     * @param int $major
-     * @param int $minor
-     * @param int $patch
-     * @param PreRelease|array|string $preRelease
-     * @param Build|array|string $build
-     * @return self
-     */
-    public static function fromAllElements($major, $minor, $patch, $preRelease, $build)
+    public static function fromParts(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build) : Version
     {
-        self::validateVersionElement('major', $major);
-
-        self::validateVersionElement('minor', $minor);
-
-        self::validateVersionElement('patch', $patch);
-
-        if (!$preRelease instanceof PreRelease) {
-            $preRelease = PreRelease::create($preRelease);
-        }
-
-        if (!$build instanceof Build) {
-            $build = Build::create($build);
-        }
+        self::validatePart('major', $major);
+        self::validatePart('minor', $minor);
+        self::validatePart('patch', $patch);
 
         return new self($major, $minor, $patch, $preRelease, $build);
     }
 
-    private static function validateVersionElement($element, $value)
+    public static function fromMajor(int $major) : Version
     {
-        if (!is_int($value) || $value < 0) {
-            throw InvalidVersionElementException::forElement($element);
-        }
+        return self::fromParts($major, 0, 0, PreRelease::createEmpty(), Build::createEmpty());
     }
 
-    /**
-     * @param int $major
-     * @return self
-     */
-    public static function fromMajor($major)
+    public static function fromMinor(int $major, int $minor) : Version
     {
-        return self::fromAllElements($major, 0, 0, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($major, $minor, 0, PreRelease::createEmpty(), Build::createEmpty());
     }
 
-    /**
-     * @param int $major
-     * @param int $minor
-     * @return self
-     */
-    public static function fromMinor($major, $minor)
+    public static function fromPatch(int $major, int $minor, int $patch) : Version
     {
-        return self::fromAllElements($major, $minor, 0, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($major, $minor, $patch, PreRelease::createEmpty(), Build::createEmpty());
     }
 
-    /**
-     * @param int $major
-     * @param int $minor
-     * @param int $patch
-     * @return self
-     */
-    public static function fromPatch($major, $minor, $patch)
+    public static function fromPreRelease(int $major, int $minor, int $patch, PreRelease $preRelease) : Version
     {
-        return self::fromAllElements($major, $minor, $patch, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($major, $minor, $patch, $preRelease, Build::createEmpty());
     }
 
-    /**
-     * @param int $major
-     * @param int $minor
-     * @param int $patch
-     * @param @param PreRelease|array|string $preRelease
-     * @return self
-     */
-    public static function fromPreRelease($major, $minor, $patch, $preRelease)
+    public static function fromBuild(int $major, int $minor, int $patch, Build $build) : Version
     {
-        return self::fromAllElements($major, $minor, $patch, $preRelease, Build::createEmpty());
-    }
-
-    /**
-     * @param int $major
-     * @param int $minor
-     * @param int $patch
-     * @param Build|array|string $build
-     * @return self
-     */
-    public static function fromBuild($major, $minor, $patch, $build)
-    {
-        return self::fromAllElements($major, $minor, $patch, PreRelease::createEmpty(), $build);
+        return self::fromParts($major, $minor, $patch, PreRelease::createEmpty(), $build);
     }
 
     /**
      * @param string $versionString
-     * @return self
+     * @return Version
      * @throws InvalidVersionStringException
      */
-    public static function fromString($versionString)
+    public static function fromString(string $versionString) : Version
     {
         $parts = [];
 
@@ -179,65 +118,51 @@ final class Version implements JsonSerializable
         $minor = (int) $minor;
         $patch = (int) $patch;
 
-        $preRelease = (!empty($parts['preRelease'])) ? $parts['preRelease'] : PreRelease::createEmpty();
+        $preRelease = (!empty($parts['preRelease'])) ? PreRelease::create($parts['preRelease']) : PreRelease::createEmpty();
 
-        $build = (!empty($parts['build'])) ? $parts['build'] : Build::createEmpty();
+        $build = (!empty($parts['build'])) ? Build::create($parts['build']) : Build::createEmpty();
 
-        return self::fromAllElements($major, $minor, $patch, $preRelease, $build);
+        return self::fromParts($major, $minor, $patch, $preRelease, $build);
     }
 
-    /**
-     * @return int
-     */
-    public function getMajor()
+    private static function validatePart(string $part, int $value)
+    {
+        if ($value < 0) {
+            throw InvalidVersionElementException::forElement($part);
+        }
+    }
+
+    public function getMajor() : int
     {
         return $this->major;
     }
 
-    /**
-     * @return int
-     */
-    public function getMinor()
+    public function getMinor() : int
     {
         return $this->minor;
     }
 
-    /**
-     * @return int
-     */
-    public function getPatch()
+    public function getPatch() : int
     {
         return $this->patch;
     }
 
-    /**
-     * @return PreRelease
-     */
-    public function getPreRelease()
+    public function getPreRelease() : PreRelease
     {
         return $this->preRelease;
     }
 
-    /**
-     * @return Build
-     */
-    public function getBuild()
+    public function getBuild() : Build
     {
         return $this->build;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPreRelease()
+    public function isPreRelease() : bool
     {
         return !$this->preRelease->isEmpty();
     }
 
-    /**
-     * @return bool
-     */
-    public function isBuild()
+    public function isBuild() : bool
     {
         return !$this->build->isEmpty();
     }
@@ -246,7 +171,7 @@ final class Version implements JsonSerializable
      * @param self|string $version
      * @return int (1 if $this > $version, -1 if $this < $version, 0 if equal)
      */
-    public function compareTo($version)
+    public function compareTo($version) : int
     {
         if (!$version instanceof self) {
             $version = self::fromString((string) $version);
@@ -256,40 +181,19 @@ final class Version implements JsonSerializable
     }
 
     /**
-     * @return ComparatorInterface
+     * @param self|string $version
+     * @return bool
      */
-    public static function getComparator()
+    public function isEqualTo($version) : bool
     {
-        if (!isset(self::$comparator)) {
-            self::setComparator(new SemverComparator());
-        }
-
-        return self::$comparator;
-    }
-
-    /**
-     * @param ComparatorInterface $comparator
-     * @return void
-     */
-    public static function setComparator(ComparatorInterface $comparator)
-    {
-        self::$comparator = $comparator;
+        return $this->compareTo($version) === 0;
     }
 
     /**
      * @param self|string $version
      * @return bool
      */
-    public function isEqualTo($version)
-    {
-        return $this->compareTo($version) == 0;
-    }
-
-    /**
-     * @param self|string $version
-     * @return bool
-     */
-    public function isNotEqualTo($version)
+    public function isNotEqualTo($version) : bool
     {
         return !$this->isEqualTo($version);
     }
@@ -298,7 +202,7 @@ final class Version implements JsonSerializable
      * @param self|string $version
      * @return bool
      */
-    public function isGreaterThan($version)
+    public function isGreaterThan($version) : bool
     {
         return $this->compareTo($version) > 0;
     }
@@ -307,7 +211,7 @@ final class Version implements JsonSerializable
      * @param self|string $version
      * @return bool
      */
-    public function isGreaterOrEqualTo($version)
+    public function isGreaterOrEqualTo($version) : bool
     {
         return $this->compareTo($version) >= 0;
     }
@@ -316,7 +220,7 @@ final class Version implements JsonSerializable
      * @param self|string $version
      * @return bool
      */
-    public function isLessThan($version)
+    public function isLessThan($version) : bool
     {
         return $this->compareTo($version) < 0;
     }
@@ -325,7 +229,7 @@ final class Version implements JsonSerializable
      * @param self|string $version
      * @return bool
      */
-    public function isLessOrEqualTo($version)
+    public function isLessOrEqualTo($version) : bool
     {
         return $this->compareTo($version) <= 0;
     }
@@ -334,61 +238,41 @@ final class Version implements JsonSerializable
      * @param ConstraintInterface|string $constraint
      * @return bool
      */
-    public function matches($constraint)
+    public function matches($constraint) : bool
     {
-        if (!$constraint instanceof ConstraintInterface) {
+        if (! $constraint instanceof ConstraintInterface) {
             $constraint = Constraint::fromString($constraint);
         }
 
         return $constraint->assert($this);
     }
 
-    /**
-     * @return self
-     */
-    public function withMajorIncremented()
+    public function incrementMajor() : Version
     {
-        return self::fromAllElements($this->major + 1, 0, 0, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($this->major + 1, 0, 0, PreRelease::createEmpty(), Build::createEmpty());
     }
 
-    /**
-     * @return self
-     */
-    public function withMinorIncremented()
+    public function incrementMinor() : Version
     {
-        return self::fromAllElements($this->major, $this->minor + 1, 0, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($this->major, $this->minor + 1, 0, PreRelease::createEmpty(), Build::createEmpty());
     }
 
-    /**
-     * @return self
-     */
-    public function withPatchIncremented()
+    public function incrementPatch() : Version
     {
-        return self::fromAllElements($this->major, $this->minor, $this->patch + 1, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($this->major, $this->minor, $this->patch + 1, PreRelease::createEmpty(), Build::createEmpty());
     }
 
-    /**
-     * @param PreRelease|array|string $preRelease
-     * @return self
-     */
-    public function withPreRelease($preRelease)
+    public function withPreRelease($preRelease) : Version
     {
-        return self::fromAllElements($this->major, $this->minor, $this->patch, $preRelease, Build::createEmpty());
+        return self::fromParts($this->major, $this->minor, $this->patch, PreRelease::create($preRelease), Build::createEmpty());
     }
 
-    /**
-     * @param Build|array|string $build
-     * @return self
-     */
-    public function withBuild($build)
+    public function withBuild($build) : Version
     {
-        return self::fromAllElements($this->major, $this->minor, $this->patch, $this->preRelease, $build);
+        return self::fromParts($this->major, $this->minor, $this->patch, $this->preRelease, Build::create($build));
     }
 
-    /**
-     * @return string
-     */
-    public function getVersionString()
+    public function getVersionString() : string
     {
         return
             $this->major
@@ -399,26 +283,17 @@ final class Version implements JsonSerializable
             ;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString() : string
     {
         return $this->getVersionString();
     }
 
-    /**
-     * @return string
-     */
-    public function jsonSerialize()
+    public function jsonSerialize() : string
     {
         return $this->getVersionString();
     }
 
-    /**
-     * @return array
-     */
-    public function toArray()
+    public function toArray() : array
     {
         return [
             'major' => $this->major,
@@ -427,5 +302,19 @@ final class Version implements JsonSerializable
             'preRelease' => $this->preRelease->toArray(),
             'build' => $this->build->toArray(),
         ];
+    }
+
+    public static function getComparator() : ComparatorInterface
+    {
+        if (null === self::$comparator) {
+            self::setComparator(new SemverComparator());
+        }
+
+        return self::$comparator;
+    }
+
+    public static function setComparator(ComparatorInterface $comparator) : void
+    {
+        self::$comparator = $comparator;
     }
 }
