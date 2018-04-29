@@ -31,9 +31,9 @@ abstract class BaseExtension
      */
     abstract protected function validate(string $identifier) : void;
 
-    public static function fromIdentifiers(string $firstIdentifier, string ...$identifiers)
+    public static function fromIdentifiers(string $identifier, string ...$identifiers)
     {
-        return new static(...array_merge([$firstIdentifier], $identifiers));
+        return new static(...array_merge([$identifier], $identifiers));
     }
 
     public static function fromIdentifiersString(string $identifiers)

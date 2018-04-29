@@ -17,23 +17,23 @@ class PreRelease extends BaseExtension
 
     public function compareTo(PreRelease $preRelease) : int
     {
-        $firstPreReleaseIdentifiers = array_values($this->getIdentifiers());
-        $secondPreReleaseIdentifiers = array_values($preRelease->getIdentifiers());
+        $preRelease1Ids = array_values($this->getIdentifiers());
+        $preRelease2Ids = array_values($preRelease->getIdentifiers());
 
-        $pr1Count = count($firstPreReleaseIdentifiers);
-        $pr2Count = count($secondPreReleaseIdentifiers);
+        $preRelease1IdsCount = count($preRelease1Ids);
+        $preRelease2IdsCount = count($preRelease2Ids);
 
-        $limit = min($pr1Count, $pr2Count);
+        $limit = min($preRelease1IdsCount, $preRelease2IdsCount);
 
         for ($i = 0; $i < $limit; $i++) {
-            if ($firstPreReleaseIdentifiers[$i] === $secondPreReleaseIdentifiers[$i]) {
+            if ($preRelease1Ids[$i] === $preRelease2Ids[$i]) {
                 continue;
             }
 
-            return $this->compareIdentifiers($firstPreReleaseIdentifiers[$i], $secondPreReleaseIdentifiers[$i]);
+            return $this->compareIdentifiers($preRelease1Ids[$i], $preRelease2Ids[$i]);
         }
 
-        return $pr1Count - $pr2Count;
+        return $preRelease1IdsCount - $preRelease2IdsCount;
     }
 
     private function compareIdentifiers($identifier1, $identifier2) : int
