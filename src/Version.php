@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Version;
 
 use JsonSerializable;
-use Version\Metadata\PreRelease;
-use Version\Metadata\Build;
+use Version\Extension\Build;
+use Version\Extension\NoBuild;
+use Version\Extension\NoPreRelease;
 use Version\Exception\InvalidVersionElementException;
 use Version\Exception\InvalidVersionStringException;
 use Version\Comparator\ComparatorInterface;
 use Version\Comparator\SemverComparator;
 use Version\Constraint\ConstraintInterface;
 use Version\Constraint\Constraint;
+use Version\Extension\PreRelease;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -69,27 +71,27 @@ class Version implements JsonSerializable
 
     public static function fromMajor(int $major) : Version
     {
-        return self::fromParts($major, 0, 0, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($major, 0, 0, new NoPreRelease(), new NoBuild());
     }
 
     public static function fromMinor(int $major, int $minor) : Version
     {
-        return self::fromParts($major, $minor, 0, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($major, $minor, 0, new NoPreRelease(), new NoBuild());
     }
 
     public static function fromPatch(int $major, int $minor, int $patch) : Version
     {
-        return self::fromParts($major, $minor, $patch, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($major, $minor, $patch, new NoPreRelease(), new NoBuild());
     }
 
     public static function fromPreRelease(int $major, int $minor, int $patch, PreRelease $preRelease) : Version
     {
-        return self::fromParts($major, $minor, $patch, $preRelease, Build::createEmpty());
+        return self::fromParts($major, $minor, $patch, $preRelease, new NoBuild());
     }
 
     public static function fromBuild(int $major, int $minor, int $patch, Build $build) : Version
     {
-        return self::fromParts($major, $minor, $patch, PreRelease::createEmpty(), $build);
+        return self::fromParts($major, $minor, $patch, new NoPreRelease(), $build);
     }
 
     /**
@@ -118,9 +120,9 @@ class Version implements JsonSerializable
         $minor = (int) $minor;
         $patch = (int) $patch;
 
-        $preRelease = (!empty($parts['preRelease'])) ? PreRelease::create($parts['preRelease']) : PreRelease::createEmpty();
+        $preRelease = (!empty($parts['preRelease'])) ? PreRelease::fromIdentifiersString($parts['preRelease']) : new NoPreRelease();
 
-        $build = (!empty($parts['build'])) ? Build::create($parts['build']) : Build::createEmpty();
+        $build = (!empty($parts['build'])) ? Build::fromIdentifiersString($parts['build']) : new NoBuild();
 
         return self::fromParts($major, $minor, $patch, $preRelease, $build);
     }
@@ -249,27 +251,35 @@ class Version implements JsonSerializable
 
     public function incrementMajor() : Version
     {
-        return self::fromParts($this->major + 1, 0, 0, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($this->major + 1, 0, 0, new NoPreRelease(), new NoBuild());
     }
 
     public function incrementMinor() : Version
     {
-        return self::fromParts($this->major, $this->minor + 1, 0, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($this->major, $this->minor + 1, 0, new NoPreRelease(), new NoBuild());
     }
 
     public function incrementPatch() : Version
     {
-        return self::fromParts($this->major, $this->minor, $this->patch + 1, PreRelease::createEmpty(), Build::createEmpty());
+        return self::fromParts($this->major, $this->minor, $this->patch + 1, new NoPreRelease(), new NoBuild());
     }
 
     public function withPreRelease($preRelease) : Version
     {
-        return self::fromParts($this->major, $this->minor, $this->patch, PreRelease::create($preRelease), Build::createEmpty());
+        if (is_string($preRelease)) {
+            $preRelease = PreRelease::fromIdentifiersString($preRelease);
+        }
+
+        return self::fromParts($this->major, $this->minor, $this->patch, $preRelease, new NoBuild());
     }
 
     public function withBuild($build) : Version
     {
-        return self::fromParts($this->major, $this->minor, $this->patch, $this->preRelease, Build::create($build));
+        if (is_string($build)) {
+            $build = Build::fromIdentifiersString($build);
+        }
+
+        return self::fromParts($this->major, $this->minor, $this->patch, $this->preRelease, $build);
     }
 
     public function getVersionString() : string
@@ -280,7 +290,7 @@ class Version implements JsonSerializable
             . '.' . $this->patch
             . ($this->isPreRelease() ? '-' . (string) $this->preRelease : '')
             . ($this->isBuild() ? '+' . (string) $this->build : '')
-            ;
+        ;
     }
 
     public function __toString() : string
@@ -299,8 +309,8 @@ class Version implements JsonSerializable
             'major' => $this->major,
             'minor' => $this->minor,
             'patch' => $this->patch,
-            'preRelease' => $this->preRelease->toArray(),
-            'build' => $this->build->toArray(),
+            'preRelease' => $this->preRelease->getIdentifiers(),
+            'build' => $this->build->getIdentifiers(),
         ];
     }
 

@@ -36,7 +36,7 @@ class VersionOperationsTest extends TestCase
         VersionTest::assertMatchesVersion($newVersion, 2, 4, 4, false, false);
     }
 
-    public function testVersionIncrementResetsMetadata()
+    public function testVersionIncrementResetsExtensionPart()
     {
         $version = Version::fromString('2.0.0-beta+111');
         $newVersion = $version->incrementMinor();

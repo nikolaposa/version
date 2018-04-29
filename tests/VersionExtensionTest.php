@@ -6,18 +6,16 @@ namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Version\Version;
-use Version\Metadata\PreRelease;
-use Version\Metadata\Build;
-use Version\Identifier\PreReleaseIdentifier;
-use Version\Identifier\BuildIdentifier;
-use Version\Exception\InvalidIdentifierValueException;
+use Version\Extension\PreRelease;
+use Version\Extension\Build;
+use Version\Exception\InvalidIdentifierException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class VersionMetadataTest extends TestCase
+class VersionExtensionTest extends TestCase
 {
-    public function testVersionPreReleaseMetadata()
+    public function testVersionPreRelease()
     {
         $version = Version::fromString('1.0.0-alpha');
 
@@ -28,11 +26,10 @@ class VersionMetadataTest extends TestCase
         $this->assertCount(1, $identifiers);
 
         $identifier = current($identifiers);
-        $this->assertInstanceOf(PreReleaseIdentifier::class, $identifier);
-        $this->assertEquals('alpha', $identifier->getValue());
+        $this->assertSame('alpha', $identifier);
     }
 
-    public function testVersionMultiPreReleaseMetadata()
+    public function testVersionMultiPreRelease()
     {
         $version = Version::fromString('1.0.0-alpha.1.2');
 
@@ -43,12 +40,12 @@ class VersionMetadataTest extends TestCase
         $id2 = array_shift($identifiers);
         $id3 = array_shift($identifiers);
 
-        $this->assertEquals('alpha', $id1->getValue());
-        $this->assertEquals('1', $id2->getValue());
-        $this->assertEquals('2', $id3->getValue());
+        $this->assertSame('alpha', $id1);
+        $this->assertSame('1', $id2);
+        $this->assertSame('2', $id3);
     }
 
-    public function testVersionBuildMetadata()
+    public function testVersionBuild()
     {
         $version = Version::fromString('1.0.0+20150919');
 
@@ -59,11 +56,10 @@ class VersionMetadataTest extends TestCase
         $this->assertCount(1, $identifiers);
 
         $identifier = current($identifiers);
-        $this->assertInstanceOf(BuildIdentifier::class, $identifier);
-        $this->assertEquals('20150919', $identifier->getValue());
+        $this->assertSame('20150919', $identifier);
     }
 
-    public function testVersionMultiBuildMetadata()
+    public function testVersionMultiBuild()
     {
         $version = Version::fromString('1.0.0+exp.sha.5114f85');
 
@@ -74,9 +70,9 @@ class VersionMetadataTest extends TestCase
         $id2 = array_shift($identifiers);
         $id3 = array_shift($identifiers);
 
-        $this->assertEquals('exp', $id1->getValue());
-        $this->assertEquals('sha', $id2->getValue());
-        $this->assertEquals('5114f85', $id3->getValue());
+        $this->assertSame('exp', $id1);
+        $this->assertSame('sha', $id2);
+        $this->assertSame('5114f85', $id3);
     }
 
     public function testFullVersion()
@@ -86,27 +82,27 @@ class VersionMetadataTest extends TestCase
         $preReleaseIdentifiers = $version->getPreRelease()->getIdentifiers();
         $this->assertCount(2, $preReleaseIdentifiers);
 
-        $prId1 = array_shift($preReleaseIdentifiers);
-        $prId2 = array_shift($preReleaseIdentifiers);
+        $preReleaseId1 = array_shift($preReleaseIdentifiers);
+        $preReleaseId2 = array_shift($preReleaseIdentifiers);
 
-        $this->assertEquals('alpha', $prId1->getValue());
-        $this->assertEquals('1', $prId2->getValue());
+        $this->assertSame('alpha', $preReleaseId1);
+        $this->assertSame('1', $preReleaseId2);
 
         $buildIdentifiers = $version->getBuild()->getIdentifiers();
         $this->assertCount(3, $buildIdentifiers);
 
-        $bId1 = array_shift($buildIdentifiers);
-        $bId2 = array_shift($buildIdentifiers);
-        $bId3 = array_shift($buildIdentifiers);
+        $buildId1 = array_shift($buildIdentifiers);
+        $buildId2 = array_shift($buildIdentifiers);
+        $buildId3 = array_shift($buildIdentifiers);
 
-        $this->assertEquals('exp', $bId1->getValue());
-        $this->assertEquals('sha', $bId2->getValue());
-        $this->assertEquals('5114f85', $bId3->getValue());
+        $this->assertSame('exp', $buildId1);
+        $this->assertSame('sha', $buildId2);
+        $this->assertSame('5114f85', $buildId3);
     }
 
-    public function testCreationFailsInCaseOfEmptyMetadata()
+    public function testCreationFailsInCaseOfEmptyExtension()
     {
-        $this->expectException(InvalidIdentifierValueException::class);
+        $this->expectException(InvalidIdentifierException::class);
 
         Version::fromString('1.0.0-alpha..1');
     }
