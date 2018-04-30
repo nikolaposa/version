@@ -25,32 +25,24 @@ class CompositeConstraint implements ConstraintInterface
      */
     protected $constraints;
 
-    protected function __construct()
-    {
-    }
-
-    public static function fromProperties(string $type, ConstraintInterface $constraint, ConstraintInterface ...$constraints) : CompositeConstraint
+    public function __construct(string $type, ConstraintInterface $constraint, ConstraintInterface ...$constraints)
     {
         if (! in_array($type, [self::TYPE_AND, self::TYPE_OR], true)) {
             throw InvalidCompositeConstraintException::forType($type);
         }
 
-        $compositeConstraint = new static();
-
-        $compositeConstraint->type = $type;
-        $compositeConstraint->constraints = array_merge([$constraint], $constraints);
-
-        return $compositeConstraint;
+        $this->type = $type;
+        $this->constraints = array_merge([$constraint], $constraints);
     }
 
-    public static function fromAndConstraints(ConstraintInterface $constraint, ConstraintInterface ...$constraints) : CompositeConstraint
+    public static function and(ConstraintInterface $constraint, ConstraintInterface ...$constraints) : CompositeConstraint
     {
-        return self::fromProperties(self::TYPE_AND, $constraint, ...$constraints);
+        return new static(self::TYPE_AND, $constraint, ...$constraints);
     }
 
-    public static function fromOrConstraints(ConstraintInterface $constraint, ConstraintInterface ...$constraints) : CompositeConstraint
+    public static function or(ConstraintInterface $constraint, ConstraintInterface ...$constraints) : CompositeConstraint
     {
-        return self::fromProperties(self::TYPE_OR, $constraint, ...$constraints);
+        return new static(self::TYPE_OR, $constraint, ...$constraints);
     }
 
     public function getType() : string

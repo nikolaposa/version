@@ -5,40 +5,26 @@ declare(strict_types=1);
 namespace Version\Tests\Constraint;
 
 use PHPUnit\Framework\TestCase;
-use Version\Constraint\Parser\ParserInterface;
-use Version\Constraint\Parser\StandardParser;
-use Version\Constraint\Constraint;
+use Version\Constraint\ComparisonConstraint;
 use Version\Constraint\CompositeConstraint;
 use Version\Exception\InvalidConstraintStringException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class ParserTest extends TestCase
+class ComparisonConstraintParsingTest extends TestCase
 {
-    /**
-     * @var ParserInterface
-     */
-    protected $parser;
-
-    protected function setUp()
-    {
-        $this->parser = new StandardParser();
-    }
-
-    public static function assertConstraint($operator, $operandString, Constraint $constraint)
+    public static function assertConstraint($operator, $operandString, ComparisonConstraint $constraint)
     {
         self::assertEquals($operator, $constraint->getOperator());
         self::assertEquals($operandString, (string) $constraint->getOperand());
     }
 
-    public static function assertCompositeConstraint($type, array $constraints, CompositeConstraint $constraint)
+    public static function assertCompositeConstraint($type, array $constraints, CompositeConstraint $compositeConstraint)
     {
-        self::assertEquals($type, $constraint->getType());
+        self::assertEquals($type, $compositeConstraint->getType());
 
-        $actualConstraints = $constraint->getConstraints();
-
-        foreach ($actualConstraints as $i => $constraint) {
+        foreach ($compositeConstraint->getConstraints() as $i => $constraint) {
             if ($constraint instanceof CompositeConstraint) {
                 self::assertCompositeConstraint(
                     $constraints[$i]['type'],
@@ -58,25 +44,22 @@ class ParserTest extends TestCase
 
     public function testParsingSimpleConstraint()
     {
-        $constraint = $this->parser->parse('>=1.2.0');
+        $constraint = ComparisonConstraint::fromString('>=1.2.0');
 
-        $this->assertInstanceOf(Constraint::class, $constraint);
         $this->assertConstraint('>=', '1.2.0', $constraint);
     }
 
     public function testParsingConstraintWithoutOperatorShouldUseEqualAsOperator()
     {
-        $constraint = $this->parser->parse('1.2.0');
+        $constraint = ComparisonConstraint::fromString('1.2.0');
 
-        $this->assertInstanceOf(Constraint::class, $constraint);
         $this->assertConstraint('=', '1.2.0', $constraint);
     }
 
     public function testParsingRangeConstraint()
     {
-        $constraint = $this->parser->parse('>=1.2.3 <1.3.0');
+        $constraint = ComparisonConstraint::fromString('>=1.2.3 <1.3.0');
 
-        $this->assertInstanceOf(CompositeConstraint::class, $constraint);
         $this->assertCompositeConstraint(
             CompositeConstraint::TYPE_AND,
             [
@@ -89,9 +72,8 @@ class ParserTest extends TestCase
 
     public function testParsingConstraintWithLogicalOperators()
     {
-        $constraint = $this->parser->parse('>=1.0.0 <1.1.0 || >=1.2.0');
+        $constraint = ComparisonConstraint::fromString('>=1.0.0 <1.1.0 || >=1.2.0');
 
-        $this->assertInstanceOf(CompositeConstraint::class, $constraint);
         $this->assertCompositeConstraint(
             CompositeConstraint::TYPE_OR,
             [
@@ -115,39 +97,37 @@ class ParserTest extends TestCase
 
     public function testExceptionIsRaisedIfConstraintStringIsEmpty()
     {
-        $this->expectException(
-            InvalidConstraintStringException::class,
-            'Constraint string must not be empty'
-        );
+        $this->expectException(InvalidConstraintStringException::class);
+        $this->expectExceptionMessage('Constraint string must not be empty');
 
-        $this->parser->parse('  ');
+        ComparisonConstraint::fromString('  ');
     }
 
     public function testExceptionIsRaisedIfConstraintStringCannotBeParsed()
     {
         $this->expectException(InvalidConstraintStringException::class);
 
-        $this->parser->parse('invalid');
+        ComparisonConstraint::fromString('invalid');
     }
 
     public function testExceptionIsRaisedIfConstraintContainsOperatorThatCannotBeParsed()
     {
         $this->expectException(InvalidConstraintStringException::class);
 
-        $this->parser->parse('"100');
+        ComparisonConstraint::fromString('"100');
     }
 
     public function testExceptionIsRaisedIfConstraintContainsVersionThatCannotBeParsed()
     {
         $this->expectException(InvalidConstraintStringException::class);
 
-        $this->parser->parse('>100');
+        ComparisonConstraint::fromString('>100');
     }
 
     public function testExceptionIsRaisedIfConstraintStringContainsInvalidLogicalOperation()
     {
         $this->expectException(InvalidConstraintStringException::class);
 
-        $this->parser->parse('>=1.0.0 <1.1.0 ||');
+        ComparisonConstraint::fromString('>=1.0.0 <1.1.0 ||');
     }
 }
