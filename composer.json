@@ -27,10 +27,7 @@
     "autoload": {
         "psr-4": {
             "Version\\": "src/"
-        },
-        "classmap": [
-            "src/"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": { "Version\\Tests\\": "tests/" }
