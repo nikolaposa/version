@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Version\Extension\Build;
 use Version\Extension\PreRelease;
 use Version\Version;
-use Version\Exception\InvalidVersionElementException;
+use Version\Exception\InvalidVersionPartException;
 use Version\Exception\InvalidVersionStringException;
 
 /**
@@ -159,21 +159,21 @@ class VersionTest extends TestCase
 
     public function testCreationFailsInCaseOfInvalidMajorVersion()
     {
-        $this->expectException(InvalidVersionElementException::class);
+        $this->expectException(InvalidVersionPartException::class);
 
         Version::fromMajor(-10);
     }
 
     public function testCreationFailsInCaseOfInvalidMinorVersion()
     {
-        $this->expectException(InvalidVersionElementException::class);
+        $this->expectException(InvalidVersionPartException::class);
 
         Version::fromMinor(0, -5);
     }
 
     public function testCreationFailsInCaseOfInvalidPatchVersion()
     {
-        $this->expectException(InvalidVersionElementException::class);
+        $this->expectException(InvalidVersionPartException::class);
 
         Version::fromPatch(2, 1, -3);
     }

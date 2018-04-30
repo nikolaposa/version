@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Version\Constraint;
 
 use Version\Version;
-use Version\Exception\InvalidConstraintException;
+use Version\Exception\InvalidComparisonConstraintException;
 
 /** @noinspection PhpInconsistentReturnPointsInspection */
 
@@ -46,7 +46,7 @@ class ComparisonConstraint implements ConstraintInterface
     public function __construct(string $operator, Version $operand)
     {
         if (! in_array($operator, static::$validOperators, true)) {
-            throw InvalidConstraintException::forOperator($operator);
+            throw InvalidComparisonConstraintException::forOperator($operator);
         }
 
         $this->operator = $operator;

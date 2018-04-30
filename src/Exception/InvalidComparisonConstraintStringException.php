@@ -9,14 +9,14 @@ use DomainException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidConstraintStringException extends DomainException implements ExceptionInterface
+class InvalidComparisonConstraintStringException extends DomainException implements ExceptionInterface
 {
-    public static function forEmptyConstraintString() : self
+    public static function forEmptyString() : self
     {
         return new self('Constraint string must not be empty');
     }
 
-    public static function forConstraintString(string $constraintString) : self
+    public static function forUnparsableString(string $constraintString) : self
     {
         return new self(sprintf(
             "Constraint string: '%s' seems to be invalid and it cannot be parsed",

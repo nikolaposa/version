@@ -9,9 +9,9 @@ use InvalidArgumentException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidVersionElementException extends InvalidArgumentException implements ExceptionInterface
+class InvalidVersionPartException extends InvalidArgumentException implements ExceptionInterface
 {
-    public static function forElement(string $part) : self
+    public static function forPart(string $part) : self
     {
         return new self(sprintf(
             '%s version must be non-negative integer',

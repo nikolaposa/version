@@ -7,7 +7,7 @@ namespace Version\Tests\Constraint;
 use PHPUnit\Framework\TestCase;
 use Version\Constraint\ComparisonConstraint;
 use Version\Constraint\CompositeConstraint;
-use Version\Exception\InvalidConstraintStringException;
+use Version\Exception\InvalidComparisonConstraintStringException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -97,7 +97,7 @@ class ComparisonConstraintParsingTest extends TestCase
 
     public function testExceptionIsRaisedIfConstraintStringIsEmpty()
     {
-        $this->expectException(InvalidConstraintStringException::class);
+        $this->expectException(InvalidComparisonConstraintStringException::class);
         $this->expectExceptionMessage('Constraint string must not be empty');
 
         ComparisonConstraint::fromString('  ');
@@ -105,28 +105,28 @@ class ComparisonConstraintParsingTest extends TestCase
 
     public function testExceptionIsRaisedIfConstraintStringCannotBeParsed()
     {
-        $this->expectException(InvalidConstraintStringException::class);
+        $this->expectException(InvalidComparisonConstraintStringException::class);
 
         ComparisonConstraint::fromString('invalid');
     }
 
     public function testExceptionIsRaisedIfConstraintContainsOperatorThatCannotBeParsed()
     {
-        $this->expectException(InvalidConstraintStringException::class);
+        $this->expectException(InvalidComparisonConstraintStringException::class);
 
         ComparisonConstraint::fromString('"100');
     }
 
     public function testExceptionIsRaisedIfConstraintContainsVersionThatCannotBeParsed()
     {
-        $this->expectException(InvalidConstraintStringException::class);
+        $this->expectException(InvalidComparisonConstraintStringException::class);
 
         ComparisonConstraint::fromString('>100');
     }
 
     public function testExceptionIsRaisedIfConstraintStringContainsInvalidLogicalOperation()
     {
-        $this->expectException(InvalidConstraintStringException::class);
+        $this->expectException(InvalidComparisonConstraintStringException::class);
 
         ComparisonConstraint::fromString('>=1.0.0 <1.1.0 ||');
     }

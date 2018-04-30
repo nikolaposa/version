@@ -8,7 +8,7 @@ use JsonSerializable;
 use Version\Extension\Build;
 use Version\Extension\NoBuild;
 use Version\Extension\NoPreRelease;
-use Version\Exception\InvalidVersionElementException;
+use Version\Exception\InvalidVersionPartException;
 use Version\Exception\InvalidVersionStringException;
 use Version\Comparator\ComparatorInterface;
 use Version\Comparator\SemverComparator;
@@ -123,7 +123,7 @@ class Version implements JsonSerializable
     protected static function validatePart(string $part, int $value) : void
     {
         if ($value < 0) {
-            throw InvalidVersionElementException::forElement($part);
+            throw InvalidVersionPartException::forPart($part);
         }
     }
 

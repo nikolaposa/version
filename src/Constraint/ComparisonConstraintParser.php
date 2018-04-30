@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Version\Constraint;
 
 use Version\Exception\ExceptionInterface;
-use Version\Exception\InvalidConstraintStringException;
+use Version\Exception\InvalidComparisonConstraintStringException;
 use Version\Version;
 
 /**
@@ -30,7 +30,7 @@ class ComparisonConstraintParser
         $constraintString = trim($constraintString);
 
         if ('' === $constraintString) {
-            throw InvalidConstraintStringException::forEmptyConstraintString();
+            throw InvalidComparisonConstraintStringException::forEmptyString();
         }
 
         $this->constraintString = $constraintString;
@@ -131,6 +131,6 @@ class ComparisonConstraintParser
 
     protected function error() : void
     {
-        throw InvalidConstraintStringException::forConstraintString($this->constraintString);
+        throw InvalidComparisonConstraintStringException::forUnparsableString($this->constraintString);
     }
 }

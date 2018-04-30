@@ -9,7 +9,7 @@ use DomainException;
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidConstraintException extends DomainException implements ExceptionInterface
+class InvalidComparisonConstraintException extends DomainException implements ExceptionInterface
 {
     public static function forOperator(string $operator) : self
     {

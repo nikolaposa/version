@@ -7,7 +7,7 @@ namespace Version\Tests\Constraint;
 use PHPUnit\Framework\TestCase;
 use Version\Constraint\ComparisonConstraint;
 use Version\Version;
-use Version\Exception\InvalidConstraintException;
+use Version\Exception\InvalidComparisonConstraintException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -26,7 +26,7 @@ class ComparisonConstraintTest extends TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidOperator()
     {
-        $this->expectException(InvalidConstraintException::class);
+        $this->expectException(InvalidComparisonConstraintException::class);
 
         new ComparisonConstraint('invalid', Version::fromString('1.0.0'));
     }
