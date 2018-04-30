@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Version\Constraint;
+
 use Version\Exception\ExceptionInterface;
 use Version\Exception\InvalidConstraintStringException;
 use Version\Version;
