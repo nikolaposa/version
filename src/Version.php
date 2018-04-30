@@ -101,28 +101,27 @@ class Version implements JsonSerializable
      */
     public static function fromString(string $versionString) : Version
     {
-        $parts = [];
-
         if (!preg_match(
             '#^'
+            . 'v?'
             . '(?P<core>(?:[0-9]|[1-9][0-9]+)(?:\.(?:[0-9]|[1-9][0-9]+)){2})'
             . '(?:\-(?P<preRelease>[0-9A-Za-z\-\.]+))?'
             . '(?:\+(?P<build>[0-9A-Za-z\-\.]+))?'
             . '$#',
-            (string) $versionString,
+            $versionString,
             $parts
         )) {
             throw InvalidVersionStringException::forVersionString($versionString);
         }
 
-        list($major, $minor, $patch) = explode('.', $parts['core']);
+        [$major, $minor, $patch] = explode('.', $parts['core']);
         $major = (int) $major;
         $minor = (int) $minor;
         $patch = (int) $patch;
 
-        $preRelease = (!empty($parts['preRelease'])) ? PreRelease::fromIdentifiersString($parts['preRelease']) : new NoPreRelease();
+        $preRelease = !empty($parts['preRelease']) ? PreRelease::fromIdentifiersString($parts['preRelease']) : new NoPreRelease();
 
-        $build = (!empty($parts['build'])) ? Build::fromIdentifiersString($parts['build']) : new NoBuild();
+        $build = !empty($parts['build']) ? Build::fromIdentifiersString($parts['build']) : new NoBuild();
 
         return static::fromParts($major, $minor, $patch, $preRelease, $build);
     }

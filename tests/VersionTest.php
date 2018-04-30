@@ -95,6 +95,7 @@ class VersionTest extends TestCase
             ['2.5.4', 2, 5, 4, false, false],
             ['2.1.17', 2, 1, 17, false, false],
             ['3.1.0-beta+123', 3, 1, 0, 'beta', '123'],
+            ['v1.2.3', 1, 2, 3, false, false],
         ];
     }
 
