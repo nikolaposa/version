@@ -46,11 +46,6 @@ class Version implements JsonSerializable
      */
     protected $build;
 
-    /**
-     * @var ComparatorInterface
-     */
-    protected static $comparator;
-
     protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
     {
         $this->major = $major;
@@ -170,19 +165,6 @@ class Version implements JsonSerializable
 
     /**
      * @param self|string $version
-     * @return int (1 if $this > $version, -1 if $this < $version, 0 if equal)
-     */
-    public function compareTo($version) : int
-    {
-        if (!$version instanceof self) {
-            $version = static::fromString((string) $version);
-        }
-
-        return self::getComparator()->compare($this, $version);
-    }
-
-    /**
-     * @param self|string $version
      * @return bool
      */
     public function isEqualTo($version) : bool
@@ -233,6 +215,19 @@ class Version implements JsonSerializable
     public function isLessOrEqualTo($version) : bool
     {
         return $this->compareTo($version) <= 0;
+    }
+
+    /**
+     * @param self|string $version
+     * @return int (1 if $this > $version, -1 if $this < $version, 0 if equal)
+     */
+    public function compareTo($version) : int
+    {
+        if (is_string($version)) {
+            $version = static::fromString($version);
+        }
+
+        return $this->getComparator()->compare($this, $version);
     }
 
     /**
@@ -313,17 +308,14 @@ class Version implements JsonSerializable
         ];
     }
 
-    public static function getComparator() : ComparatorInterface
+    protected function getComparator() : ComparatorInterface
     {
-        if (null === self::$comparator) {
-            self::setComparator(new SemverComparator());
+        static $comparator = null;
+
+        if (null === $comparator) {
+            $comparator = new SemverComparator();
         }
 
-        return self::$comparator;
-    }
-
-    public static function setComparator(ComparatorInterface $comparator) : void
-    {
-        self::$comparator = $comparator;
+        return $comparator;
     }
 }
