@@ -7,7 +7,7 @@ namespace Version\Tests;
 use PHPUnit\Framework\TestCase;
 use Version\VersionsCollection;
 use Version\Version;
-use Version\Constraint\Constraint;
+use Version\Constraint\ComparisonConstraint;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -114,7 +114,7 @@ class VersionsCollectionTest extends TestCase
             '2.0.1',
         ]);
 
-        $versions2 = $versions->matching(Constraint::fromString('>=2.0.0'));
+        $versions2 = $versions->matching(ComparisonConstraint::fromString('>=2.0.0'));
 
         $this->assertCount(5, $versions);
         $this->assertCount(2, $versions2);

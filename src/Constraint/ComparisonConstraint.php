@@ -6,13 +6,13 @@ namespace Version\Constraint;
 
 use Version\Version;
 use Version\Exception\InvalidConstraintException;
-use Version\Constraint\Parser\ParserInterface;
-use Version\Constraint\Parser\StandardParser;
+
+/** @noinspection PhpInconsistentReturnPointsInspection */
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class Constraint implements ConstraintInterface
+class ComparisonConstraint implements ConstraintInterface
 {
     public const OPERATOR_EQ = '=';
     public const OPERATOR_NEQ = '!=';
@@ -43,48 +43,25 @@ class Constraint implements ConstraintInterface
         self::OPERATOR_LTE,
     ];
 
-    /**
-     * @var ParserInterface
-     */
-    private static $parser;
-
-    protected function __construct(string $operator, Version $operand)
+    public function __construct(string $operator, Version $operand)
     {
+        if (! in_array($operator, static::$validOperators, true)) {
+            throw InvalidConstraintException::forOperator($operator);
+        }
+
         $this->operator = $operator;
         $this->operand = $operand;
     }
 
-    public static function fromProperties(string $operator, Version $operand) : Constraint
+    public static function fromString(string $constraintString) : ConstraintInterface
     {
-        self::validateOperator($operator);
+        static $parser = null;
 
-        return new self($operator, $operand);
-    }
-
-    public static function fromString(string $constraintString) : Constraint
-    {
-        return self::getParser()->parse($constraintString);
-    }
-
-    protected static function validateOperator(string $operator) : void
-    {
-        if (! in_array($operator, self::$validOperators, true)) {
-            throw InvalidConstraintException::forOperator($operator);
-        }
-    }
-
-    public static function getParser() : ParserInterface
-    {
-        if (null === self::$parser) {
-            self::setParser(new StandardParser());
+        if (null === $parser) {
+            $parser = new ComparisonConstraintParser();
         }
 
-        return self::$parser;
-    }
-
-    public static function setParser(ParserInterface $parser) : void
-    {
-        self::$parser = $parser;
+        return $parser->parse($constraintString);
     }
 
     public function getOperator() : string
@@ -112,8 +89,6 @@ class Constraint implements ConstraintInterface
                 return $version->isLessThan($this->operand);
             case self::OPERATOR_LTE:
                 return $version->isLessOrEqualTo($this->operand);
-            default:
-                return false;
         }
     }
 }

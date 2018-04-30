@@ -13,7 +13,6 @@ use Version\Exception\InvalidVersionStringException;
 use Version\Comparator\ComparatorInterface;
 use Version\Comparator\SemverComparator;
 use Version\Constraint\ConstraintInterface;
-use Version\Constraint\Constraint;
 use Version\Extension\PreRelease;
 
 /**
@@ -230,19 +229,6 @@ class Version implements JsonSerializable
         return $this->getComparator()->compare($this, $version);
     }
 
-    /**
-     * @param ConstraintInterface|string $constraint
-     * @return bool
-     */
-    public function matches($constraint) : bool
-    {
-        if (! $constraint instanceof ConstraintInterface) {
-            $constraint = Constraint::fromString($constraint);
-        }
-
-        return $constraint->assert($this);
-    }
-
     public function incrementMajor() : Version
     {
         return static::fromParts($this->major + 1, 0, 0, new NoPreRelease(), new NoBuild());
@@ -274,6 +260,11 @@ class Version implements JsonSerializable
         }
 
         return static::fromParts($this->major, $this->minor, $this->patch, $this->preRelease, $build);
+    }
+
+    public function matches(ConstraintInterface $constraint) : bool
+    {
+        return $constraint->assert($this);
     }
 
     public function getVersionString() : string

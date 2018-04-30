@@ -6,7 +6,7 @@ namespace Version\Tests\Constraint;
 
 use PHPUnit\Framework\TestCase;
 use Version\Constraint\CompositeConstraint;
-use Version\Constraint\Constraint;
+use Version\Constraint\ComparisonConstraint;
 use Version\Version;
 use Version\Exception\InvalidCompositeConstraintException;
 
@@ -17,9 +17,9 @@ class CompositeConstraintTest extends TestCase
 {
     public function testCreatingCompositeConstraintUsingFromPropertiesNamedConstructor()
     {
-        $constraint = CompositeConstraint::fromProperties(CompositeConstraint::TYPE_AND, ...[
-            Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
-            Constraint::fromProperties(Constraint::OPERATOR_LT, Version::fromString('1.1.0')),
+        $constraint = new CompositeConstraint(CompositeConstraint::TYPE_AND, ...[
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_LT, Version::fromString('1.1.0')),
         ]);
 
         $this->assertInstanceOf(CompositeConstraint::class, $constraint);
@@ -29,9 +29,9 @@ class CompositeConstraintTest extends TestCase
 
     public function testCreatingCompositeConstraintUsingFromAndConstraintsNamedConstructor()
     {
-        $constraint = CompositeConstraint::fromAndConstraints(...[
-            Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
-            Constraint::fromProperties(Constraint::OPERATOR_LT, Version::fromString('1.1.0')),
+        $constraint = CompositeConstraint::and(...[
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_LT, Version::fromString('1.1.0')),
         ]);
 
         $this->assertInstanceOf(CompositeConstraint::class, $constraint);
@@ -40,9 +40,9 @@ class CompositeConstraintTest extends TestCase
 
     public function testCreatingCompositeConstraintUsingFromOrConstraintsNamedConstructor()
     {
-        $constraint = CompositeConstraint::fromOrConstraints(...[
-            Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
-            Constraint::fromProperties(Constraint::OPERATOR_LT, Version::fromString('1.1.0')),
+        $constraint = CompositeConstraint::or(...[
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_LT, Version::fromString('1.1.0')),
         ]);
 
         $this->assertInstanceOf(CompositeConstraint::class, $constraint);
@@ -53,16 +53,16 @@ class CompositeConstraintTest extends TestCase
     {
         $this->expectException(InvalidCompositeConstraintException::class);
 
-        CompositeConstraint::fromProperties('invalid', ...[
-            Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
+        new CompositeConstraint('invalid', ...[
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
         ]);
     }
 
     public function testAssertingCompositeConstraintOfAndType()
     {
-        $constraint = CompositeConstraint::fromAndConstraints(...[
-            Constraint::fromProperties(Constraint::OPERATOR_GTE, Version::fromString('1.0.0')),
-            Constraint::fromProperties(Constraint::OPERATOR_LT, Version::fromString('1.1.0')),
+        $constraint = CompositeConstraint::and(...[
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_LT, Version::fromString('1.1.0')),
         ]);
 
         $this->assertFalse($constraint->assert(Version::fromString('0.8.7')));
@@ -73,9 +73,9 @@ class CompositeConstraintTest extends TestCase
 
     public function testAssertingCompositeConstraintOfOrType()
     {
-        $constraint = CompositeConstraint::fromOrConstraints(...[
-            Constraint::fromProperties(Constraint::OPERATOR_EQ, Version::fromString('4.7.1')),
-            Constraint::fromProperties(Constraint::OPERATOR_EQ, Version::fromString('5.0.0')),
+        $constraint = CompositeConstraint::or(...[
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_EQ, Version::fromString('4.7.1')),
+            new ComparisonConstraint(ComparisonConstraint::OPERATOR_EQ, Version::fromString('5.0.0')),
         ]);
 
         $this->assertTrue($constraint->assert(Version::fromString('4.7.1')));
