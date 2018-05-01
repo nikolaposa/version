@@ -109,15 +109,12 @@ class Version implements JsonSerializable
         }
 
         [$major, $minor, $patch] = explode('.', $parts['core']);
-        $major = (int) $major;
-        $minor = (int) $minor;
-        $patch = (int) $patch;
 
         $preRelease = !empty($parts['preRelease']) ? PreRelease::fromIdentifiersString($parts['preRelease']) : new NoPreRelease();
 
         $build = !empty($parts['build']) ? Build::fromIdentifiersString($parts['build']) : new NoBuild();
 
-        return static::fromParts($major, $minor, $patch, $preRelease, $build);
+        return static::fromParts((int) $major, (int) $minor, (int) $patch, $preRelease, $build);
     }
 
     protected static function validatePart(string $part, int $value) : void
