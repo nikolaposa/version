@@ -14,7 +14,10 @@ use Version\Constraint\ComparisonConstraint;
  */
 class VersionsCollectionTest extends TestCase
 {
-    public function testCreateCollection()
+    /**
+     * @test
+     */
+    public function it_can_be_created_via_constructor() : void
     {
         $versions = new VersionsCollection([
             Version::fromParts(1),
@@ -25,7 +28,10 @@ class VersionsCollectionTest extends TestCase
         $this->assertInstanceOf(VersionsCollection::class, $versions);
     }
 
-    public function testCreationViaStaticFactory()
+    /**
+     * @test
+     */
+    public function it_can_be_created_via_named_constructor() : void
     {
         $versions = VersionsCollection::fromArray([
             Version::fromParts(1),
@@ -36,7 +42,10 @@ class VersionsCollectionTest extends TestCase
         $this->assertInstanceOf(VersionsCollection::class, $versions);
     }
 
-    public function testCollectionCount()
+    /**
+     * @test
+     */
+    public function it_is_countable() : void
     {
         $versions = VersionsCollection::fromArray([
             Version::fromParts(1),
@@ -47,7 +56,10 @@ class VersionsCollectionTest extends TestCase
         $this->assertCount(3, $versions);
     }
 
-    public function testCollectionIteration()
+    /**
+     * @test
+     */
+    public function it_is_iterable() : void
     {
         $versions = VersionsCollection::fromArray([
             Version::fromParts(1),
@@ -56,11 +68,14 @@ class VersionsCollectionTest extends TestCase
         ]);
 
         foreach ($versions as $version) {
-            $this->assertInstanceOf('Version\Version', $version);
+            $this->assertInstanceOf(Version::class, $version);
         }
     }
 
-    public function testCollectionSortedInAscendingOrderByDefault()
+    /**
+     * @test
+     */
+    public function it_is_sorted_in_ascending_order_by_default() : void
     {
         $ordered = [
             '1.0.0',
@@ -79,11 +94,14 @@ class VersionsCollectionTest extends TestCase
         $versions->sort();
 
         foreach ($versions as $key => $version) {
-            $this->assertEquals($ordered[$key], (string) $version);
+            $this->assertSame($ordered[$key], (string) $version);
         }
     }
 
-    public function testCollectionSortedInDescendingOrder()
+    /**
+     * @test
+     */
+    public function it_can_be_sorted_in_descending_order() : void
     {
         $ordered = [
             '2.3.3',
@@ -100,11 +118,14 @@ class VersionsCollectionTest extends TestCase
         $versions->sort(VersionsCollection::SORT_DESC);
 
         foreach ($versions as $key => $version) {
-            $this->assertEquals($ordered[$key], (string) $version);
+            $this->assertSame($ordered[$key], (string) $version);
         }
     }
 
-    public function testMatchingCollectionItemsByConstraint()
+    /**
+     * @test
+     */
+    public function it_filters_versions_that_match_constraint() : void
     {
         $versions = VersionsCollection::fromArray([
             '1.0.0',

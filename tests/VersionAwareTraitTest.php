@@ -12,7 +12,10 @@ use Version\Version;
  */
 class VersionAwareTraitTest extends TestCase
 {
-    public function testSetVersion()
+    /**
+     * @test
+     */
+    public function it_sets_version() : void
     {
         $object = $this->getObjectForTrait('\Version\VersionAwareTrait');
         $this->assertAttributeEquals(null, 'version', $object);
@@ -22,7 +25,10 @@ class VersionAwareTraitTest extends TestCase
         $this->assertAttributeEquals($version, 'version', $object);
     }
 
-    public function testGetVersion()
+    /**
+     * @test
+     */
+    public function it_gets_version() : void
     {
         $object = $this->getObjectForTrait('\Version\VersionAwareTrait');
         $this->assertNull($object->getVersion());

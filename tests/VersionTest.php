@@ -18,26 +18,29 @@ use Version\Version;
  */
 class VersionTest extends TestCase
 {
-    public static function assertMatchesVersion(Version $version, $major, $minor, $patch, $preRelease, $build)
+    public static function assertMatchesVersion(Version $version, int $major, int $minor, int $patch, $preRelease, $build) : void
     {
-        self::assertEquals($version->getMajor(), $major);
-        self::assertEquals($version->getMinor(), $minor);
-        self::assertEquals($version->getPatch(), $patch);
+        self::assertSame($version->getMajor(), $major);
+        self::assertSame($version->getMinor(), $minor);
+        self::assertSame($version->getPatch(), $patch);
 
         if (false === $preRelease) {
             self::assertFalse($version->isPreRelease());
         } else {
-            self::assertEquals((string) $version->getPreRelease(), $preRelease);
+            self::assertSame((string) $version->getPreRelease(), $preRelease);
         }
 
         if (false === $build) {
             self::assertFalse($version->isBuild());
         } else {
-            self::assertEquals((string) $version->getBuild(), $build);
+            self::assertSame((string) $version->getBuild(), $build);
         }
     }
 
-    public function testCreatingFromParts()
+    /**
+     * @test
+     */
+    public function it_is_created_from_parts() : void
     {
         $version = Version::fromParts(1, 0, 0, PreRelease::fromIdentifiersString('beta'), Build::fromIdentifiersString('11'));
 
@@ -45,16 +48,24 @@ class VersionTest extends TestCase
     }
 
     /**
-     * @dataProvider versionStrings
+     * @test
+     * @dataProvider getVersionStrings
+     *
+     * @param string $versionString
+     * @param int $major
+     * @param int $minor
+     * @param int $patch
+     * @param string|bool $preRelease
+     * @param string|bool $build
      */
-    public function testCreationFromVersionString($versionString, $major, $minor, $patch, $preRelease, $build)
+    public function it_can_be_created_from_string(string $versionString, int $major, int $minor, int $patch, $preRelease, $build) : void
     {
         $version = Version::fromString($versionString);
 
         $this->assertMatchesVersion($version, $major, $minor, $patch, $preRelease, $build);
     }
 
-    public static function versionStrings()
+    public static function getVersionStrings() : array
     {
         return [
             ['0.9.7', 0, 9, 7, false, false],
@@ -67,42 +78,54 @@ class VersionTest extends TestCase
     }
 
     /**
-     * @dataProvider printedVersionStrings
+     * @test
+     * @dataProvider getPrintedVersionStrings
+     *
+     * @param string $versionString
+     * @param Version $version
      */
-    public function testVersionToStringConversion($output, Version $version)
+    public function it_can_be_converted_to_string(Version $version, string $versionString) : void
     {
-        $this->assertEquals($output, (string) $version);
+        $this->assertSame($versionString, (string) $version);
     }
 
     /**
-     * @dataProvider printedVersionStrings
+     * @test
+     * @dataProvider getPrintedVersionStrings
+     *
+     * @param string $versionString
+     * @param Version $version
      */
-    public function testJsonSerialization($output, Version $version)
+    public function it_can_be_serialized_to_json(Version $version, string $versionString) : void
     {
-        $this->assertEquals('"' . $output . '"', json_encode($version));
+        $this->assertSame('"' . $versionString . '"', json_encode($version));
     }
 
-    public static function printedVersionStrings()
+    public static function getPrintedVersionStrings() : array
     {
         return [
-            ['2.1.0', Version::fromParts(2, 1)],
-            ['1.0.0+20150919', Version::fromString('1.0.0+20150919')],
-            ['1.0.0+exp.sha.5114f85', Version::fromString('1.0.0+exp.sha.5114f85')],
-            ['1.0.0-alpha.1+exp.sha.5114f85', Version::fromString('1.0.0-alpha.1+exp.sha.5114f85')],
+            [Version::fromParts(2, 1), '2.1.0'],
+            [Version::fromString('1.0.0+20150919'), '1.0.0+20150919'],
+            [Version::fromString('1.0.0+exp.sha.5114f85'), '1.0.0+exp.sha.5114f85'],
+            [Version::fromString('1.0.0-alpha.1+exp.sha.5114f85'), '1.0.0-alpha.1+exp.sha.5114f85'],
         ];
     }
 
     /**
-     * @dataProvider versionArrays
+     * @test
+     * @dataProvider getVersionArrays
+     *
+     * @param string $versionString
+     * @param array $versionArray
      */
-    public function testVersionToArrayConversion($versionString, $versionArray)
+    public function it_can_be_converted_to_an_array(string $versionString, array $versionArray) : void
     {
         $version = Version::fromString($versionString);
 
-        $this->assertEquals($versionArray, $version->toArray());
+        $this->assertSame($versionArray, $version->toArray());
     }
 
-    public static function versionArrays()
+    public static function getVersionArrays() : array
     {
         return [
             [
@@ -124,7 +147,10 @@ class VersionTest extends TestCase
         ];
     }
 
-    public function testCreationFailsInCaseOfInvalidMajorVersion()
+    /**
+     * @test
+     */
+    public function it_raises_exception_when_created_with_invalid_major_version() : void
     {
         try {
             Version::fromParts(-10, 0, 0, new NoPreRelease(), new NoBuild());
@@ -135,7 +161,10 @@ class VersionTest extends TestCase
         }
     }
 
-    public function testCreationFailsInCaseOfInvalidMinorVersion()
+    /**
+     * @test
+     */
+    public function it_raises_exception_when_created_with_invalid_minor_version() : void
     {
         try {
             Version::fromParts(0, -5, 1, new NoPreRelease(), new NoBuild());
@@ -146,7 +175,10 @@ class VersionTest extends TestCase
         }
     }
 
-    public function testCreationFailsInCaseOfInvalidPatchVersion()
+    /**
+     * @test
+     */
+    public function it_raises_exception_when_created_with_invalid_patch_version() : void
     {
         try {
             Version::fromParts(2, 1, -1, new NoPreRelease(), new NoBuild());
@@ -157,19 +189,13 @@ class VersionTest extends TestCase
         }
     }
 
-    public function invalidVersionStringProvider()
-    {
-        return [
-            'tooManySubVersions' => ['1.5.2.4.4'],
-            'leadingZeroIsInvalid' => ['1.05.2'],
-        ];
-    }
-
     /**
-     * @param mixed $invalidVersion
-     * @dataProvider invalidVersionStringProvider
+     * @test
+     * @dataProvider getInvalidVersionStrings
+     *
+     * @param string $invalidVersion
      */
-    public function testCreationFromStringFailsInCaseInvalidCorePart($invalidVersion)
+    public function it_raises_exception_when_created_with_invalid_version_string(string $invalidVersion) : void
     {
         try {
             Version::fromString($invalidVersion);
@@ -179,5 +205,13 @@ class VersionTest extends TestCase
             $this->assertSame("Version string '$invalidVersion' is not valid and cannot be parsed", $ex->getMessage());
             $this->assertSame($invalidVersion, $ex->getVersionString());
         }
+    }
+
+    public function getInvalidVersionStrings() : array
+    {
+        return [
+            'tooManySubVersions' => ['1.5.2.4.4'],
+            'leadingZeroIsInvalid' => ['1.05.2'],
+        ];
     }
 }

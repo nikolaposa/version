@@ -12,42 +12,60 @@ abstract class BaseExtensionTest extends TestCase
 {
     abstract protected function createExtension($identifiers) : BaseExtension;
 
-    public function testCreatingFromIdentifiers()
+    /**
+     * @test
+     */
+    public function it_is_created_from_an_array_of_identifiers() : void
     {
         $extension = $this->createExtension(['123', '456']);
 
         $this->assertSame(['123', '456'], $extension->getIdentifiers());
     }
 
-    public function testCreatingFromString()
+    /**
+     * @test
+     */
+    public function it_can_be_created_from_string() : void
     {
         $extension = $this->createExtension('123.456');
 
         $this->assertSame(['123', '456'], $extension->getIdentifiers());
     }
 
-    public function testCreatingFromSingleIdentifierString()
+    /**
+     * @test
+     */
+    public function it_can_be_created_from_a_single_identifier_string() : void
     {
         $extension = $this->createExtension('123');
 
         $this->assertSame(['123'], $extension->getIdentifiers());
     }
 
-    public function testCheckingIsEmpty()
+    /**
+     * @test
+     */
+    public function it_allows_for_checking_whether_it_is_empty() : void
     {
         $extension = $this->createExtension(['123']);
 
         $this->assertFalse($extension->isEmpty());
     }
 
-    public function testToStringConversion()
+    /**
+     * @test
+     */
+    public function it_can_be_converted_to_string() : void
     {
         $extension = $this->createExtension(['123', '456']);
 
-        $this->assertEquals('123.456', (string) $extension);
+        $this->assertSame('123.456', (string) $extension);
     }
 
-    public function testExceptionIsRaisedInCaseOfInvalidIdentifier()
+    /**
+     * @test
+     */
+    public function it_raises_exception_in_case_of_an_invalid_identifier() : void
     {
         try {
             $this->createExtension(['$123']);
@@ -58,7 +76,10 @@ abstract class BaseExtensionTest extends TestCase
         }
     }
 
-    public function testCreationFailsInCaseOfAnEmptyIdentifier()
+    /**
+     * @test
+     */
+    public function it_raises_exception_in_case_of_an_empty_identifier() : void
     {
         try {
             $this->createExtension(['123', '']);

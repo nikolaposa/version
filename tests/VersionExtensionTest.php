@@ -6,96 +6,80 @@ namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Version\Version;
-use Version\Extension\PreRelease;
-use Version\Extension\Build;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
 class VersionExtensionTest extends TestCase
 {
-    public function testVersionPreRelease()
+    /**
+     * @test
+     */
+    public function it_can_contain_pre_release_identifier() : void
     {
         $version = Version::fromString('1.0.0-alpha');
 
-        $this->assertInstanceOf(PreRelease::class, $version->getPreRelease());
-
         $identifiers = $version->getPreRelease()->getIdentifiers();
-        $this->assertInternalType('array', $identifiers);
         $this->assertCount(1, $identifiers);
-
-        $identifier = current($identifiers);
-        $this->assertSame('alpha', $identifier);
+        $this->assertSame('alpha', $identifiers[0]);
     }
 
-    public function testVersionMultiPreRelease()
+    /**
+     * @test
+     */
+    public function it_can_contain_multiple_pre_release_identifiers() : void
     {
         $version = Version::fromString('1.0.0-alpha.1.2');
 
         $identifiers = $version->getPreRelease()->getIdentifiers();
         $this->assertCount(3, $identifiers);
-
-        $id1 = array_shift($identifiers);
-        $id2 = array_shift($identifiers);
-        $id3 = array_shift($identifiers);
-
-        $this->assertSame('alpha', $id1);
-        $this->assertSame('1', $id2);
-        $this->assertSame('2', $id3);
+        $this->assertSame('alpha', $identifiers[0]);
+        $this->assertSame('1', $identifiers[1]);
+        $this->assertSame('2', $identifiers[2]);
     }
 
-    public function testVersionBuild()
+    /**
+     * @test
+     */
+    public function it_can_contain_build_identifier() : void
     {
         $version = Version::fromString('1.0.0+20150919');
 
-        $this->assertInstanceOf(Build::class, $version->getBuild());
-
         $identifiers = $version->getBuild()->getIdentifiers();
-        $this->assertInternalType('array', $identifiers);
         $this->assertCount(1, $identifiers);
-
-        $identifier = current($identifiers);
-        $this->assertSame('20150919', $identifier);
+        $this->assertSame('20150919', $identifiers[0]);
     }
 
-    public function testVersionMultiBuild()
+    /**
+     * @test
+     */
+    public function it_can_contain_multiple_build_identifiers() : void
     {
         $version = Version::fromString('1.0.0+exp.sha.5114f85');
 
         $identifiers = $version->getBuild()->getIdentifiers();
         $this->assertCount(3, $identifiers);
-
-        $id1 = array_shift($identifiers);
-        $id2 = array_shift($identifiers);
-        $id3 = array_shift($identifiers);
-
-        $this->assertSame('exp', $id1);
-        $this->assertSame('sha', $id2);
-        $this->assertSame('5114f85', $id3);
+        $this->assertSame('exp', $identifiers[0]);
+        $this->assertSame('sha', $identifiers[1]);
+        $this->assertSame('5114f85', $identifiers[2]);
     }
 
-    public function testFullVersion()
+    /**
+     * @test
+     */
+    public function it_can_contain_both_pre_release_and_build_identifiers() : void
     {
         $version = Version::fromString('1.0.0-alpha.1+exp.sha.5114f85');
 
         $preReleaseIdentifiers = $version->getPreRelease()->getIdentifiers();
         $this->assertCount(2, $preReleaseIdentifiers);
-
-        $preReleaseId1 = array_shift($preReleaseIdentifiers);
-        $preReleaseId2 = array_shift($preReleaseIdentifiers);
-
-        $this->assertSame('alpha', $preReleaseId1);
-        $this->assertSame('1', $preReleaseId2);
+        $this->assertSame('alpha', $preReleaseIdentifiers[0]);
+        $this->assertSame('1', $preReleaseIdentifiers[1]);
 
         $buildIdentifiers = $version->getBuild()->getIdentifiers();
         $this->assertCount(3, $buildIdentifiers);
-
-        $buildId1 = array_shift($buildIdentifiers);
-        $buildId2 = array_shift($buildIdentifiers);
-        $buildId3 = array_shift($buildIdentifiers);
-
-        $this->assertSame('exp', $buildId1);
-        $this->assertSame('sha', $buildId2);
-        $this->assertSame('5114f85', $buildId3);
+        $this->assertSame('exp', $buildIdentifiers[0]);
+        $this->assertSame('sha', $buildIdentifiers[1]);
+        $this->assertSame('5114f85', $buildIdentifiers[2]);
     }
 }

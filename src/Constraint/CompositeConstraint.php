@@ -12,42 +12,42 @@ use Version\Exception\InvalidCompositeConstraintException;
  */
 class CompositeConstraint implements ConstraintInterface
 {
-    public const TYPE_AND = 'AND';
-    public const TYPE_OR = 'OR';
+    public const OPERATOR_AND = 'AND';
+    public const OPERATOR_OR = 'OR';
 
     /**
      * @var string
      */
-    protected $type;
+    protected $operator;
 
     /**
      * @var ConstraintInterface[]
      */
     protected $constraints;
 
-    public function __construct(string $type, ConstraintInterface $constraint, ConstraintInterface ...$constraints)
+    public function __construct(string $operator, ConstraintInterface $constraint, ConstraintInterface ...$constraints)
     {
-        if (! in_array($type, [self::TYPE_AND, self::TYPE_OR], true)) {
-            throw InvalidCompositeConstraintException::forUnsupportedType($type);
+        if (! in_array($operator, [self::OPERATOR_AND, self::OPERATOR_OR], true)) {
+            throw InvalidCompositeConstraintException::forUnsupportedOperator($operator);
         }
 
-        $this->type = $type;
+        $this->operator = $operator;
         $this->constraints = array_merge([$constraint], $constraints);
     }
 
     public static function and(ConstraintInterface $constraint, ConstraintInterface ...$constraints) : CompositeConstraint
     {
-        return new static(self::TYPE_AND, $constraint, ...$constraints);
+        return new static(self::OPERATOR_AND, $constraint, ...$constraints);
     }
 
     public static function or(ConstraintInterface $constraint, ConstraintInterface ...$constraints) : CompositeConstraint
     {
-        return new static(self::TYPE_OR, $constraint, ...$constraints);
+        return new static(self::OPERATOR_OR, $constraint, ...$constraints);
     }
 
-    public function getType() : string
+    public function getOperator() : string
     {
-        return $this->type;
+        return $this->operator;
     }
 
     public function getConstraints() : array
@@ -57,7 +57,7 @@ class CompositeConstraint implements ConstraintInterface
 
     public function assert(Version $version) : bool
     {
-        if ($this->type === self::TYPE_AND) {
+        if ($this->operator === self::OPERATOR_AND) {
             return $this->assertAnd($version);
         }
 

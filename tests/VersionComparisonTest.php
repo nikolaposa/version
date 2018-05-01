@@ -6,60 +6,73 @@ namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Version\Version;
-use Version\Constraint\ComparisonConstraint;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
 class VersionComparisonTest extends TestCase
 {
-    public static function assertVersionGreaterThan($expected, Version $actual)
+    /**
+     * @test
+     */
+    public function it_can_be_compared_to_other_version() : void
     {
-        self::assertTrue($actual->isGreaterThan($expected), "$actual is not greater than $expected");
+        $this->assertSame(1, Version::fromString('2.1.1')->compareTo(Version::fromString('2.1.0')));
     }
 
-    public function testVersionCompareTo()
+    /**
+     * @test
+     */
+    public function it_can_be_compared_using_strings_for_comparison() : void
     {
-        $this->assertEquals(1, Version::fromString('2.1.1')->compareTo(Version::fromString('2.1.0')));
+        $this->assertSame(0, Version::fromString('2.0.0')->compareTo('2.0.0'));
     }
 
-    public function testComparisonAcceptsVersionsAsStrings()
-    {
-        $this->assertEquals(0, Version::fromString('2.0.0')->compareTo('2.0.0'));
-    }
-
-    public function testVersionIsEqualComparison()
+    /**
+     * @test
+     */
+    public function it_does_is_equal_comparison() : void
     {
         $this->assertTrue(Version::fromString('1.0.0')->isEqualTo('1.0.0'));
     }
 
-    public function testVersionIsNotEqualComparison()
+    /**
+     * @test
+     */
+    public function it_does_not_equal_comparison() : void
     {
         $this->assertTrue(Version::fromString('1.0.0')->isNotEqualTo('2.0.0'));
     }
 
-    public function testVersionGreaterThanComparison()
+    /**
+     * @test
+     */
+    public function it_does_greater_than_comparison() : void
     {
         $this->assertTrue(Version::fromString('1.0.1')->isGreaterThan('1.0.0'));
     }
 
-    public function testVersionGreaterOrEqualComparison()
+    /**
+     * @test
+     */
+    public function it_does_greater_or_equal_comparison() : void
     {
         $this->assertTrue(Version::fromString('1.0.0')->isGreaterOrEqualTo('1.0.0'));
     }
 
-    public function testVersionLessThanComparison()
+    /**
+     * @test
+     */
+    public function it_does_less_than_comparison() : void
     {
         $this->assertTrue(Version::fromString('1.0.1')->isLessThan('1.0.2'));
     }
 
-    public function testVersionLessOrEqualComparison()
+    /**
+     * @test
+     */
+    public function it_does_less_or_equal_comparison()
     {
         $this->assertTrue(Version::fromString('1.0.0')->isLessOrEqualTo('1.0.0'));
-    }
-
-    public function testMatchesConstraint()
-    {
-        $this->assertTrue(Version::fromString('1.1.0')->matches(ComparisonConstraint::fromString('>1.0.0')));
     }
 }

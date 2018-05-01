@@ -25,20 +25,21 @@ class SemverComparatorTest extends TestCase
     }
 
     /**
-     * @dataProvider versionsCompareList
+     * @test
+     * @dataProvider getExpectedResultsOfComparisonVersions
+     *
+     * @param string $version1String
+     * @param string $version2String
+     * @param int $expectedResult
      */
-    public function testComparison($version1String, $version2String, $result)
+    public function it_compares_two_versions(string $version1String, string $version2String, int $expectedResult) : void
     {
-        $this->assertEquals(
-            $result,
-            $this->comparator->compare(
-                Version::fromString($version1String),
-                Version::fromString($version2String)
-            )
-        );
+        $result = $this->comparator->compare(Version::fromString($version1String), Version::fromString($version2String));
+
+        $this->assertSame($expectedResult, $result);
     }
 
-    public static function versionsCompareList()
+    public static function getExpectedResultsOfComparisonVersions() : array
     {
         return [
             ['2.1.1', '2.1.0', 1],

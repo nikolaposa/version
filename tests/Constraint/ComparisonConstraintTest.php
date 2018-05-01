@@ -14,17 +14,23 @@ use Version\Exception\InvalidComparisonConstraintException;
  */
 class ComparisonConstraintTest extends TestCase
 {
-    public function testCreatingConstraint()
+    /**
+     * @test
+     */
+    public function it_is_created_from_operator_and_operand() : void
     {
         $operand = Version::fromString('1.0.0');
         $constraint = new ComparisonConstraint(ComparisonConstraint::OPERATOR_GT, $operand);
 
         $this->assertInstanceOf(ComparisonConstraint::class, $constraint);
-        $this->assertEquals(ComparisonConstraint::OPERATOR_GT, $constraint->getOperator());
+        $this->assertSame(ComparisonConstraint::OPERATOR_GT, $constraint->getOperator());
         $this->assertSame($operand, $constraint->getOperand());
     }
 
-    public function testExceptionIsRaisedInCaseOfInvalidOperator()
+    /**
+     * @test
+     */
+    public function it_raises_exception_if_operator_is_not_valid() : void
     {
         try {
             new ComparisonConstraint('invalid', Version::fromString('1.0.0'));
@@ -36,14 +42,18 @@ class ComparisonConstraintTest extends TestCase
     }
 
     /**
-     * @dataProvider constraintAssertions
+     * @test
+     * @dataProvider getConstraintAssertions
+     *
+     * @param Version $version
+     * @param ComparisonConstraint $constraint
      */
-    public function testAssertingConstraint(Version $version, ComparisonConstraint $constraint)
+    public function it_asserts_provided_version(Version $version, ComparisonConstraint $constraint) : void
     {
         $this->assertTrue($constraint->assert($version));
     }
 
-    public function constraintAssertions() : array
+    public function getConstraintAssertions() : array
     {
         return [
             [
