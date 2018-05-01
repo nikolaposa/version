@@ -4,14 +4,17 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Added
 - Strict typing wherever possible
+- [15: Relaxed version parsing](https://github.com/nikolaposa/version/pull/15)
 
 ### Changed
+- [13: PHP 7.2 as minimum requirement](https://github.com/nikolaposa/version/pull/13)
 - Renamed `Version::fromElements()` to `Version::fromParts()`
 - `Version::fromParts()` requires `PreRelease` and `Build` instances
 - Renamed `Version::withMajorIncremented()` to `Version::incrementMajor()`
 - Renamed `Version::withMinorIncremented()` to `Version::incrementMinor()`
 - Renamed `Version::withPatchIncremented()` to `Version::incrementPatch()`
 - [14: Simplified modeling of extension parts - pre-release and build](https://github.com/nikolaposa/version/pull/14)
+- [16: Simplified Constraint modeling](https://github.com/nikolaposa/version/pull/16)
 
 ### Removed
 - Setter method from the `VersionAwareInterface`

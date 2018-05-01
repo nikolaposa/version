@@ -23,8 +23,10 @@ composer require nikolaposa/version
 
 ```php
 use Version\Version;
+use Version\Extension\PreRelease;
+use Version\Extension\NoBuild;
 
-$v = Version::fromPreRelease(2, 0, 0, 'alpha');
+$v = Version::fromParts(2, 0, 0, new PreRelease('alpha'), new NoBuild());
 
 echo $v->getMajor(); //2
 echo $v->getMinor(); //0
