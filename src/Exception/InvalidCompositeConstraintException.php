@@ -11,8 +11,8 @@ use DomainException;
  */
 class InvalidCompositeConstraintException extends DomainException implements ExceptionInterface
 {
-    public static function forType(string $type) : self
+    public static function forUnsupportedType(string $type) : self
     {
-        return new self(sprintf('Unsupported type: %s', $type));
+        return new self(sprintf('Unsupported composite constraint type: %s', $type));
     }
 }

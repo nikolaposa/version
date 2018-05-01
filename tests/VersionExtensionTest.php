@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Version\Version;
 use Version\Extension\PreRelease;
 use Version\Extension\Build;
-use Version\Exception\InvalidIdentifierException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -98,12 +97,5 @@ class VersionExtensionTest extends TestCase
         $this->assertSame('exp', $buildId1);
         $this->assertSame('sha', $buildId2);
         $this->assertSame('5114f85', $buildId3);
-    }
-
-    public function testCreationFailsInCaseOfEmptyExtension()
-    {
-        $this->expectException(InvalidIdentifierException::class);
-
-        Version::fromString('1.0.0-alpha..1');
     }
 }

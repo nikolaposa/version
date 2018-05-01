@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Version\Extension\Build;
-use Version\Extension\PreRelease;
-use Version\Version;
 use Version\Exception\InvalidVersionPartException;
 use Version\Exception\InvalidVersionStringException;
+use Version\Extension\Build;
+use Version\Extension\NoBuild;
+use Version\Extension\NoPreRelease;
+use Version\Extension\PreRelease;
+use Version\Version;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -159,23 +161,35 @@ class VersionTest extends TestCase
 
     public function testCreationFailsInCaseOfInvalidMajorVersion()
     {
-        $this->expectException(InvalidVersionPartException::class);
+        try {
+            Version::fromParts(-10, 0, 0, new NoPreRelease(), new NoBuild());
 
-        Version::fromMajor(-10);
+            $this->fail('Exception should have been raised');
+        } catch (InvalidVersionPartException $ex) {
+            $this->assertSame('Major version must be non-negative integer', $ex->getMessage());
+        }
     }
 
     public function testCreationFailsInCaseOfInvalidMinorVersion()
     {
-        $this->expectException(InvalidVersionPartException::class);
+        try {
+            Version::fromParts(0, -5, 1, new NoPreRelease(), new NoBuild());
 
-        Version::fromMinor(0, -5);
+            $this->fail('Exception should have been raised');
+        } catch (InvalidVersionPartException $ex) {
+            $this->assertSame('Minor version must be non-negative integer', $ex->getMessage());
+        }
     }
 
     public function testCreationFailsInCaseOfInvalidPatchVersion()
     {
-        $this->expectException(InvalidVersionPartException::class);
+        try {
+            Version::fromParts(2, 1, -1, new NoPreRelease(), new NoBuild());
 
-        Version::fromPatch(2, 1, -3);
+            $this->fail('Exception should have been raised');
+        } catch (InvalidVersionPartException $ex) {
+            $this->assertSame('Patch version must be non-negative integer', $ex->getMessage());
+        }
     }
 
     public function invalidVersionStringProvider()
@@ -192,9 +206,13 @@ class VersionTest extends TestCase
      */
     public function testCreationFromStringFailsInCaseInvalidCorePart($invalidVersion)
     {
-        $this->expectException(InvalidVersionStringException::class);
-        $this->expectExceptionMessage(sprintf("Version string '%s' is not valid and cannot be parsed", $invalidVersion));
+        try {
+            Version::fromString($invalidVersion);
 
-        Version::fromString($invalidVersion);
+            $this->fail('Exception should have been raised');
+        } catch (InvalidVersionStringException $ex) {
+            $this->assertSame("Version string '$invalidVersion' is not valid and cannot be parsed", $ex->getMessage());
+            $this->assertSame($invalidVersion, $ex->getVersionString());
+        }
     }
 }

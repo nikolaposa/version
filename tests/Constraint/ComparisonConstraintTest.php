@@ -26,9 +26,13 @@ class ComparisonConstraintTest extends TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidOperator()
     {
-        $this->expectException(InvalidComparisonConstraintException::class);
+        try {
+            new ComparisonConstraint('invalid', Version::fromString('1.0.0'));
 
-        new ComparisonConstraint('invalid', Version::fromString('1.0.0'));
+            $this->fail('Exception should have been raised');
+        } catch (InvalidComparisonConstraintException $ex) {
+            $this->assertSame('Unsupported comparison constraint operator: invalid', $ex->getMessage());
+        }
     }
 
     /**

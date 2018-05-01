@@ -46,7 +46,7 @@ class ComparisonConstraint implements ConstraintInterface
     public function __construct(string $operator, Version $operand)
     {
         if (! in_array($operator, static::$validOperators, true)) {
-            throw InvalidComparisonConstraintException::forOperator($operator);
+            throw InvalidComparisonConstraintException::forUnsupportedOperator($operator);
         }
 
         $this->operator = $operator;

@@ -97,37 +97,56 @@ class ComparisonConstraintParsingTest extends TestCase
 
     public function testExceptionIsRaisedIfConstraintStringIsEmpty()
     {
-        $this->expectException(InvalidComparisonConstraintStringException::class);
-        $this->expectExceptionMessage('Constraint string must not be empty');
+        try {
+            ComparisonConstraint::fromString('  ');
 
-        ComparisonConstraint::fromString('  ');
+            $this->fail('Exception should have been raised');
+        } catch (InvalidComparisonConstraintStringException $ex) {
+            $this->assertSame('Constraint string must not be empty', $ex->getMessage());
+        }
     }
 
     public function testExceptionIsRaisedIfConstraintStringCannotBeParsed()
     {
-        $this->expectException(InvalidComparisonConstraintStringException::class);
+        try {
+            ComparisonConstraint::fromString('invalid');
 
-        ComparisonConstraint::fromString('invalid');
+            $this->fail('Exception should have been raised');
+        } catch (InvalidComparisonConstraintStringException $ex) {
+            $this->assertSame("Constraint string: 'invalid' seems to be invalid and it cannot be parsed", $ex->getMessage());
+        }
     }
 
     public function testExceptionIsRaisedIfConstraintContainsOperatorThatCannotBeParsed()
     {
-        $this->expectException(InvalidComparisonConstraintStringException::class);
+        try {
+            ComparisonConstraint::fromString('"100');
 
-        ComparisonConstraint::fromString('"100');
+            $this->fail('Exception should have been raised');
+        } catch (InvalidComparisonConstraintStringException $ex) {
+            $this->assertSame("Constraint string: '\"100' seems to be invalid and it cannot be parsed", $ex->getMessage());
+        }
     }
 
     public function testExceptionIsRaisedIfConstraintContainsVersionThatCannotBeParsed()
     {
-        $this->expectException(InvalidComparisonConstraintStringException::class);
+        try {
+            ComparisonConstraint::fromString('>100');
 
-        ComparisonConstraint::fromString('>100');
+            $this->fail('Exception should have been raised');
+        } catch (InvalidComparisonConstraintStringException $ex) {
+            $this->assertSame("Constraint string: '>100' seems to be invalid and it cannot be parsed", $ex->getMessage());
+        }
     }
 
     public function testExceptionIsRaisedIfConstraintStringContainsInvalidLogicalOperation()
     {
-        $this->expectException(InvalidComparisonConstraintStringException::class);
+        try {
+            ComparisonConstraint::fromString('>=1.0.0 <1.1.0 ||');
 
-        ComparisonConstraint::fromString('>=1.0.0 <1.1.0 ||');
+            $this->fail('Exception should have been raised');
+        } catch (InvalidComparisonConstraintStringException $ex) {
+            $this->assertSame("Constraint string: '>=1.0.0 <1.1.0 ||' seems to be invalid and it cannot be parsed", $ex->getMessage());
+        }
     }
 }

@@ -51,11 +51,15 @@ class CompositeConstraintTest extends TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidType()
     {
-        $this->expectException(InvalidCompositeConstraintException::class);
+        try {
+            new CompositeConstraint('invalid', ...[
+                new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
+            ]);
 
-        new CompositeConstraint('invalid', ...[
-            new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
-        ]);
+            $this->fail('Exception should have been raised');
+        } catch (InvalidCompositeConstraintException $ex) {
+            $this->assertSame('Unsupported composite constraint type: invalid', $ex->getMessage());
+        }
     }
 
     public function testAssertingCompositeConstraintOfAndType()

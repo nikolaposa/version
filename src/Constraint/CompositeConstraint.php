@@ -28,7 +28,7 @@ class CompositeConstraint implements ConstraintInterface
     public function __construct(string $type, ConstraintInterface $constraint, ConstraintInterface ...$constraints)
     {
         if (! in_array($type, [self::TYPE_AND, self::TYPE_OR], true)) {
-            throw InvalidCompositeConstraintException::forType($type);
+            throw InvalidCompositeConstraintException::forUnsupportedType($type);
         }
 
         $this->type = $type;

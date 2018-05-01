@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Version\Exception\InvalidIdentifierException;
+use Version\Exception\InvalidExtensionIdentifierException;
 use Version\Extension\BaseExtension;
 
 abstract class BaseExtensionTest extends TestCase
@@ -49,8 +49,23 @@ abstract class BaseExtensionTest extends TestCase
 
     public function testExceptionIsRaisedInCaseOfInvalidIdentifier()
     {
-        $this->expectException(InvalidIdentifierException::class);
+        try {
+            $this->createExtension(['$123']);
 
-        $this->createExtension(['$123']);
+            $this->fail('Exception should have been raised');
+        } catch (InvalidExtensionIdentifierException $ex) {
+            $this->assertContains("identifier: '$123' is not valid; it must comprise only ASCII alphanumerics and hyphen", $ex->getMessage());
+        }
+    }
+
+    public function testCreationFailsInCaseOfAnEmptyIdentifier()
+    {
+        try {
+            $this->createExtension(['123', '']);
+
+            $this->fail('Exception should have been raised');
+        } catch (InvalidExtensionIdentifierException $ex) {
+            $this->assertContains("identifier: '' is not valid; it must comprise only ASCII alphanumerics and hyphen", $ex->getMessage());
+        }
     }
 }

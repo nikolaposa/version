@@ -13,9 +13,6 @@ class InvalidVersionPartException extends InvalidArgumentException implements Ex
 {
     public static function forPart(string $part) : self
     {
-        return new self(sprintf(
-            '%s version must be non-negative integer',
-            ucfirst($part)
-        ));
+        return new self(sprintf('%s version must be non-negative integer', ucfirst($part)));
     }
 }
