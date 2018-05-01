@@ -17,7 +17,7 @@ class VersionsCollectionTest extends TestCase
     public function testCreateCollection()
     {
         $versions = new VersionsCollection([
-            Version::fromMajor(1),
+            Version::fromParts(1),
             '1.1.0',
             '2.3.3',
         ]);
@@ -28,7 +28,7 @@ class VersionsCollectionTest extends TestCase
     public function testCreationViaStaticFactory()
     {
         $versions = VersionsCollection::fromArray([
-            Version::fromMajor(1),
+            Version::fromParts(1),
             '1.1.0',
             '2.3.3',
         ]);
@@ -39,7 +39,7 @@ class VersionsCollectionTest extends TestCase
     public function testCollectionCount()
     {
         $versions = VersionsCollection::fromArray([
-            Version::fromMajor(1),
+            Version::fromParts(1),
             '1.1.0',
             '2.3.3',
         ]);
@@ -50,7 +50,7 @@ class VersionsCollectionTest extends TestCase
     public function testCollectionIteration()
     {
         $versions = VersionsCollection::fromArray([
-            Version::fromMajor(1),
+            Version::fromParts(1),
             '1.1.0',
             '2.3.3',
         ]);
@@ -71,7 +71,7 @@ class VersionsCollectionTest extends TestCase
 
         $versions = VersionsCollection::fromArray([
             '2.3.3',
-            Version::fromMajor(1),
+            Version::fromParts(1),
             '1.1.0',
             '2.3.3-beta',
         ]);
@@ -93,7 +93,7 @@ class VersionsCollectionTest extends TestCase
 
         $versions = VersionsCollection::fromArray([
             '2.3.3',
-            Version::fromMajor(1),
+            Version::fromParts(1),
             '1.1.0',
         ]);
 

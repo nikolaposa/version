@@ -26,7 +26,7 @@ use Version\Version;
 use Version\Extension\PreRelease;
 use Version\Extension\NoBuild;
 
-$v = Version::fromParts(2, 0, 0, new PreRelease('alpha'), new NoBuild());
+$v = Version::fromParts(2, 0, 0, new PreRelease('alpha'));
 
 echo $v->getMajor(); //2
 echo $v->getMinor(); //0

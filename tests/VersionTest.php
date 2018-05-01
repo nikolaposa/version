@@ -37,42 +37,7 @@ class VersionTest extends TestCase
         }
     }
 
-    public function testCreatingFromMajorElement()
-    {
-        $version = Version::fromMajor(1);
-
-        $this->assertMatchesVersion($version, 1, 0, 0, false, false);
-    }
-
-    public function testCreatingFromMinorElement()
-    {
-        $version = Version::fromMinor(2, 1);
-
-        $this->assertMatchesVersion($version, 2, 1, 0, false, false);
-    }
-
-    public function testCreatingFromPatchElement()
-    {
-        $version = Version::fromPatch(03, 1, 1);
-
-        $this->assertMatchesVersion($version, 3, 1, 1, false, false);
-    }
-
-    public function testCreatingFromPreRelease()
-    {
-        $version = Version::fromPreRelease(2, 0, 0, PreRelease::fromIdentifiersString('alpha'));
-
-        $this->assertMatchesVersion($version, 2, 0, 0, 'alpha', false);
-    }
-
-    public function testCreatingFromBuild()
-    {
-        $version = Version::fromBuild(4, 3, 3, Build::fromIdentifiersString('123'));
-
-        $this->assertMatchesVersion($version, 4, 3, 3, false, '123');
-    }
-
-    public function testCreatingFromAllElements()
+    public function testCreatingFromParts()
     {
         $version = Version::fromParts(1, 0, 0, PreRelease::fromIdentifiersString('beta'), Build::fromIdentifiersString('11'));
 
@@ -120,7 +85,7 @@ class VersionTest extends TestCase
     public static function printedVersionStrings()
     {
         return [
-            ['2.1.0', Version::fromPatch(2, 1, 0)],
+            ['2.1.0', Version::fromParts(2, 1)],
             ['1.0.0+20150919', Version::fromString('1.0.0+20150919')],
             ['1.0.0+exp.sha.5114f85', Version::fromString('1.0.0+exp.sha.5114f85')],
             ['1.0.0-alpha.1+exp.sha.5114f85', Version::fromString('1.0.0-alpha.1+exp.sha.5114f85')],

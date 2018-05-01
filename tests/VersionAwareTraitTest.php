@@ -17,7 +17,7 @@ class VersionAwareTraitTest extends TestCase
         $object = $this->getObjectForTrait('\Version\VersionAwareTrait');
         $this->assertAttributeEquals(null, 'version', $object);
 
-        $version = Version::fromMajor(1);
+        $version = Version::fromParts(1);
         $object->setVersion($version);
         $this->assertAttributeEquals($version, 'version', $object);
     }
@@ -27,7 +27,7 @@ class VersionAwareTraitTest extends TestCase
         $object = $this->getObjectForTrait('\Version\VersionAwareTrait');
         $this->assertNull($object->getVersion());
 
-        $version = Version::fromMajor(1);
+        $version = Version::fromParts(1);
         $object->setVersion($version);
         $this->assertSame($version, $object->getVersion());
     }
