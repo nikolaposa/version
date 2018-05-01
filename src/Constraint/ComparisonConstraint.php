@@ -34,7 +34,7 @@ class ComparisonConstraint implements ConstraintInterface
     /**
      * @var array
      */
-    private static $validOperators = [
+    protected static $validOperators = [
         self::OPERATOR_EQ,
         self::OPERATOR_NEQ,
         self::OPERATOR_GT,
