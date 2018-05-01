@@ -11,6 +11,7 @@ use Version\Extension\Build;
 use Version\Extension\NoBuild;
 use Version\Extension\NoPreRelease;
 use Version\Extension\PreRelease;
+use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Version;
 
 /**
@@ -18,25 +19,6 @@ use Version\Version;
  */
 class VersionTest extends TestCase
 {
-    public static function assertMatchesVersion(Version $version, int $major, int $minor, int $patch, $preRelease, $build) : void
-    {
-        self::assertSame($version->getMajor(), $major);
-        self::assertSame($version->getMinor(), $minor);
-        self::assertSame($version->getPatch(), $patch);
-
-        if (false === $preRelease) {
-            self::assertFalse($version->isPreRelease());
-        } else {
-            self::assertSame((string) $version->getPreRelease(), $preRelease);
-        }
-
-        if (false === $build) {
-            self::assertFalse($version->isBuild());
-        } else {
-            self::assertSame((string) $version->getBuild(), $build);
-        }
-    }
-
     /**
      * @test
      */
@@ -44,7 +26,7 @@ class VersionTest extends TestCase
     {
         $version = Version::fromParts(1, 0, 0, PreRelease::fromIdentifiersString('beta'), Build::fromIdentifiersString('11'));
 
-        $this->assertMatchesVersion($version, 1, 0, 0, 'beta', '11');
+        $this->assertThat($version, new VersionIsIdentical(1, 0, 0, 'beta', '11'));
     }
 
     /**
@@ -62,18 +44,18 @@ class VersionTest extends TestCase
     {
         $version = Version::fromString($versionString);
 
-        $this->assertMatchesVersion($version, $major, $minor, $patch, $preRelease, $build);
+        $this->assertThat($version, new VersionIsIdentical($major, $minor, $patch, $preRelease, $build));
     }
 
     public static function getVersionStrings() : array
     {
         return [
-            ['0.9.7', 0, 9, 7, false, false],
-            ['1.10.0', 1, 10, 0, false, false],
-            ['2.5.4', 2, 5, 4, false, false],
-            ['2.1.17', 2, 1, 17, false, false],
+            ['0.9.7', 0, 9, 7, null, null],
+            ['1.10.0', 1, 10, 0, null, null],
+            ['2.5.4', 2, 5, 4, null, null],
+            ['2.1.17', 2, 1, 17, null, null],
             ['3.1.0-beta+123', 3, 1, 0, 'beta', '123'],
-            ['v1.2.3', 1, 2, 3, false, false],
+            ['v1.2.3', 1, 2, 3, null, null],
         ];
     }
 

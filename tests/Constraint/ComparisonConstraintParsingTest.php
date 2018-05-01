@@ -14,34 +14,6 @@ use Version\Exception\InvalidComparisonConstraintStringException;
  */
 class ComparisonConstraintParsingTest extends TestCase
 {
-    public static function assertConstraint($operator, $operandString, ComparisonConstraint $constraint)
-    {
-        self::assertSame($operator, $constraint->getOperator());
-        self::assertSame($operandString, (string) $constraint->getOperand());
-    }
-
-    public static function assertCompositeConstraint($type, array $constraints, CompositeConstraint $compositeConstraint)
-    {
-        self::assertSame($type, $compositeConstraint->getOperator());
-
-        foreach ($compositeConstraint->getConstraints() as $i => $constraint) {
-            if ($constraint instanceof CompositeConstraint) {
-                self::assertCompositeConstraint(
-                    $constraints[$i]['type'],
-                    $constraints[$i]['constraints'],
-                    $constraint
-                );
-                continue;
-            }
-
-            self::assertConstraint(
-                $constraints[$i]['operator'],
-                $constraints[$i]['operand'],
-                $constraint
-            );
-        }
-    }
-
     /**
      * @test
      */
@@ -49,7 +21,9 @@ class ComparisonConstraintParsingTest extends TestCase
     {
         $constraint = ComparisonConstraint::fromString('>=1.2.0');
 
-        $this->assertConstraint('>=', '1.2.0', $constraint);
+        $this->assertInstanceOf(ComparisonConstraint::class, $constraint);
+        $this->assertSame('>=', $constraint->getOperator());
+        $this->assertSame('1.2.0', (string) $constraint->getOperand());
     }
 
     /**
@@ -59,7 +33,9 @@ class ComparisonConstraintParsingTest extends TestCase
     {
         $constraint = ComparisonConstraint::fromString('1.2.0');
 
-        $this->assertConstraint('=', '1.2.0', $constraint);
+        $this->assertInstanceOf(ComparisonConstraint::class, $constraint);
+        $this->assertSame('=', $constraint->getOperator());
+        $this->assertSame('1.2.0', (string) $constraint->getOperand());
     }
 
     /**
@@ -69,13 +45,14 @@ class ComparisonConstraintParsingTest extends TestCase
     {
         $constraint = ComparisonConstraint::fromString('>=1.2.3 <1.3.0');
 
-        $this->assertCompositeConstraint(
+        $this->assertInstanceOf(CompositeConstraint::class, $constraint);
+        $this->assertCompositeConstraintIsIdentical(
+            $constraint,
             CompositeConstraint::OPERATOR_AND,
             [
                 ['operator' => '>=', 'operand' => '1.2.3'],
                 ['operator' => '<', 'operand' => '1.3.0'],
-            ],
-            $constraint
+            ]
         );
     }
 
@@ -86,24 +63,25 @@ class ComparisonConstraintParsingTest extends TestCase
     {
         $constraint = ComparisonConstraint::fromString('>=1.0.0 <1.1.0 || >=1.2.0');
 
-        $this->assertCompositeConstraint(
+        $this->assertInstanceOf(CompositeConstraint::class, $constraint);
+        $this->assertCompositeConstraintIsIdentical(
+            $constraint,
             CompositeConstraint::OPERATOR_OR,
             [
                 [
-                    'type' => CompositeConstraint::OPERATOR_AND,
+                    'operator' => CompositeConstraint::OPERATOR_AND,
                     'constraints' => [
                         ['operator' => '>=', 'operand' => '1.0.0'],
                         ['operator' => '<', 'operand' => '1.1.0'],
                     ]
                 ],
                 [
-                    'type' => CompositeConstraint::OPERATOR_AND,
+                    'operator' => CompositeConstraint::OPERATOR_AND,
                     'constraints' => [
                         ['operator' => '>=', 'operand' => '1.2.0'],
                     ]
                 ],
-            ],
-            $constraint
+            ]
         );
     }
 
@@ -174,6 +152,27 @@ class ComparisonConstraintParsingTest extends TestCase
             $this->fail('Exception should have been raised');
         } catch (InvalidComparisonConstraintStringException $ex) {
             $this->assertSame("Constraint string: '>=1.0.0 <1.1.0 ||' seems to be invalid and it cannot be parsed", $ex->getMessage());
+        }
+    }
+
+    public static function assertCompositeConstraintIsIdentical(CompositeConstraint $compositeConstraint, string $expectedOperator, array $expectedConstraints)
+    {
+        self::assertSame($expectedOperator, $compositeConstraint->getOperator());
+
+        foreach ($compositeConstraint->getConstraints() as $i => $constraint) {
+            /* @var $constraint \Version\Constraint\ComparisonConstraint */
+
+            if ($constraint instanceof CompositeConstraint) {
+                self::assertCompositeConstraintIsIdentical(
+                    $constraint,
+                    $expectedConstraints[$i]['operator'],
+                    $expectedConstraints[$i]['constraints']
+                );
+                continue;
+            }
+
+            self::assertSame($expectedConstraints[$i]['operator'], $constraint->getOperator());
+            self::assertSame($expectedConstraints[$i]['operand'], (string) $constraint->getOperand());
         }
     }
 }

@@ -53,7 +53,11 @@ class ComparisonConstraint implements ConstraintInterface
         $this->operand = $operand;
     }
 
-    public static function fromString(string $constraintString) : ConstraintInterface
+    /**
+     * @param string $constraintString
+     * @return ComparisonConstraint|CompositeConstraint
+     */
+    public static function fromString(string $constraintString)
     {
         static $parser = null;
 

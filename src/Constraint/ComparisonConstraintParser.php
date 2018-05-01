@@ -25,7 +25,11 @@ class ComparisonConstraintParser
      */
     protected $constraintParts = [];
 
-    public function parse(string $constraintString) : ConstraintInterface
+    /**
+     * @param string $constraintString
+     * @return ComparisonConstraint|CompositeConstraint
+     */
+    public function parse(string $constraintString)
     {
         $constraintString = trim($constraintString);
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Version;
 
 /**
@@ -20,7 +21,7 @@ class VersionOperationsTest extends TestCase
         $version = Version::fromString('1.10.7');
         $newVersion = $version->incrementMajor();
 
-        VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, false, false);
+        $this->assertThat($newVersion, new VersionIsIdentical(2, 0, 0));
     }
 
     /**
@@ -31,7 +32,7 @@ class VersionOperationsTest extends TestCase
         $version = Version::fromString('2.0.0');
         $newVersion = $version->incrementMinor();
 
-        VersionTest::assertMatchesVersion($newVersion, 2, 1, 0, false, false);
+        $this->assertThat($newVersion, new VersionIsIdentical(2, 1, 0));
     }
 
     /**
@@ -42,7 +43,7 @@ class VersionOperationsTest extends TestCase
         $version = Version::fromString('2.4.3');
         $newVersion = $version->incrementPatch();
 
-        VersionTest::assertMatchesVersion($newVersion, 2, 4, 4, false, false);
+        $this->assertThat($newVersion, new VersionIsIdentical(2, 4, 4));
     }
 
     /**
@@ -53,7 +54,7 @@ class VersionOperationsTest extends TestCase
         $version = Version::fromString('2.0.0-beta+111');
         $newVersion = $version->incrementMinor();
 
-        VersionTest::assertMatchesVersion($newVersion, 2, 1, 0, false, false);
+        $this->assertThat($newVersion, new VersionIsIdentical(2, 1, 0));
     }
 
     /**
@@ -64,7 +65,7 @@ class VersionOperationsTest extends TestCase
         $version = Version::fromString('2.0.0');
         $newVersion = $version->withPreRelease('beta');
 
-        VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, 'beta', false);
+        $this->assertThat($newVersion, new VersionIsIdentical(2, 0, 0, 'beta'));
     }
 
     /**
@@ -75,7 +76,7 @@ class VersionOperationsTest extends TestCase
         $version = Version::fromString('2.0.0+111');
         $newVersion = $version->withPreRelease('beta');
 
-        VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, 'beta', false);
+        $this->assertThat($newVersion, new VersionIsIdentical(2, 0, 0, 'beta'));
     }
 
     /**
@@ -86,6 +87,6 @@ class VersionOperationsTest extends TestCase
         $version = Version::fromString('2.0.0-beta');
         $newVersion = $version->withBuild('111');
 
-        VersionTest::assertMatchesVersion($newVersion, 2, 0, 0, 'beta', '111');
+        $this->assertThat($newVersion, new VersionIsIdentical(2, 0, 0, 'beta', '111'));
     }
 }
