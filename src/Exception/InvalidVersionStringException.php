@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Version\Exception;
 
+use DomainException;
+
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
  */
-class InvalidVersionStringException extends \DomainException implements ExceptionInterface
+class InvalidVersionStringException extends DomainException implements ExceptionInterface
 {
     /**
      * @var string

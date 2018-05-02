@@ -8,7 +8,7 @@ use JsonSerializable;
 use Version\Extension\Build;
 use Version\Extension\NoBuild;
 use Version\Extension\NoPreRelease;
-use Version\Exception\InvalidVersionPartException;
+use Version\Exception\InvalidVersionException;
 use Version\Exception\InvalidVersionStringException;
 use Version\Comparator\ComparatorInterface;
 use Version\Comparator\SemverComparator;
@@ -47,6 +47,10 @@ class Version implements JsonSerializable
 
     protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
     {
+        $this->validateNumber('major', $major);
+        $this->validateNumber('minor', $minor);
+        $this->validateNumber('patch', $patch);
+
         $this->major = $major;
         $this->minor = $minor;
         $this->patch = $patch;
@@ -54,12 +58,15 @@ class Version implements JsonSerializable
         $this->build = $build;
     }
 
+    protected function validateNumber(string $name, int $value) : void
+    {
+        if ($value < 0) {
+            throw InvalidVersionException::forNumber($name, $value);
+        }
+    }
+
     public static function fromParts(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null) : Version
     {
-        static::validatePart('major', $major);
-        static::validatePart('minor', $minor);
-        static::validatePart('patch', $patch);
-
         return new static($major, $minor, $patch, $preRelease ?? new NoPreRelease(), $build ?? new NoBuild());
     }
 
@@ -84,19 +91,10 @@ class Version implements JsonSerializable
         }
 
         [$major, $minor, $patch] = explode('.', $parts['core']);
-
         $preRelease = !empty($parts['preRelease']) ? PreRelease::fromIdentifiersString($parts['preRelease']) : new NoPreRelease();
-
         $build = !empty($parts['build']) ? Build::fromIdentifiersString($parts['build']) : new NoBuild();
 
         return static::fromParts((int) $major, (int) $minor, (int) $patch, $preRelease, $build);
-    }
-
-    protected static function validatePart(string $part, int $value) : void
-    {
-        if ($value < 0) {
-            throw InvalidVersionPartException::forPart($part);
-        }
     }
 
     public function getMajor() : int
@@ -135,7 +133,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param self|string $version
+     * @param Version|string $version
      * @return bool
      */
     public function isEqualTo($version) : bool
@@ -144,7 +142,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param self|string $version
+     * @param Version|string $version
      * @return bool
      */
     public function isNotEqualTo($version) : bool
@@ -153,7 +151,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param self|string $version
+     * @param Version|string $version
      * @return bool
      */
     public function isGreaterThan($version) : bool
@@ -162,7 +160,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param self|string $version
+     * @param Version|string $version
      * @return bool
      */
     public function isGreaterOrEqualTo($version) : bool
@@ -171,7 +169,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param self|string $version
+     * @param Version|string $version
      * @return bool
      */
     public function isLessThan($version) : bool
@@ -180,7 +178,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param self|string $version
+     * @param Version|string $version
      * @return bool
      */
     public function isLessOrEqualTo($version) : bool
@@ -189,7 +187,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param self|string $version
+     * @param Version|string $version
      * @return int (1 if $this > $version, -1 if $this < $version, 0 if equal)
      */
     public function compareTo($version) : int
