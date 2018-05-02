@@ -33,7 +33,7 @@ abstract class BaseExtension
 
     public static function fromIdentifiers(string $identifier, string ...$identifiers)
     {
-        return new static(...array_merge([$identifier], $identifiers));
+        return new static($identifier, ...$identifiers);
     }
 
     public static function fromIdentifiersString(string $identifiers)
