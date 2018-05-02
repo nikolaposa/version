@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## 3.0.0 - 2018-05-02
 ### Added
 - Strict typing wherever possible
 - [15: Relaxed version parsing](https://github.com/nikolaposa/version/pull/15)
