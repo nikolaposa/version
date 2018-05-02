@@ -140,11 +140,11 @@ $package->setVersion(Version::fromString('2.3.3'));
 use Version\VersionsCollection;
 use Version\Version;
 
-$versions = VersionsCollection::fromArray([
-    Version::fromMajor(1),
-    '1.1.0',
-    '2.3.3',
-]);
+$versions = new VersionsCollection(
+    Version::fromParts(1),
+    Version::fromString('1.1.0'),
+    Version::fromString('2.3.3')
+);
 
 echo count($versions); //3
 

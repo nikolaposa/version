@@ -19,11 +19,11 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_can_be_created_via_constructor() : void
     {
-        $versions = new VersionsCollection([
+        $versions = new VersionsCollection(
             Version::fromParts(1),
-            '1.1.0',
-            '2.3.3',
-        ]);
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3')
+        );
 
         $this->assertInstanceOf(VersionsCollection::class, $versions);
     }
@@ -33,11 +33,11 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_can_be_created_via_named_constructor() : void
     {
-        $versions = VersionsCollection::fromArray([
+        $versions = new VersionsCollection(
             Version::fromParts(1),
-            '1.1.0',
-            '2.3.3',
-        ]);
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3')
+        );
 
         $this->assertInstanceOf(VersionsCollection::class, $versions);
     }
@@ -47,11 +47,11 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_is_countable() : void
     {
-        $versions = VersionsCollection::fromArray([
+        $versions = new VersionsCollection(
             Version::fromParts(1),
-            '1.1.0',
-            '2.3.3',
-        ]);
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3')
+        );
 
         $this->assertCount(3, $versions);
     }
@@ -61,11 +61,11 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_is_iterable() : void
     {
-        $versions = VersionsCollection::fromArray([
+        $versions = new VersionsCollection(
             Version::fromParts(1),
-            '1.1.0',
-            '2.3.3',
-        ]);
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3')
+        );
 
         foreach ($versions as $version) {
             $this->assertInstanceOf(Version::class, $version);
@@ -84,12 +84,12 @@ class VersionsCollectionTest extends TestCase
             '2.3.3',
         ];
 
-        $versions = VersionsCollection::fromArray([
-            '2.3.3',
+        $versions = new VersionsCollection(
+            Version::fromString('2.3.3'),
             Version::fromParts(1),
-            '1.1.0',
-            '2.3.3-beta',
-        ]);
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3-beta')
+        );
 
         $versions->sort();
 
@@ -109,11 +109,11 @@ class VersionsCollectionTest extends TestCase
             '1.0.0',
         ];
 
-        $versions = VersionsCollection::fromArray([
-            '2.3.3',
+        $versions = new VersionsCollection(
+            Version::fromString('2.3.3'),
             Version::fromParts(1),
-            '1.1.0',
-        ]);
+            Version::fromString('1.1.0')
+        );
 
         $versions->sort(VersionsCollection::SORT_DESC);
 
@@ -127,13 +127,13 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_filters_versions_that_match_constraint() : void
     {
-        $versions = VersionsCollection::fromArray([
-            '1.0.0',
-            '1.0.1',
-            '1.1.0',
-            '2.0.0',
-            '2.0.1',
-        ]);
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.0.1'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.0.0'),
+            Version::fromString('2.0.1')
+        );
 
         $versions2 = $versions->matching(ComparisonConstraint::fromString('>=2.0.0'));
 

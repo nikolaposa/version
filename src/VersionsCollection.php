@@ -21,28 +21,14 @@ class VersionsCollection implements Countable, IteratorAggregate
     /**
      * @var Version[]
      */
-    protected $versions = [];
+    protected $versions;
 
-    /**
-     * @param array $versions
-     */
-    public function __construct(array $versions)
+    public function __construct(Version $version, Version ...$versions)
     {
-        foreach ($versions as $version) {
-            if (is_string($version)) {
-                $version = Version::fromString($version);
-            }
-
-            $this->versions[] = $version;
-        }
+        $this->versions = array_merge([$version], $versions);
     }
 
-    public static function fromArray(array $versions) : VersionsCollection
-    {
-        return new static($versions);
-    }
-
-    public function count(): int
+    public function count() : int
     {
         return count($this->versions);
     }
@@ -67,7 +53,7 @@ class VersionsCollection implements Countable, IteratorAggregate
 
     public function matching(ConstraintInterface $constraint) : VersionsCollection
     {
-        return new static(array_filter(
+        return new static(...array_filter(
             $this->versions,
             function (Version $version) use ($constraint) {
                 return $version->matches($constraint);

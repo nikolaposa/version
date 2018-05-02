@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Setter method from the `VersionAwareInterface`
 - `Version::from(Major|Minor|Path|PreRelease|Build)` named constructors in favor of having a single `Version::fromParts()` named constructor with optional parameters
+- `VersionCollection::fromArray()`; constructor with variadic `Version` arguments should be used instead
 
 ## 2.2.2 - 2017-01-01
 ### Fixed
