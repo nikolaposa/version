@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Version\Constraint;
 
+use ReflectionClass;
 use Version\Version;
 use Version\Exception\InvalidComparisonConstraintException;
 
@@ -31,23 +32,9 @@ class ComparisonConstraint implements ConstraintInterface
      */
     protected $operand;
 
-    /**
-     * @var array
-     */
-    protected static $validOperators = [
-        self::OPERATOR_EQ,
-        self::OPERATOR_NEQ,
-        self::OPERATOR_GT,
-        self::OPERATOR_GTE,
-        self::OPERATOR_LT,
-        self::OPERATOR_LTE,
-    ];
-
     public function __construct(string $operator, Version $operand)
     {
-        if (! in_array($operator, static::$validOperators, true)) {
-            throw InvalidComparisonConstraintException::forUnsupportedOperator($operator);
-        }
+        $this->validateOperator($operator);
 
         $this->operator = $operator;
         $this->operand = $operand;
@@ -93,6 +80,19 @@ class ComparisonConstraint implements ConstraintInterface
                 return $version->isLessThan($this->operand);
             case self::OPERATOR_LTE:
                 return $version->isLessOrEqualTo($this->operand);
+        }
+    }
+
+    protected function validateOperator($operator) : void
+    {
+        static $validOperators = null;
+
+        if (null === $validOperators) {
+            $validOperators = (new ReflectionClass($this))->getConstants();
+        }
+
+        if (! in_array($operator, $validOperators, true)) {
+            throw InvalidComparisonConstraintException::forUnsupportedOperator($operator);
         }
     }
 }
