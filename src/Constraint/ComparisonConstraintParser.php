@@ -40,7 +40,7 @@ class ComparisonConstraintParser
         $this->constraintString = $constraintString;
 
         if (! $this->isMultiPartConstraint()) {
-            return $this->buildConstraintFromStringUnit($this->constraintString);
+            return $this->buildConstraint($this->constraintString);
         }
 
         $this->splitConstraintParts();
@@ -48,9 +48,20 @@ class ComparisonConstraintParser
         return $this->buildCompositeConstraint();
     }
 
-    protected function buildConstraintFromStringUnit(string $constraintStringUnit) : ComparisonConstraint
+    protected function isMultiPartConstraint() : bool
     {
-        [$operator, $operandString] = array_values($this->parseConstraintStringUnit($constraintStringUnit));
+        return (false !== strpos($this->constraintString, ' '));
+    }
+
+    protected function splitConstraintParts() : void
+    {
+        $constraintParts = explode(' ', $this->constraintString);
+        $this->constraintParts = array_map('trim', $constraintParts);
+    }
+
+    protected function buildConstraint(string $constraintPart) : ComparisonConstraint
+    {
+        [$operator, $operandString] = array_values($this->parseConstraint($constraintPart));
 
         if (empty($operandString)) {
             $this->error();
@@ -66,7 +77,7 @@ class ComparisonConstraintParser
         }
     }
 
-    protected function parseConstraintStringUnit(string $constraintStringUnit) : array
+    protected function parseConstraint(string $constraintStringUnit) : array
     {
         $i = 0;
         while (isset($constraintStringUnit[$i]) && !ctype_digit($constraintStringUnit[$i])) {
@@ -82,33 +93,16 @@ class ComparisonConstraintParser
         ];
     }
 
-    protected function isMultiPartConstraint() : bool
-    {
-        return (false !== strpos($this->constraintString, ' '));
-    }
-
-    protected function splitConstraintParts() : void
-    {
-        $this->constraintParts = explode(' ', $this->constraintString);
-    }
-
     protected function buildCompositeConstraint() : CompositeConstraint
     {
         $compositeAndConstraints = $compositeOrConstraints = [];
 
         foreach ($this->constraintParts as $constraintPart) {
-            if (!$this->isOperator($constraintPart)) {
-                $compositeAndConstraints[] = $this->buildConstraintFromStringUnit($constraintPart);
-                continue;
-            }
-
-            $constraintOperator = $constraintPart;
-
-            switch ($constraintOperator) {
-                case self::OPERATOR_OR:
-                    $compositeOrConstraints[] = CompositeConstraint::and(...$compositeAndConstraints);
-                    $compositeAndConstraints = [];
-                    break;
+            if (self::OPERATOR_OR === $constraintPart) {
+                $compositeOrConstraints[] = CompositeConstraint::and(...$compositeAndConstraints);
+                $compositeAndConstraints = []; //reset collected AND constraints
+            } else {
+                $compositeAndConstraints[] = $this->buildConstraint($constraintPart);
             }
         }
 
@@ -124,13 +118,6 @@ class ComparisonConstraintParser
         }
 
         return CompositeConstraint::and(...$compositeAndConstraints);
-    }
-
-    protected function isOperator(string $constraintPart) : bool
-    {
-        return in_array($constraintPart, [
-            self::OPERATOR_OR,
-        ], true);
     }
 
     protected function error() : void
