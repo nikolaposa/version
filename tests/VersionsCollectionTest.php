@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Version\Exception\InvalidVersionStringException;
 use Version\VersionsCollection;
 use Version\Version;
 use Version\Constraint\ComparisonConstraint;
@@ -31,15 +32,25 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_via_named_constructor() : void
+    public function it_can_be_created_from_version_strings() : void
     {
-        $versions = new VersionsCollection(
-            Version::fromParts(1),
-            Version::fromString('1.1.0'),
-            Version::fromString('2.3.3')
-        );
+        $versions = VersionsCollection::fromStrings('1.1.0', '2.3.3');
 
         $this->assertInstanceOf(VersionsCollection::class, $versions);
+    }
+
+    /**
+     * @test
+     */
+    public function it_forwards_invalid_version_string_exception() : void
+    {
+        try {
+            VersionsCollection::fromStrings('1.1.0', 'invalid');
+
+            $this->fail('Exception should have been raised');
+        } catch (InvalidVersionStringException $ex) {
+            $this->assertSame('invalid', $ex->getVersionString());
+        }
     }
 
     /**
