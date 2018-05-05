@@ -72,4 +72,9 @@ class VersionsCollection implements Countable, IteratorAggregate
             }
         ));
     }
+
+    public function toArray() : array
+    {
+        return $this->versions;
+    }
 }

@@ -177,4 +177,21 @@ class VersionsCollectionTest extends TestCase
 
         $this->assertCount(0, $versions2);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_be_converted_to_an_array() : void
+    {
+        $versions = VersionsCollection::fromStrings(
+            '1.0.0',
+            '1.0.1',
+            '1.1.0'
+        );
+
+        $versionsArray = $versions->toArray();
+
+        $this->assertContainsOnlyInstancesOf(Version::class, $versionsArray);
+        $this->assertCount(3, $versionsArray);
+    }
 }
