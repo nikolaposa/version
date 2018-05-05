@@ -22,7 +22,7 @@ class VersionsCollectionTest extends TestCase
     public function it_can_be_created_via_constructor() : void
     {
         $versions = new VersionsCollection(
-            Version::fromParts(1),
+            Version::fromString('1.0.0'),
             Version::fromString('1.1.0'),
             Version::fromString('2.3.3')
         );
@@ -39,7 +39,10 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_can_be_created_from_version_strings() : void
     {
-        $versions = VersionsCollection::fromStrings('1.1.0', '2.3.3');
+        $versions = new VersionsCollection(
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3')
+        );
 
         $this->assertThat($versions, new VersionsCollectionIsIdentical([
             [1, 1, 0, null, null],
@@ -53,7 +56,10 @@ class VersionsCollectionTest extends TestCase
     public function it_forwards_invalid_version_string_exception() : void
     {
         try {
-            VersionsCollection::fromStrings('1.1.0', 'invalid');
+            new VersionsCollection(
+                Version::fromString('1.1.0'),
+                Version::fromString('invalid')
+            );
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersionStringException $ex) {
@@ -66,10 +72,10 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_is_countable() : void
     {
-        $versions = VersionsCollection::fromStrings(
-            '1.0.0',
-            '1.1.0',
-            '2.3.3'
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3')
         );
 
         $this->assertCount(3, $versions);
@@ -90,10 +96,10 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_is_iterable() : void
     {
-        $versions = VersionsCollection::fromStrings(
-            '1.0.0',
-            '1.1.0',
-            '2.3.3'
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3')
         );
 
         foreach ($versions as $version) {
@@ -106,11 +112,11 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_is_sorted_in_ascending_order_by_default() : void
     {
-        $versions = VersionsCollection::fromStrings(
-            '2.3.3',
-            '1.0.0',
-            '1.1.0',
-            '2.3.3-beta'
+        $versions = new VersionsCollection(
+            Version::fromString('2.3.3'),
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3-beta')
         );
 
         $versions->sort();
@@ -132,10 +138,10 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_can_be_sorted_in_descending_order() : void
     {
-        $versions = VersionsCollection::fromStrings(
-            '2.3.3',
-            '1.0.0',
-            '1.1.0'
+        $versions = new VersionsCollection(
+            Version::fromString('2.3.3'),
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0')
         );
 
         $versions->sort(VersionsCollection::SORT_DESC);
@@ -156,12 +162,11 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_filters_versions_that_match_constraint() : void
     {
-        $versions = VersionsCollection::fromStrings(
-            '1.0.0',
-            '1.0.1',
-            '1.1.0',
-            '2.0.0',
-            '2.0.1'
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.0.1'),
+            Version::fromString('2.0.0'),
+            Version::fromString('2.0.1')
         );
 
         $versions2 = $versions->matching(ComparisonConstraint::fromString('>=2.0.0'));
@@ -193,10 +198,10 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_can_be_converted_to_an_array() : void
     {
-        $versions = VersionsCollection::fromStrings(
-            '1.0.0',
-            '1.0.1',
-            '1.1.0'
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.0.1'),
+            Version::fromString('1.1.0')
         );
 
         $versionsArray = $versions->toArray();

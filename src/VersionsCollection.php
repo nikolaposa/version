@@ -28,13 +28,6 @@ class VersionsCollection implements Countable, IteratorAggregate
         $this->versions = $versions;
     }
 
-    public static function fromStrings(string ...$versionStrings) : VersionsCollection
-    {
-        return new static(...array_map(function ($versionString) {
-            return Version::fromString($versionString);
-        }, $versionStrings));
-    }
-
     public function count() : int
     {
         return count($this->versions);
