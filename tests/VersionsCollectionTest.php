@@ -6,6 +6,7 @@ namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Version\Exception\InvalidVersionStringException;
+use Version\Tests\TestAsset\VersionsCollectionIsIdentical;
 use Version\VersionsCollection;
 use Version\Version;
 use Version\Constraint\ComparisonConstraint;
@@ -26,7 +27,11 @@ class VersionsCollectionTest extends TestCase
             Version::fromString('2.3.3')
         );
 
-        $this->assertInstanceOf(VersionsCollection::class, $versions);
+        $this->assertThat($versions, new VersionsCollectionIsIdentical([
+            [1, 0, 0, null, null],
+            [1, 1, 0, null, null],
+            [2, 3, 3, null, null],
+        ]));
     }
 
     /**
@@ -36,7 +41,10 @@ class VersionsCollectionTest extends TestCase
     {
         $versions = VersionsCollection::fromStrings('1.1.0', '2.3.3');
 
-        $this->assertInstanceOf(VersionsCollection::class, $versions);
+        $this->assertThat($versions, new VersionsCollectionIsIdentical([
+            [1, 1, 0, null, null],
+            [2, 3, 3, null, null],
+        ]));
     }
 
     /**
@@ -58,10 +66,10 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_is_countable() : void
     {
-        $versions = new VersionsCollection(
-            Version::fromParts(1),
-            Version::fromString('1.1.0'),
-            Version::fromString('2.3.3')
+        $versions = VersionsCollection::fromStrings(
+            '1.0.0',
+            '1.1.0',
+            '2.3.3'
         );
 
         $this->assertCount(3, $versions);
@@ -82,10 +90,10 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_is_iterable() : void
     {
-        $versions = new VersionsCollection(
-            Version::fromParts(1),
-            Version::fromString('1.1.0'),
-            Version::fromString('2.3.3')
+        $versions = VersionsCollection::fromStrings(
+            '1.0.0',
+            '1.1.0',
+            '2.3.3'
         );
 
         foreach ($versions as $version) {
@@ -98,24 +106,24 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_is_sorted_in_ascending_order_by_default() : void
     {
-        $ordered = [
+        $versions = VersionsCollection::fromStrings(
+            '2.3.3',
+            '1.0.0',
+            '1.1.0',
+            '2.3.3-beta'
+        );
+
+        $versions->sort();
+
+        $expectedOrder = [
             '1.0.0',
             '1.1.0',
             '2.3.3-beta',
             '2.3.3',
         ];
 
-        $versions = new VersionsCollection(
-            Version::fromString('2.3.3'),
-            Version::fromParts(1),
-            Version::fromString('1.1.0'),
-            Version::fromString('2.3.3-beta')
-        );
-
-        $versions->sort();
-
         foreach ($versions as $key => $version) {
-            $this->assertSame($ordered[$key], (string) $version);
+            $this->assertSame($expectedOrder[$key], (string) $version);
         }
     }
 
@@ -124,22 +132,22 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_can_be_sorted_in_descending_order() : void
     {
-        $ordered = [
+        $versions = VersionsCollection::fromStrings(
+            '2.3.3',
+            '1.0.0',
+            '1.1.0'
+        );
+
+        $versions->sort(VersionsCollection::SORT_DESC);
+
+        $expectedOrder = [
             '2.3.3',
             '1.1.0',
             '1.0.0',
         ];
 
-        $versions = new VersionsCollection(
-            Version::fromString('2.3.3'),
-            Version::fromParts(1),
-            Version::fromString('1.1.0')
-        );
-
-        $versions->sort(VersionsCollection::SORT_DESC);
-
         foreach ($versions as $key => $version) {
-            $this->assertSame($ordered[$key], (string) $version);
+            $this->assertSame($expectedOrder[$key], (string) $version);
         }
     }
 
@@ -148,18 +156,20 @@ class VersionsCollectionTest extends TestCase
      */
     public function it_filters_versions_that_match_constraint() : void
     {
-        $versions = new VersionsCollection(
-            Version::fromString('1.0.0'),
-            Version::fromString('1.0.1'),
-            Version::fromString('1.1.0'),
-            Version::fromString('2.0.0'),
-            Version::fromString('2.0.1')
+        $versions = VersionsCollection::fromStrings(
+            '1.0.0',
+            '1.0.1',
+            '1.1.0',
+            '2.0.0',
+            '2.0.1'
         );
 
         $versions2 = $versions->matching(ComparisonConstraint::fromString('>=2.0.0'));
 
-        $this->assertCount(5, $versions);
-        $this->assertCount(2, $versions2);
+        $this->assertThat($versions2, new VersionsCollectionIsIdentical([
+            [2, 0, 0, null, null],
+            [2, 0, 1, null, null],
+        ]));
     }
 
     /**

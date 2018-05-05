@@ -34,16 +34,16 @@ final class VersionIsIdentical extends Constraint
         );
     }
 
-    protected function matches($constraint) : bool
+    protected function matches($version) : bool
     {
-        /* @var $constraint Version */
+        /* @var $version Version */
 
         return (
-            $constraint->getMajor() === $this->expectedVersion->getMajor()
-            && $constraint->getMinor() === $this->expectedVersion->getMinor()
-            && $constraint->getPatch() === $this->expectedVersion->getPatch()
-            && $constraint->getPreRelease()->getIdentifiers() === $this->expectedVersion->getPreRelease()->getIdentifiers()
-            && $constraint->getBuild()->getIdentifiers() === $this->expectedVersion->getBuild()->getIdentifiers()
+            $version->getMajor() === $this->expectedVersion->getMajor()
+            && $version->getMinor() === $this->expectedVersion->getMinor()
+            && $version->getPatch() === $this->expectedVersion->getPatch()
+            && $version->getPreRelease()->getIdentifiers() === $this->expectedVersion->getPreRelease()->getIdentifiers()
+            && $version->getBuild()->getIdentifiers() === $this->expectedVersion->getBuild()->getIdentifiers()
         );
     }
 
