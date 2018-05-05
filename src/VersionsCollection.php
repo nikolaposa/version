@@ -23,9 +23,9 @@ class VersionsCollection implements Countable, IteratorAggregate
      */
     protected $versions;
 
-    public function __construct(Version $version, Version ...$versions)
+    public function __construct(Version ...$versions)
     {
-        $this->versions = array_merge([$version], $versions);
+        $this->versions = $versions;
     }
 
     public function count() : int

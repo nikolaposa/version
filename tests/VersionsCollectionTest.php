@@ -140,4 +140,20 @@ class VersionsCollectionTest extends TestCase
         $this->assertCount(5, $versions);
         $this->assertCount(2, $versions2);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_become_empty_after_filtering_out_all_versions() : void
+    {
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.0.1'),
+            Version::fromString('1.1.0')
+        );
+
+        $versions2 = $versions->matching(ComparisonConstraint::fromString('>=2.0.0'));
+
+        $this->assertCount(0, $versions2);
+    }
 }
