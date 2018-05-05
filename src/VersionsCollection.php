@@ -42,7 +42,7 @@ class VersionsCollection implements Countable, IteratorAggregate
 
     public function isEmpty() : bool
     {
-        return 0 === $this->count();
+        return empty($this->versions);
     }
 
     public function getIterator() : Traversable
