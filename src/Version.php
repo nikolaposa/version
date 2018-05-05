@@ -79,7 +79,7 @@ class Version implements JsonSerializable
     {
         if (!preg_match(
             '#^'
-            . 'v?'
+            . '(v|release\-)?'
             . '(?P<core>(?:[0-9]|[1-9][0-9]+)(?:\.(?:[0-9]|[1-9][0-9]+)){2})'
             . '(?:\-(?P<preRelease>[0-9A-Za-z\-\.]+))?'
             . '(?:\+(?P<build>[0-9A-Za-z\-\.]+))?'
