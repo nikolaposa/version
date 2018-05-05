@@ -49,7 +49,6 @@ final class VersionsCollectionIsIdentical extends Constraint
         }
 
         return true;
-
     }
 
     public function toString() : string
