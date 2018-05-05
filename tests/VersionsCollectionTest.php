@@ -59,6 +59,16 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
+    public function it_provides_is_empty_check() : void
+    {
+        $versions = new VersionsCollection();
+
+        $this->assertTrue($versions->isEmpty());
+    }
+
+    /**
+     * @test
+     */
     public function it_is_iterable() : void
     {
         $versions = new VersionsCollection(

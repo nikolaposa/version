@@ -33,6 +33,11 @@ class VersionsCollection implements Countable, IteratorAggregate
         return count($this->versions);
     }
 
+    public function isEmpty() : bool
+    {
+        return 0 === $this->count();
+    }
+
     public function getIterator() : Traversable
     {
         return new ArrayIterator($this->versions);
