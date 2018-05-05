@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## 3.0.1 - 2018-05-05
 ### Fixed
 - `VersionsCollection::matching()` fails if all the versions do not satisfy constraint; allow VersionsCollection to be empty
 
@@ -71,4 +71,4 @@ All notable changes to this project will be documented in this file.
 This release is abandoned, please consider upgrading to 2.x.
 
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/3.0.0...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/3.0.1...HEAD
