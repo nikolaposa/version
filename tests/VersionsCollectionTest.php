@@ -119,7 +119,7 @@ class VersionsCollectionTest extends TestCase
             Version::fromString('2.3.3-beta')
         );
 
-        $versions->sort();
+        $versions = $versions->sorted();
 
         $expectedOrder = [
             '1.0.0',
@@ -144,12 +144,38 @@ class VersionsCollectionTest extends TestCase
             Version::fromString('1.1.0')
         );
 
-        $versions->sort(VersionsCollection::SORT_DESC);
+        $versions = $versions->sorted(VersionsCollection::SORT_DESC);
 
         $expectedOrder = [
             '2.3.3',
             '1.1.0',
             '1.0.0',
+        ];
+
+        foreach ($versions as $key => $version) {
+            $this->assertSame($expectedOrder[$key], (string) $version);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_sorted_via_deprecated_sort_method() : void
+    {
+        $versions = new VersionsCollection(
+            Version::fromString('2.3.3'),
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3-beta')
+        );
+
+        $versions->sort();
+
+        $expectedOrder = [
+            '1.0.0',
+            '1.1.0',
+            '2.3.3-beta',
+            '2.3.3',
         ];
 
         foreach ($versions as $key => $version) {
