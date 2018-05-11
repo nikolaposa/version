@@ -38,6 +38,16 @@ class VersionsCollection implements Countable, IteratorAggregate
         return empty($this->versions);
     }
 
+    public function first() : ?Version
+    {
+        return $this->versions[0] ?? null;
+    }
+
+    public function last() : ?Version
+    {
+        return $this->versions[count($this->versions) - 1] ?? null;
+    }
+
     public function getIterator() : Traversable
     {
         return new ArrayIterator($this->versions);

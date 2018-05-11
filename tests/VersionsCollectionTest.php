@@ -6,6 +6,7 @@ namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Version\Exception\InvalidVersionStringException;
+use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Tests\TestAsset\VersionsCollectionIsIdentical;
 use Version\VersionsCollection;
 use Version\Version;
@@ -89,6 +90,64 @@ class VersionsCollectionTest extends TestCase
         $versions = new VersionsCollection();
 
         $this->assertTrue($versions->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_first_version() : void
+    {
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3')
+        );
+
+        $version = $versions->first();
+
+        $this->assertNotNull($version);
+        $this->assertThat($version, new VersionIsIdentical(1, 0, 0));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_null_for_first_version_if_collection_is_empty() : void
+    {
+        $versions = new VersionsCollection();
+
+        $version = $versions->first();
+
+        $this->assertNull($version);
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_last_version() : void
+    {
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.3.3')
+        );
+
+        $version = $versions->last();
+
+        $this->assertNotNull($version);
+        $this->assertThat($version, new VersionIsIdentical(2, 3, 3));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_null_for_last_version_if_collection_is_empty() : void
+    {
+        $versions = new VersionsCollection();
+
+        $version = $versions->last();
+
+        $this->assertNull($version);
     }
 
     /**
