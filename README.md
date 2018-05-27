@@ -148,7 +148,7 @@ $versions = new VersionsCollection(
 
 echo count($versions); //3
 
-$versions = $versions->sorted(VersionsCollection::SORT_DESC);
+$versions = $versions->sortedDescending(VersionsCollection::SORT_DESC);
 
 //Outputs: 2.3.3, 1.1.0, 1.0.0
 foreach ($versions as $version) {

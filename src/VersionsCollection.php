@@ -69,18 +69,23 @@ class VersionsCollection implements Countable, IteratorAggregate
         });
     }
 
-    public function sorted(string $direction = self::SORT_ASC) : VersionsCollection
+    public function sortedAscending() : VersionsCollection
     {
         $versions = $this->versions;
 
-        usort($versions, function (Version $a, Version $b) use ($direction) {
-            $result = $a->compareTo($b);
+        usort($versions, function (Version $a, Version $b) {
+            return $a->compareTo($b);
+        });
 
-            if ($direction === self::SORT_DESC) {
-                $result *= -1;
-            }
+        return new static(...$versions);
+    }
 
-            return $result;
+    public function sortedDescending() : VersionsCollection
+    {
+        $versions = $this->versions;
+
+        usort($versions, function (Version $a, Version $b) {
+            return $a->compareTo($b) * -1;
         });
 
         return new static(...$versions);

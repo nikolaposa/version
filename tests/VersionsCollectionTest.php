@@ -178,7 +178,7 @@ class VersionsCollectionTest extends TestCase
             Version::fromString('2.3.3-beta')
         );
 
-        $versions = $versions->sorted();
+        $versions = $versions->sortedAscending();
 
         $expectedOrder = [
             '1.0.0',
@@ -203,7 +203,7 @@ class VersionsCollectionTest extends TestCase
             Version::fromString('1.1.0')
         );
 
-        $versions = $versions->sorted(VersionsCollection::SORT_DESC);
+        $versions = $versions->sortedDescending();
 
         $expectedOrder = [
             '2.3.3',
