@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Version\Exception\CollectionIsEmptyException;
 use Version\Exception\InvalidVersionStringException;
 use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Tests\TestAsset\VersionsCollectionIsIdentical;
@@ -112,13 +113,17 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_for_first_version_if_collection_is_empty() : void
+    public function it_raises_exception_when_getting_first_item_of_empty_collection() : void
     {
         $versions = new VersionsCollection();
 
-        $version = $versions->first();
+        try {
+            $versions->first();
 
-        $this->assertNull($version);
+            $this->fail('Exception should have been raised');
+        } catch (CollectionIsEmptyException $ex) {
+            $this->assertSame('Invoking first() on an empty collection', $ex->getMessage());
+        }
     }
 
     /**
@@ -141,13 +146,17 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_for_last_version_if_collection_is_empty() : void
+    public function it_raises_exception_when_getting_last_item_of_empty_collection() : void
     {
         $versions = new VersionsCollection();
 
-        $version = $versions->last();
+        try {
+            $versions->last();
 
-        $this->assertNull($version);
+            $this->fail('Exception should have been raised');
+        } catch (CollectionIsEmptyException $ex) {
+            $this->assertSame('Invoking last() on an empty collection', $ex->getMessage());
+        }
     }
 
     /**
@@ -260,6 +269,24 @@ class VersionsCollectionTest extends TestCase
             [2, 0, 0, null, null],
             [2, 0, 1, null, null],
         ]));
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_first_last_items_after_filtering() : void
+    {
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.0.1'),
+            Version::fromString('2.0.0'),
+            Version::fromString('2.0.1')
+        );
+
+        $versions2 = $versions->matching(ComparisonConstraint::fromString('>=2.0.0'));
+
+        $this->assertThat($versions2->first(), new VersionIsIdentical(2, 0, 0));
+        $this->assertThat($versions2->last(), new VersionIsIdentical(2, 0, 1));
     }
 
     /**

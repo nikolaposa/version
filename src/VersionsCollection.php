@@ -9,6 +9,7 @@ use IteratorAggregate;
 use ArrayIterator;
 use Traversable;
 use Version\Constraint\ConstraintInterface;
+use Version\Exception\CollectionIsEmptyException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -38,14 +39,22 @@ class VersionsCollection implements Countable, IteratorAggregate
         return empty($this->versions);
     }
 
-    public function first() : ?Version
+    public function first() : Version
     {
-        return $this->versions[0] ?? null;
+        if (empty($this->versions)) {
+            throw new CollectionIsEmptyException('Invoking first() on an empty collection');
+        }
+
+        return $this->versions[0];
     }
 
-    public function last() : ?Version
+    public function last() : Version
     {
-        return $this->versions[count($this->versions) - 1] ?? null;
+        if (empty($this->versions)) {
+            throw new CollectionIsEmptyException('Invoking last() on an empty collection');
+        }
+
+        return $this->versions[count($this->versions) - 1];
     }
 
     public function getIterator() : Traversable
