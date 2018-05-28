@@ -6,12 +6,13 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+
 matrix:
   include:
     - php: 7.1
-          env:
-            - EXECUTE_CS_CHECK=true
-            - EXECUTE_TEST_COVERALLS=true
+      env:
+        - EXECUTE_CS_CHECK=true
+        - EXECUTE_TEST_COVERALLS=true
     - php: 7.2
 
 install:
