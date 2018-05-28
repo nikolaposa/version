@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 3.0.2 - 2018-05-28
+### Fixed
+- [Lower PHP version requirement](https://github.com/nikolaposa/version/issues/19)
+
 ## 3.0.1 - 2018-05-05
 ### Fixed
 - `VersionsCollection::matching()` fails if all the versions do not satisfy constraint; allow VersionsCollection to be empty
