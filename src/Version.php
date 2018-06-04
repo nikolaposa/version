@@ -189,16 +189,6 @@ class Version implements JsonSerializable
         return $this->getComparator()->compare($this, $version);
     }
 
-    public function isMinor() : bool
-    {
-        return $this->minor > 0;
-    }
-
-    public function isPatch() : bool
-    {
-        return $this->patch > 0;
-    }
-
     public function isPreRelease() : bool
     {
         return !$this->preRelease->isEmpty();

@@ -75,22 +75,4 @@ class VersionComparisonTest extends TestCase
     {
         $this->assertTrue(Version::fromString('1.0.0')->isLessOrEqualTo('1.0.0'));
     }
-
-    /**
-     * @test
-     */
-    public function it_checks_whether_it_is_minor() : void
-    {
-        $this->assertFalse(Version::fromString('2.0.0')->isMinor());
-        $this->assertTrue(Version::fromString('2.1.0')->isMinor());
-    }
-
-    /**
-     * @test
-     */
-    public function it_checks_whether_it_is_patch() : void
-    {
-        $this->assertTrue(Version::fromString('1.2.3')->isPatch());
-        $this->assertFalse(Version::fromString('2.1.0')->isPatch());
-    }
 }

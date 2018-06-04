@@ -308,18 +308,42 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_filters_minor_versions() : void
+    public function it_finds_major_releases() : void
     {
-        $versions = new VersionsCollection(
+        $releases = new VersionsCollection(
             Version::fromString('1.0.0'),
             Version::fromString('1.1.0'),
             Version::fromString('2.0.0'),
-            Version::fromString('2.1.0')
+            Version::fromString('2.1.0'),
+            Version::fromString('3.0.0'),
+            Version::fromString('3.0.1')
         );
 
-        $minorVersions = $versions->filterMinor();
+        $majorReleases = $releases->majorReleases();
 
-        $this->assertThat($minorVersions, new VersionsCollectionIsIdentical([
+        $this->assertThat($majorReleases, new VersionsCollectionIsIdentical([
+            [1, 0, 0, null, null],
+            [2, 0, 0, null, null],
+            [3, 0, 0, null, null],
+        ]));
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_minor_releases() : void
+    {
+        $releases = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.0.0'),
+            Version::fromString('2.1.0'),
+            Version::fromString('2.1.1')
+        );
+
+        $minorReleases = $releases->minorReleases();
+
+        $this->assertThat($minorReleases, new VersionsCollectionIsIdentical([
             [1, 1, 0, null, null],
             [2, 1, 0, null, null],
         ]));
@@ -328,21 +352,43 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_filters_patch_versions() : void
+    public function it_finds_patch_releases() : void
     {
-        $versions = new VersionsCollection(
+        $releases = new VersionsCollection(
             Version::fromString('1.0.0'),
             Version::fromString('1.0.1'),
             Version::fromString('2.0.0'),
             Version::fromString('2.0.1')
         );
 
-        $patchVersions = $versions->filterPatch();
+        $patchReleases = $releases->patchReleases();
 
-        $this->assertThat($patchVersions, new VersionsCollectionIsIdentical([
+        $this->assertThat($patchReleases, new VersionsCollectionIsIdentical([
             [1, 0, 1, null, null],
             [2, 0, 1, null, null],
         ]));
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_latest_major_release() : void
+    {
+        $releases = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.0.0'),
+            Version::fromString('2.1.0'),
+            Version::fromString('3.0.0'),
+            Version::fromString('3.0.1')
+        );
+
+        $latestMajorRelease = $releases
+            ->majorReleases()
+            ->sortedDescending()
+            ->first();
+
+        $this->assertThat($latestMajorRelease, new VersionIsIdentical(3, 0, 0));
     }
 
     /**

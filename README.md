@@ -154,6 +154,9 @@ $versions = $versions->sortedDescending(VersionsCollection::SORT_DESC);
 foreach ($versions as $version) {
     echo (string) $version;
 }
+
+$minorReleases = $versions->minorReleases();
+echo $minorReleases->first(); //1.1.0
 ```
 
 ## Credits
