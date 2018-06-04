@@ -115,7 +115,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return new static(...array_filter(
             $this->versions,
             function (Version $version) {
-                return $version->getMajor() > 0 && $version->getMinor() === 0 && $version->getPatch() === 0;
+                return $version->isMajorRelease();
             }
         ));
     }
@@ -125,7 +125,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return new static(...array_filter(
             $this->versions,
             function (Version $version) {
-                return $version->getMinor() > 0 && $version->getPatch() === 0;
+                return $version->isMinorRelease();
             }
         ));
     }
@@ -135,7 +135,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return new static(...array_filter(
             $this->versions,
             function (Version $version) {
-                return $version->getPatch() > 0;
+                return $version->isPatchRelease();
             }
         ));
     }

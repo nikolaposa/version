@@ -189,6 +189,21 @@ class Version implements JsonSerializable
         return $this->getComparator()->compare($this, $version);
     }
 
+    public function isMajorRelease() : bool
+    {
+        return $this->major > 0 && $this->minor === 0 && $this->patch === 0;
+    }
+
+    public function isMinorRelease() : bool
+    {
+        return $this->minor > 0 && $this->patch === 0;
+    }
+
+    public function isPatchRelease() : bool
+    {
+        return $this->patch > 0;
+    }
+
     public function isPreRelease() : bool
     {
         return !$this->preRelease->isEmpty();
