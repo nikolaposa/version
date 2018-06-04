@@ -308,6 +308,46 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
+    public function it_filters_minor_versions() : void
+    {
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.1.0'),
+            Version::fromString('2.0.0'),
+            Version::fromString('2.1.0')
+        );
+
+        $minorVersions = $versions->filterMinor();
+
+        $this->assertThat($minorVersions, new VersionsCollectionIsIdentical([
+            [1, 1, 0, null, null],
+            [2, 1, 0, null, null],
+        ]));
+    }
+
+    /**
+     * @test
+     */
+    public function it_filters_patch_versions() : void
+    {
+        $versions = new VersionsCollection(
+            Version::fromString('1.0.0'),
+            Version::fromString('1.0.1'),
+            Version::fromString('2.0.0'),
+            Version::fromString('2.0.1')
+        );
+
+        $minorVersions = $versions->filterMinor();
+
+        $this->assertThat($minorVersions, new VersionsCollectionIsIdentical([
+            [1, 0, 1, null, null],
+            [2, 0, 1, null, null],
+        ]));
+    }
+
+    /**
+     * @test
+     */
     public function it_can_be_converted_to_an_array() : void
     {
         $versions = new VersionsCollection(

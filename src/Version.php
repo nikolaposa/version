@@ -122,16 +122,6 @@ class Version implements JsonSerializable
         return $this->build;
     }
 
-    public function isPreRelease() : bool
-    {
-        return !$this->preRelease->isEmpty();
-    }
-
-    public function isBuild() : bool
-    {
-        return !$this->build->isEmpty();
-    }
-
     /**
      * @param Version|string $version
      * @return bool
@@ -199,6 +189,35 @@ class Version implements JsonSerializable
         return $this->getComparator()->compare($this, $version);
     }
 
+    public function isMinor() : bool
+    {
+        return $this->minor > 0;
+    }
+
+    public function isPatch() : bool
+    {
+        return $this->patch > 0;
+    }
+
+    public function isPreRelease() : bool
+    {
+        return !$this->preRelease->isEmpty();
+    }
+
+    /**
+     * @deprecated Use hasBuild() instead
+     * @return bool
+     */
+    public function isBuild() : bool
+    {
+        return !$this->build->isEmpty();
+    }
+
+    public function hasBuild() : bool
+    {
+        return !$this->build->isEmpty();
+    }
+
     public function incrementMajor() : Version
     {
         return static::fromParts($this->major + 1, 0, 0, new NoPreRelease(), new NoBuild());
@@ -252,7 +271,7 @@ class Version implements JsonSerializable
             . '.' . $this->minor
             . '.' . $this->patch
             . ($this->isPreRelease() ? '-' . (string) $this->preRelease : '')
-            . ($this->isBuild() ? '+' . (string) $this->build : '')
+            . ($this->hasBuild() ? '+' . (string) $this->build : '')
         ;
     }
 

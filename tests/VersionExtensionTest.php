@@ -19,6 +19,7 @@ class VersionExtensionTest extends TestCase
     {
         $version = Version::fromString('1.0.0-alpha');
 
+        $this->assertTrue($version->isPreRelease());
         $identifiers = $version->getPreRelease()->getIdentifiers();
         $this->assertCount(1, $identifiers);
         $this->assertSame('alpha', $identifiers[0]);
@@ -45,6 +46,8 @@ class VersionExtensionTest extends TestCase
     {
         $version = Version::fromString('1.0.0+20150919');
 
+        $this->assertTrue($version->hasBuild());
+        $this->assertTrue($version->isBuild());
         $identifiers = $version->getBuild()->getIdentifiers();
         $this->assertCount(1, $identifiers);
         $this->assertSame('20150919', $identifiers[0]);

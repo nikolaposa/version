@@ -110,6 +110,26 @@ class VersionsCollection implements Countable, IteratorAggregate
         ));
     }
 
+    public function filterMinor() : VersionsCollection
+    {
+        return new static(...array_filter(
+            $this->versions,
+            function (Version $version) {
+                return $version->isMinor();
+            }
+        ));
+    }
+
+    public function filterPatch() : VersionsCollection
+    {
+        return new static(...array_filter(
+            $this->versions,
+            function (Version $version) {
+                return $version->isPatch();
+            }
+        ));
+    }
+
     /**
      * @return Version[]
      */
