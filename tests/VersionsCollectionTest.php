@@ -337,9 +337,9 @@ class VersionsCollectionTest extends TestCase
             Version::fromString('2.0.1')
         );
 
-        $minorVersions = $versions->filterMinor();
+        $patchVersions = $versions->filterPatch();
 
-        $this->assertThat($minorVersions, new VersionsCollectionIsIdentical([
+        $this->assertThat($patchVersions, new VersionsCollectionIsIdentical([
             [1, 0, 1, null, null],
             [2, 0, 1, null, null],
         ]));

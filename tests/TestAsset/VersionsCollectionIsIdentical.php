@@ -34,6 +34,10 @@ final class VersionsCollectionIsIdentical extends Constraint
     {
         /* @var $versions VersionsCollection */
 
+        if ($versions->count() !== count($this->isIdenticalConstraints)) {
+            return false;
+        }
+
         foreach ($versions->toArray() as $i => $version) {
             /* @var $version Version */
 
