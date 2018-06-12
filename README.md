@@ -148,12 +148,15 @@ $versions = new VersionsCollection(
 
 echo count($versions); //3
 
-$versions->sort(VersionsCollection::SORT_DESC);
+$versions = $versions->sortedDescending();
 
 //Outputs: 2.3.3, 1.1.0, 1.0.0
 foreach ($versions as $version) {
     echo (string) $version;
 }
+
+$minorReleases = $versions->minorReleases();
+echo $minorReleases->first(); //1.1.0
 ```
 
 ## Credits

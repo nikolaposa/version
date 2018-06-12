@@ -9,6 +9,7 @@ use IteratorAggregate;
 use ArrayIterator;
 use Traversable;
 use Version\Constraint\ConstraintInterface;
+use Version\Exception\CollectionIsEmptyException;
 
 /**
  * @author Nikola Posa <posa.nikola@gmail.com>
@@ -33,11 +34,37 @@ class VersionsCollection implements Countable, IteratorAggregate
         return count($this->versions);
     }
 
+    public function isEmpty() : bool
+    {
+        return empty($this->versions);
+    }
+
+    public function first() : Version
+    {
+        if (empty($this->versions)) {
+            throw new CollectionIsEmptyException('Invoking first() on an empty collection');
+        }
+
+        return $this->versions[0];
+    }
+
+    public function last() : Version
+    {
+        if (empty($this->versions)) {
+            throw new CollectionIsEmptyException('Invoking last() on an empty collection');
+        }
+
+        return $this->versions[count($this->versions) - 1];
+    }
+
     public function getIterator() : Traversable
     {
         return new ArrayIterator($this->versions);
     }
 
+    /**
+     * @deprecated This method will be removed in 4.0.0. Use sorted() instead.
+     */
     public function sort(string $direction = self::SORT_ASC) : void
     {
         usort($this->versions, function (Version $a, Version $b) use ($direction) {
@@ -51,6 +78,28 @@ class VersionsCollection implements Countable, IteratorAggregate
         });
     }
 
+    public function sortedAscending() : VersionsCollection
+    {
+        $versions = $this->versions;
+
+        usort($versions, function (Version $a, Version $b) {
+            return $a->compareTo($b);
+        });
+
+        return new static(...$versions);
+    }
+
+    public function sortedDescending() : VersionsCollection
+    {
+        $versions = $this->versions;
+
+        usort($versions, function (Version $a, Version $b) {
+            return $a->compareTo($b) * -1;
+        });
+
+        return new static(...$versions);
+    }
+
     public function matching(ConstraintInterface $constraint) : VersionsCollection
     {
         return new static(...array_filter(
@@ -59,5 +108,43 @@ class VersionsCollection implements Countable, IteratorAggregate
                 return $version->matches($constraint);
             }
         ));
+    }
+
+    public function majorReleases() : VersionsCollection
+    {
+        return new static(...array_filter(
+            $this->versions,
+            function (Version $version) {
+                return $version->isMajorRelease();
+            }
+        ));
+    }
+
+    public function minorReleases() : VersionsCollection
+    {
+        return new static(...array_filter(
+            $this->versions,
+            function (Version $version) {
+                return $version->isMinorRelease();
+            }
+        ));
+    }
+
+    public function patchReleases() : VersionsCollection
+    {
+        return new static(...array_filter(
+            $this->versions,
+            function (Version $version) {
+                return $version->isPatchRelease();
+            }
+        ));
+    }
+
+    /**
+     * @return Version[]
+     */
+    public function toArray() : array
+    {
+        return $this->versions;
     }
 }
