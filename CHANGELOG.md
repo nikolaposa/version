@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased][Unreleased]
 ### Added
-- [17: Align with Composer's parsing of a version string](https://github.com/nikolaposa/version/pull/17)
+- Support parsing Composer version strings
 - Add `VersionsCollection::isEmpty()` method
 - Add `VersionsCollection::toArray()` method
 - Add immutable `VersionsCollection::sortedAscending()` and `VersionsCollection::sortedDescending()` methods; mark `VersionsCollection::sort()` as deprecated
