@@ -1,6 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased][Unreleased]
+### Added
+- [17: Align with Composer's parsing of a version string](https://github.com/nikolaposa/version/pull/17)
+- Add `VersionsCollection::isEmpty()` method
+- Add `VersionsCollection::toArray()` method
+- Add immutable `VersionsCollection::sortedAscending()` and `VersionsCollection::sortedDescending()` methods; mark `VersionsCollection::sort()` as deprecated
+- Add `VersionsCollection::first()` method
+- Add `VersionsCollection::last()` method
+- Add `VersionsCollection::majorReleases()` method
+- Add `VersionsCollection::minorReleases()` method
+- Add `VersionsCollection::patchReleases()` method
+
 ## 3.0.2 - 2018-05-28
 ### Fixed
 - [Lower PHP version requirement](https://github.com/nikolaposa/version/issues/19)
@@ -75,4 +87,4 @@ All notable changes to this project will be documented in this file.
 This release is abandoned, please consider upgrading to 2.x.
 
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/3.0.1...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/3.0.2...HEAD
