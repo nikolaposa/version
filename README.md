@@ -75,7 +75,7 @@ var_dump($v->matches('>=2.0.0 <2.3.0')); //bool(true)
 var_dump($v->matches('>=2.0.0 <2.1.0 || 2.2.0')); //bool(true)
 ```
 
-### Modifying version
+### Version operations
 
 ```php
 use Version\Version;
