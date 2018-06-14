@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased][Unreleased]
+## 3.1.0 - 2018-06-14
 ### Added
 - Support for parsing Composer version strings
 - Add `VersionsCollection::isEmpty()` method
