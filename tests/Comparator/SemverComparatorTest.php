@@ -57,6 +57,7 @@ class SemverComparatorTest extends TestCase
             ['1.0.0-rc.1.1', '1.0.0-rc.1', 1],
             ['1.0.0', '1.0.0-rc.1', 1],
             ['1.0.0-alpha+20150919', '1.0.0-alpha+exp.sha.5114f85', 0],
+            ['1.0.0-b1', '1.0.0-a', 1],
         ];
     }
 }

@@ -38,14 +38,14 @@ class PreRelease extends BaseExtension
 
     private function compareIdentifiers($identifier1, $identifier2) : int
     {
-        $pr1IsAlpha = ctype_alpha($identifier1);
-        $pr2IsAlpha = ctype_alpha($identifier2);
+        $identifier1IsNumber = ctype_digit($identifier1);
+        $identifier2IsNumber = ctype_digit($identifier2);
 
-        if ($pr1IsAlpha xor $pr2IsAlpha) {
-            return $pr1IsAlpha ? 1 : -1;
+        if ($identifier1IsNumber xor $identifier2IsNumber) {
+            return $identifier1IsNumber ? -1 : 1;
         }
 
-        if (ctype_digit($identifier1) && ctype_digit($identifier2)) {
+        if ($identifier1IsNumber && $identifier2IsNumber) {
             return (int) $identifier1 - (int) $identifier2;
         }
 
