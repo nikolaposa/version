@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased][Unreleased]
+### Fixed
+- [20: Fix comparison when identifier of pre release contains both letters and numbers](https://github.com/nikolaposa/version/pull/20)
+
 ## 3.1.0 - 2018-06-14
 ### Added
 - Support for parsing Composer version strings
