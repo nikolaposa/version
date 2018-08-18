@@ -91,4 +91,4 @@ All notable changes to this project will be documented in this file.
 This release is abandoned, please consider upgrading to 2.x.
 
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/3.0.2...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/3.1.0...HEAD
