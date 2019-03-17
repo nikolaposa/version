@@ -136,6 +136,27 @@ class VersionTest extends TestCase
     /**
      * @test
      */
+    public function it_can_be_serialized_and_deserialized() : void
+    {
+        $version = Version::fromParts(
+            1,
+            0,
+            0,
+            PreRelease::fromIdentifiersString('beta'),
+            Build::fromIdentifiersString('123')
+        );
+
+        $serializedVersion = serialize($version);
+
+        /** @var Version $deserializedVersion */
+        $deserializedVersion = unserialize($serializedVersion);
+
+        $this->assertTrue($deserializedVersion->isEqualTo($version));
+    }
+
+    /**
+     * @test
+     */
     public function it_raises_exception_when_created_with_invalid_major_version() : void
     {
         try {
