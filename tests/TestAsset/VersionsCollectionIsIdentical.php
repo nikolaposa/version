@@ -10,9 +10,7 @@ use Version\VersionsCollection;
 
 final class VersionsCollectionIsIdentical extends Constraint
 {
-    /**
-     * @var VersionIsIdentical[]
-     */
+    /** @var VersionIsIdentical[] */
     private $isIdenticalConstraints;
 
     public function __construct(array $expectedVersions)

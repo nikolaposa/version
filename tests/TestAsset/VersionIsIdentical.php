@@ -11,9 +11,7 @@ use Version\Version;
 
 final class VersionIsIdentical extends Constraint
 {
-    /**
-     * @var Version
-     */
+    /** @var Version */
     private $expectedVersion;
 
     public function __construct(

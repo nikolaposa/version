@@ -15,34 +15,21 @@ use Version\Comparator\SemverComparator;
 use Version\Constraint\ConstraintInterface;
 use Version\Extension\PreRelease;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class Version implements JsonSerializable
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $major;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $minor;
 
-    /**
-     * @var int
-     */
+    /**  @var int */
     protected $patch;
 
-    /**
-     * @var PreRelease
-     */
+    /** @var PreRelease */
     protected $preRelease;
 
-    /**
-     * @var Build
-     */
+    /** @var Build */
     protected $build;
 
     protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
@@ -72,8 +59,10 @@ class Version implements JsonSerializable
 
     /**
      * @param string $versionString
-     * @return Version
+     *
      * @throws InvalidVersionStringException
+     *
+     * @return Version
      */
     public static function fromString(string $versionString) : Version
     {
@@ -275,8 +264,8 @@ class Version implements JsonSerializable
             $this->major
             . '.' . $this->minor
             . '.' . $this->patch
-            . ($this->isPreRelease() ? '-' . (string) $this->preRelease : '')
-            . ($this->hasBuild() ? '+' . (string) $this->build : '')
+            . ($this->isPreRelease() ? '-' . $this->preRelease : '')
+            . ($this->hasBuild() ? '+' . $this->build : '')
         ;
     }
 

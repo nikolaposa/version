@@ -9,9 +9,6 @@ use Version\Constraint\ComparisonConstraint;
 use Version\Constraint\CompositeConstraint;
 use Version\Exception\InvalidComparisonConstraintStringException;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class ComparisonConstraintParsingTest extends TestCase
 {
     /**

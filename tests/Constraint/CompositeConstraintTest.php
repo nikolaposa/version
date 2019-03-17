@@ -10,9 +10,6 @@ use Version\Constraint\ComparisonConstraint;
 use Version\Version;
 use Version\Exception\InvalidCompositeConstraintException;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class CompositeConstraintTest extends TestCase
 {
     /**

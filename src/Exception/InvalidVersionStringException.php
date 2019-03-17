@@ -6,14 +6,9 @@ namespace Version\Exception;
 
 use DomainException;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class InvalidVersionStringException extends DomainException implements ExceptionInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $versionString;
 
     public static function forVersionString(string $versionString) : self

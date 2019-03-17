@@ -9,9 +9,6 @@ use Version\Constraint\ComparisonConstraint;
 use Version\Version;
 use Version\Exception\InvalidComparisonConstraintException;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class ComparisonConstraintTest extends TestCase
 {
     /**

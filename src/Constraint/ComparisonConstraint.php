@@ -8,11 +8,6 @@ use ReflectionClass;
 use Version\Version;
 use Version\Exception\InvalidComparisonConstraintException;
 
-/** @noinspection PhpInconsistentReturnPointsInspection */
-
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class ComparisonConstraint implements ConstraintInterface
 {
     public const OPERATOR_EQ = '=';
@@ -22,14 +17,10 @@ class ComparisonConstraint implements ConstraintInterface
     public const OPERATOR_LT = '<';
     public const OPERATOR_LTE = '<=';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $operator;
 
-    /**
-     * @var Version
-     */
+    /** @var Version */
     protected $operand;
 
     public function __construct(string $operator, Version $operand)

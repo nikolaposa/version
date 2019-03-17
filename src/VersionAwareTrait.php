@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace Version;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 trait VersionAwareTrait
 {
-    /**
-     * @var Version
-     */
+    /** @var Version */
     protected $version;
 
     public function setVersion(Version $version) : void

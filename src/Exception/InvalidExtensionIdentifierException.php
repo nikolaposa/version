@@ -8,9 +8,6 @@ use DomainException;
 use ReflectionClass;
 use Version\Extension\BaseExtension;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class InvalidExtensionIdentifierException extends DomainException implements ExceptionInterface
 {
     public static function forExtensionIdentifier(BaseExtension $extension, string $identifier) : self

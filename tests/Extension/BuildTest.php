@@ -7,9 +7,6 @@ namespace Version\Tests\Extension;
 use Version\Extension\BaseExtension;
 use Version\Extension\Build;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class BuildTest extends BaseExtensionTest
 {
     protected function createExtension($identifiers) : BaseExtension

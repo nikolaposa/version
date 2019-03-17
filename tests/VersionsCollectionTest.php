@@ -13,9 +13,6 @@ use Version\VersionsCollection;
 use Version\Version;
 use Version\Constraint\ComparisonConstraint;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class VersionsCollectionTest extends TestCase
 {
     /**

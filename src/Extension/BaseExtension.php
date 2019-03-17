@@ -10,9 +10,7 @@ abstract class BaseExtension
 {
     protected const IDENTIFIERS_SEPARATOR = '.';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $identifiers;
 
     protected function __construct(string ...$identifiers)

@@ -8,21 +8,14 @@ use Version\Exception\ExceptionInterface;
 use Version\Exception\InvalidComparisonConstraintStringException;
 use Version\Version;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class ComparisonConstraintParser
 {
     public const OPERATOR_OR = '||';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $constraintString;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $constraintParts = [];
 
     /**

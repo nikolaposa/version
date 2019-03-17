@@ -7,9 +7,6 @@ namespace Version\Tests;
 use PHPUnit\Framework\TestCase;
 use Version\Version;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class VersionComparisonTest extends TestCase
 {
     /**

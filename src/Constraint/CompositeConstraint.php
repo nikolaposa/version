@@ -7,22 +7,15 @@ namespace Version\Constraint;
 use Version\Version;
 use Version\Exception\InvalidCompositeConstraintException;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class CompositeConstraint implements ConstraintInterface
 {
     public const OPERATOR_AND = 'AND';
     public const OPERATOR_OR = 'OR';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $operator;
 
-    /**
-     * @var ConstraintInterface[]
-     */
+    /** @var ConstraintInterface[] */
     protected $constraints;
 
     public function __construct(string $operator, ConstraintInterface $constraint, ConstraintInterface ...$constraints)

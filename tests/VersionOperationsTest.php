@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Version;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class VersionOperationsTest extends TestCase
 {
     /**

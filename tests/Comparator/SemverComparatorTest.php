@@ -9,14 +9,9 @@ use Version\Comparator\ComparatorInterface;
 use Version\Comparator\SemverComparator;
 use Version\Version;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class SemverComparatorTest extends TestCase
 {
-    /**
-     * @var ComparatorInterface
-     */
+    /** @var ComparatorInterface */
     protected $comparator;
 
     protected function setUp()

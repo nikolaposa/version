@@ -6,9 +6,6 @@ namespace Version\Exception;
 
 use DomainException;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class InvalidCompositeConstraintException extends DomainException implements ExceptionInterface
 {
     public static function forUnsupportedOperator(string $operator) : self

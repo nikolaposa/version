@@ -14,9 +14,6 @@ use Version\Extension\PreRelease;
 use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Version;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class VersionTest extends TestCase
 {
     /**
@@ -24,7 +21,13 @@ class VersionTest extends TestCase
      */
     public function it_is_created_from_parts() : void
     {
-        $version = Version::fromParts(1, 0, 0, PreRelease::fromIdentifiersString('beta'), Build::fromIdentifiersString('11'));
+        $version = Version::fromParts(
+            1,
+            0,
+            0,
+            PreRelease::fromIdentifiersString('beta'),
+            Build::fromIdentifiersString('11')
+        );
 
         $this->assertThat($version, new VersionIsIdentical(1, 0, 0, 'beta', '11'));
     }
@@ -67,7 +70,7 @@ class VersionTest extends TestCase
      * @param string $versionString
      * @param Version $version
      */
-    public function it_can_be_converted_to_string(Version $version, string $versionString) : void
+    public function it_can_be_casted_to_string(Version $version, string $versionString) : void
     {
         $this->assertSame($versionString, (string) $version);
     }

@@ -6,9 +6,6 @@ namespace Version\Exception;
 
 use DomainException;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class InvalidVersionException extends DomainException implements ExceptionInterface
 {
     public static function forNumber(string $name, int $value) : self

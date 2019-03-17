@@ -11,17 +11,12 @@ use Traversable;
 use Version\Constraint\ConstraintInterface;
 use Version\Exception\CollectionIsEmptyException;
 
-/**
- * @author Nikola Posa <posa.nikola@gmail.com>
- */
 class VersionsCollection implements Countable, IteratorAggregate
 {
     public const SORT_ASC = 'ASC';
     public const SORT_DESC = 'DESC';
 
-    /**
-     * @var Version[]
-     */
+    /** @var Version[] */
     protected $versions;
 
     public function __construct(Version ...$versions)
