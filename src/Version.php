@@ -33,7 +33,7 @@ class Version implements JsonSerializable
     protected $build;
 
     /** @var ComparatorInterface */
-    private static $comparator;
+    protected static $comparator;
 
     protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
     {
@@ -295,15 +295,15 @@ class Version implements JsonSerializable
 
     public static function setComparator(?ComparatorInterface $comparator) : void
     {
-        self::$comparator = $comparator;
+        static::$comparator = $comparator;
     }
 
     protected function getComparator() : ComparatorInterface
     {
-        if (null === self::$comparator) {
-            self::$comparator = new SemverComparator();
+        if (null === static::$comparator) {
+            static::$comparator = new SemverComparator();
         }
 
-        return self::$comparator;
+        return static::$comparator;
     }
 }
