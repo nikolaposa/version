@@ -17,6 +17,9 @@ use Version\Extension\PreRelease;
 
 class Version implements JsonSerializable
 {
+    /** @var ComparatorInterface */
+    private static $comparator;
+
     /** @var int */
     protected $major;
 
@@ -31,6 +34,11 @@ class Version implements JsonSerializable
 
     /** @var Build */
     protected $build;
+
+    public static function setComparator(?ComparatorInterface $comparator) : void
+    {
+        self::$comparator = $comparator;
+    }
 
     protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
     {
@@ -292,12 +300,10 @@ class Version implements JsonSerializable
 
     protected function getComparator() : ComparatorInterface
     {
-        static $comparator = null;
-
-        if (null === $comparator) {
-            $comparator = new SemverComparator();
+        if (null === self::$comparator) {
+            self::$comparator = new SemverComparator();
         }
 
-        return $comparator;
+        return self::$comparator;
     }
 }

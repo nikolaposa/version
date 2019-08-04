@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Version\Comparator\ComparatorInterface;
 use Version\Exception\InvalidVersionException;
 use Version\Exception\InvalidVersionStringException;
 use Version\Extension\Build;
@@ -220,5 +221,26 @@ class VersionTest extends TestCase
             'tooManySubVersions' => ['1.5.2.4.4'],
             'leadingZeroIsInvalid' => ['1.05.2'],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_custom_comparator() : void
+    {
+        Version::setComparator(new class implements ComparatorInterface {
+            public function compare(Version $version1, Version $version2) : int
+            {
+                return 1;
+            }
+        });
+
+        try {
+            $version = Version::fromParts(1);
+            $this->assertSame(1, $version->compareTo($version));
+        } finally {
+            // reset comparator
+            Version::setComparator(null);
+        }
     }
 }
