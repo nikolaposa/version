@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased][Unreleased]
+### Added
+- [23: Allow setting custom comparison strategy](https://github.com/nikolaposa/version/pull/23)
+
 ### Fixed
 - [20: Fix comparison when identifier of pre release contains both letters and numbers](https://github.com/nikolaposa/version/pull/20)
 
