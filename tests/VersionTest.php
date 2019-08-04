@@ -226,7 +226,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_set_custom_comparator() : void
+    public function it_allows_setting_custom_comparator() : void
     {
         Version::setComparator(new class implements ComparatorInterface {
             public function compare(Version $version1, Version $version2) : int
