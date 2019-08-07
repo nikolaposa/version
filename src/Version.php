@@ -231,7 +231,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param PreRelease|string $preRelease
+     * @param PreRelease|string|null $preRelease
      * @return Version
      */
     public function withPreRelease($preRelease) : Version
@@ -244,7 +244,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param Build|string $build
+     * @param Build|string|null $build
      * @return Version
      */
     public function withBuild($build) : Version
