@@ -1,12 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased][Unreleased]
+## 3.2.0 - 2019-08-11
 ### Added
 - [23: Allow setting custom comparison strategy](https://github.com/nikolaposa/version/pull/23)
 
 ### Fixed
 - [20: Fix comparison when identifier of pre release contains both letters and numbers](https://github.com/nikolaposa/version/pull/20)
+- [24: Fix docblocks for withPreRelease() and withBuild() methods](https://github.com/nikolaposa/version/pull/24)
 
 ## 3.1.0 - 2018-06-14
 ### Added
