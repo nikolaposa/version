@@ -32,7 +32,7 @@ class Version implements JsonSerializable
     /** @var Build */
     protected $build;
 
-    /** @var ComparatorInterface */
+    /** @var ComparatorInterface|null */
     protected static $comparator;
 
     protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
