@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - PHPUnit 8 is now the minimum required version
 
+### Removed
+- `VersionAwareInterface`
+- `VersionAwareTrait`
+
 ## 3.2.0 - 2019-08-11
 ### Added
 - [23: Allow setting custom comparison strategy](https://github.com/nikolaposa/version/pull/23)
