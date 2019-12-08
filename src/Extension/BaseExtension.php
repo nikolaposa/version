@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Version\Extension;
 
-use Version\Exception\InvalidExtensionIdentifierException;
+use Version\Exception\InvalidExtensionIdentifier;
 
 abstract class BaseExtension
 {
@@ -24,8 +24,8 @@ abstract class BaseExtension
 
     /**
      * @param string $identifier
-     * @throws InvalidExtensionIdentifierException
      * @return void
+     * @throws InvalidExtensionIdentifier
      */
     abstract protected function validate(string $identifier): void;
 

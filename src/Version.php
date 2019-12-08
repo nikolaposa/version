@@ -8,8 +8,8 @@ use JsonSerializable;
 use Version\Extension\Build;
 use Version\Extension\NoBuild;
 use Version\Extension\NoPreRelease;
-use Version\Exception\InvalidVersionException;
-use Version\Exception\InvalidVersionStringException;
+use Version\Exception\InvalidVersion;
+use Version\Exception\InvalidVersionString;
 use Version\Comparison\Comparator;
 use Version\Comparison\SemverComparator;
 use Version\Comparison\Constraint\Constraint;
@@ -51,7 +51,7 @@ class Version implements JsonSerializable
     protected function validateNumber(string $name, int $value): void
     {
         if ($value < 0) {
-            throw InvalidVersionException::forNumber($name, $value);
+            throw InvalidVersion::negativeNumber($name, $value);
         }
     }
 
@@ -63,9 +63,9 @@ class Version implements JsonSerializable
     /**
      * @param string $versionString
      *
-     * @throws InvalidVersionStringException
-     *
      * @return Version
+     * @throws InvalidVersionString
+     *
      */
     public static function fromString(string $versionString): Version
     {
@@ -79,7 +79,7 @@ class Version implements JsonSerializable
             $versionString,
             $parts
         )) {
-            throw InvalidVersionStringException::forVersionString($versionString);
+            throw InvalidVersionString::notParsable($versionString);
         }
 
         [$major, $minor, $patch] = explode('.', $parts['core']);

@@ -7,7 +7,7 @@ namespace Version\Tests\Comparison\Constraint;
 use PHPUnit\Framework\TestCase;
 use Version\Comparison\Constraint\OperatorConstraint;
 use Version\Comparison\Constraint\CompositeConstraint;
-use Version\Exception\InvalidConstraintStringException;
+use Version\Comparison\Exception\InvalidConstraintString;
 
 class OperatorConstraintParsingTest extends TestCase
 {
@@ -91,8 +91,8 @@ class OperatorConstraintParsingTest extends TestCase
             OperatorConstraint::fromString('  ');
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidConstraintStringException $ex) {
-            $this->assertSame('Constraint string must not be empty', $ex->getMessage());
+        } catch (InvalidConstraintString $ex) {
+            $this->assertSame('Comparision constraint string must not be empty', $ex->getMessage());
         }
     }
 
@@ -105,8 +105,8 @@ class OperatorConstraintParsingTest extends TestCase
             OperatorConstraint::fromString('invalid');
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidConstraintStringException $ex) {
-            $this->assertSame("Constraint string: 'invalid' seems to be invalid and it cannot be parsed", $ex->getMessage());
+        } catch (InvalidConstraintString $ex) {
+            $this->assertSame("Comparision constraint string: 'invalid' is not valid and cannot be parsed", $ex->getMessage());
         }
     }
 
@@ -119,8 +119,8 @@ class OperatorConstraintParsingTest extends TestCase
             OperatorConstraint::fromString('"100');
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidConstraintStringException $ex) {
-            $this->assertSame("Constraint string: '\"100' seems to be invalid and it cannot be parsed", $ex->getMessage());
+        } catch (InvalidConstraintString $ex) {
+            $this->assertSame("Comparision constraint string: '\"100' is not valid and cannot be parsed", $ex->getMessage());
         }
     }
 
@@ -133,8 +133,8 @@ class OperatorConstraintParsingTest extends TestCase
             OperatorConstraint::fromString('>100');
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidConstraintStringException $ex) {
-            $this->assertSame("Constraint string: '>100' seems to be invalid and it cannot be parsed", $ex->getMessage());
+        } catch (InvalidConstraintString $ex) {
+            $this->assertSame("Comparision constraint string: '>100' is not valid and cannot be parsed", $ex->getMessage());
         }
     }
 
@@ -147,8 +147,8 @@ class OperatorConstraintParsingTest extends TestCase
             OperatorConstraint::fromString('>=1.0.0 <1.1.0 ||');
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidConstraintStringException $ex) {
-            $this->assertSame("Constraint string: '>=1.0.0 <1.1.0 ||' seems to be invalid and it cannot be parsed", $ex->getMessage());
+        } catch (InvalidConstraintString $ex) {
+            $this->assertSame("Comparision constraint string: '>=1.0.0 <1.1.0 ||' is not valid and cannot be parsed", $ex->getMessage());
         }
     }
 

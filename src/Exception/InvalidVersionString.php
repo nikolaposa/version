@@ -6,12 +6,12 @@ namespace Version\Exception;
 
 use DomainException;
 
-class InvalidVersionStringException extends DomainException implements ExceptionInterface
+class InvalidVersionString extends DomainException implements VersionException
 {
     /** @var string */
     protected $versionString;
 
-    public static function forVersionString(string $versionString): self
+    public static function notParsable(string $versionString): self
     {
         $exception = new self(sprintf("Version string '%s' is not valid and cannot be parsed", $versionString));
         $exception->versionString = $versionString;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Version\Comparison\Constraint;
 
-use Version\Exception\ExceptionInterface;
-use Version\Exception\InvalidConstraintStringException;
+use Version\Exception\VersionException;
+use Version\Comparison\Exception\InvalidConstraintString;
 use Version\Version;
 
 class OperatorConstraintParser
@@ -27,7 +27,7 @@ class OperatorConstraintParser
         $constraintString = trim($constraintString);
 
         if ('' === $constraintString) {
-            throw InvalidConstraintStringException::forEmptyString();
+            throw InvalidConstraintString::empty();
         }
 
         $this->constraintString = $constraintString;
@@ -65,7 +65,7 @@ class OperatorConstraintParser
                 $operator ?: OperatorConstraint::OPERATOR_EQ,
                 Version::fromString($operandString)
             );
-        } catch (ExceptionInterface $ex) {
+        } catch (VersionException $ex) {
             $this->error();
         }
     }
@@ -115,6 +115,6 @@ class OperatorConstraintParser
 
     protected function error(): void
     {
-        throw InvalidConstraintStringException::forUnparsableString($this->constraintString);
+        throw InvalidConstraintString::notParsable($this->constraintString);
     }
 }

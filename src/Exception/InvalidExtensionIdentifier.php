@@ -8,7 +8,7 @@ use DomainException;
 use ReflectionClass;
 use Version\Extension\BaseExtension;
 
-class InvalidExtensionIdentifierException extends DomainException implements ExceptionInterface
+class InvalidExtensionIdentifier extends DomainException implements VersionException
 {
     public static function forExtensionIdentifier(BaseExtension $extension, string $identifier): self
     {

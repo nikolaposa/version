@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Version\Exception\CollectionIsEmptyException;
-use Version\Exception\InvalidVersionStringException;
+use Version\Exception\InvalidVersionString;
 use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Tests\TestAsset\VersionsCollectionIsIdentical;
 use Version\VersionsCollection;
@@ -61,7 +60,7 @@ class VersionsCollectionTest extends TestCase
             );
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidVersionStringException $ex) {
+        } catch (InvalidVersionString $ex) {
             $this->assertSame('invalid', $ex->getVersionString());
         }
     }
@@ -110,22 +109,6 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_getting_first_item_of_empty_collection(): void
-    {
-        $versions = new VersionsCollection();
-
-        try {
-            $versions->first();
-
-            $this->fail('Exception should have been raised');
-        } catch (CollectionIsEmptyException $ex) {
-            $this->assertSame('Invoking first() on an empty collection', $ex->getMessage());
-        }
-    }
-
-    /**
-     * @test
-     */
     public function it_gets_last_version(): void
     {
         $versions = new VersionsCollection(
@@ -143,17 +126,12 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_getting_last_item_of_empty_collection(): void
+    public function it_doesnt_return_first_last_versions_if_empty(): void
     {
         $versions = new VersionsCollection();
 
-        try {
-            $versions->last();
-
-            $this->fail('Exception should have been raised');
-        } catch (CollectionIsEmptyException $ex) {
-            $this->assertSame('Invoking last() on an empty collection', $ex->getMessage());
-        }
+        $this->assertNull($versions->first());
+        $this->assertNull($versions->last());
     }
 
     /**
@@ -215,32 +193,6 @@ class VersionsCollectionTest extends TestCase
             '2.3.3',
             '1.1.0',
             '1.0.0',
-        ];
-
-        foreach ($versions as $key => $version) {
-            $this->assertSame($expectedOrder[$key], (string) $version);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_be_sorted_via_deprecated_sort_method(): void
-    {
-        $versions = new VersionsCollection(
-            Version::fromString('2.3.3'),
-            Version::fromString('1.0.0'),
-            Version::fromString('1.1.0'),
-            Version::fromString('2.3.3-beta')
-        );
-
-        $versions->sort();
-
-        $expectedOrder = [
-            '1.0.0',
-            '1.1.0',
-            '2.3.3-beta',
-            '2.3.3',
         ];
 
         foreach ($versions as $key => $version) {

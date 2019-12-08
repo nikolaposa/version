@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Version\Comparison\Constraint;
 
 use Version\Version;
-use Version\Exception\InvalidCompositeConstraintException;
+use Version\Comparison\Exception\InvalidCompositeConstraint;
 
 class CompositeConstraint implements Constraint
 {
@@ -21,7 +21,7 @@ class CompositeConstraint implements Constraint
     public function __construct(string $operator, Constraint $constraint, Constraint ...$constraints)
     {
         if (! in_array($operator, [self::OPERATOR_AND, self::OPERATOR_OR], true)) {
-            throw InvalidCompositeConstraintException::forUnsupportedOperator($operator);
+            throw InvalidCompositeConstraint::unsupportedOperator($operator);
         }
 
         $this->operator = $operator;

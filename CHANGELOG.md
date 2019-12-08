@@ -12,10 +12,14 @@ All notable changes to this project will be documented in this file.
 - Rename `Version\Comparison\Constraint\ComparisonConstraintParser` to `Version\Comparison\Constraint\OperatorConstraintParser`
 - Rename `Version\Exception\InvalidComparisionConstraintStringException` to `Version\Exception\InvalidConstraintStringException`
 - Rename `Version\Exception\InvalidComparisonConstraintException` to `Version\Exception\InvalidOperatorConstraintException`
+- Rename component-level `Version\Exception\ExceptionInterface` to `Version\Exception\VersionException`
+- Move comparision-related exception into `Version\Comparision\Exception` namespace
+- Remove `-Exception` suffix from all concrete exception names
 
 ### Removed
-- `VersionAwareInterface`
-- `VersionAwareTrait`
+- `Version\VersionAwareInterface`
+- `Version\VersionAwareTrait`
+- `Version\Exception\CollectionIsEmptyException`
 
 ## 3.2.0 - 2019-08-11
 ### Added

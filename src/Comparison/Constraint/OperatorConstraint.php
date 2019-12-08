@@ -6,7 +6,7 @@ namespace Version\Comparison\Constraint;
 
 use ReflectionClass;
 use Version\Version;
-use Version\Exception\InvalidOperatorConstraintException;
+use Version\Comparison\Exception\InvalidOperatorConstraint;
 
 class OperatorConstraint implements Constraint
 {
@@ -83,7 +83,7 @@ class OperatorConstraint implements Constraint
         }
 
         if (! in_array($operator, $validOperators, true)) {
-            throw InvalidOperatorConstraintException::forUnsupportedOperator($operator);
+            throw InvalidOperatorConstraint::unsupportedOperator($operator);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Version\Tests\Comparison\Constraint;
 use PHPUnit\Framework\TestCase;
 use Version\Comparison\Constraint\OperatorConstraint;
 use Version\Version;
-use Version\Exception\InvalidOperatorConstraintException;
+use Version\Comparison\Exception\InvalidOperatorConstraint;
 
 class OperatorConstraintTest extends TestCase
 {
@@ -33,7 +33,7 @@ class OperatorConstraintTest extends TestCase
             new OperatorConstraint('invalid', Version::fromString('1.0.0'));
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidOperatorConstraintException $ex) {
+        } catch (InvalidOperatorConstraint $ex) {
             $this->assertSame('Unsupported constraint operator: invalid', $ex->getMessage());
         }
     }

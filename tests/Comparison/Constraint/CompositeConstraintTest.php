@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Version\Comparison\Constraint\CompositeConstraint;
 use Version\Comparison\Constraint\OperatorConstraint;
 use Version\Version;
-use Version\Exception\InvalidCompositeConstraintException;
+use Version\Comparison\Exception\InvalidCompositeConstraint;
 
 class CompositeConstraintTest extends TestCase
 {
@@ -64,7 +64,7 @@ class CompositeConstraintTest extends TestCase
             ]);
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidCompositeConstraintException $ex) {
+        } catch (InvalidCompositeConstraint $ex) {
             $this->assertSame('Unsupported composite constraint operator: invalid', $ex->getMessage());
         }
     }

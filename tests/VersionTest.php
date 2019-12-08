@@ -6,8 +6,8 @@ namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Version\Comparison\Comparator;
-use Version\Exception\InvalidVersionException;
-use Version\Exception\InvalidVersionStringException;
+use Version\Exception\InvalidVersion;
+use Version\Exception\InvalidVersionString;
 use Version\Extension\Build;
 use Version\Extension\NoBuild;
 use Version\Extension\NoPreRelease;
@@ -164,8 +164,8 @@ class VersionTest extends TestCase
             Version::fromParts(-10, 0, 0, new NoPreRelease(), new NoBuild());
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidVersionException $ex) {
-            $this->assertSame('Major version must be non-negative integer, -10 given', $ex->getMessage());
+        } catch (InvalidVersion $ex) {
+            $this->assertSame('Major version must be positive integer, -10 given', $ex->getMessage());
         }
     }
 
@@ -178,8 +178,8 @@ class VersionTest extends TestCase
             Version::fromParts(0, -5, 1, new NoPreRelease(), new NoBuild());
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidVersionException $ex) {
-            $this->assertSame('Minor version must be non-negative integer, -5 given', $ex->getMessage());
+        } catch (InvalidVersion $ex) {
+            $this->assertSame('Minor version must be positive integer, -5 given', $ex->getMessage());
         }
     }
 
@@ -192,8 +192,8 @@ class VersionTest extends TestCase
             Version::fromParts(2, 1, -1, new NoPreRelease(), new NoBuild());
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidVersionException $ex) {
-            $this->assertSame('Patch version must be non-negative integer, -1 given', $ex->getMessage());
+        } catch (InvalidVersion $ex) {
+            $this->assertSame('Patch version must be positive integer, -1 given', $ex->getMessage());
         }
     }
 
@@ -209,7 +209,7 @@ class VersionTest extends TestCase
             Version::fromString($invalidVersion);
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidVersionStringException $ex) {
+        } catch (InvalidVersionString $ex) {
             $this->assertSame("Version string '$invalidVersion' is not valid and cannot be parsed", $ex->getMessage());
             $this->assertSame($invalidVersion, $ex->getVersionString());
         }
