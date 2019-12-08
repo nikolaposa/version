@@ -10,7 +10,7 @@ use ArrayIterator;
 use Traversable;
 use Version\Comparison\Constraint\Constraint;
 
-class VersionsCollection implements Countable, IteratorAggregate
+class VersionCollection implements Countable, IteratorAggregate
 {
     public const SORT_ASC = 'ASC';
     public const SORT_DESC = 'DESC';
@@ -48,7 +48,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return new ArrayIterator($this->versions);
     }
 
-    public function sortedAscending(): VersionsCollection
+    public function sortedAscending(): VersionCollection
     {
         $versions = $this->versions;
 
@@ -59,7 +59,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return new static(...$versions);
     }
 
-    public function sortedDescending(): VersionsCollection
+    public function sortedDescending(): VersionCollection
     {
         $versions = $this->versions;
 
@@ -70,7 +70,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return new static(...$versions);
     }
 
-    public function matching(Constraint $constraint): VersionsCollection
+    public function matching(Constraint $constraint): VersionCollection
     {
         return new static(...array_filter(
             $this->versions,
@@ -80,7 +80,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         ));
     }
 
-    public function majorReleases(): VersionsCollection
+    public function majorReleases(): VersionCollection
     {
         return new static(...array_filter(
             $this->versions,
@@ -90,7 +90,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         ));
     }
 
-    public function minorReleases(): VersionsCollection
+    public function minorReleases(): VersionCollection
     {
         return new static(...array_filter(
             $this->versions,
@@ -100,7 +100,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         ));
     }
 
-    public function patchReleases(): VersionsCollection
+    public function patchReleases(): VersionCollection
     {
         return new static(...array_filter(
             $this->versions,

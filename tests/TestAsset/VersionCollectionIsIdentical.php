@@ -6,9 +6,9 @@ namespace Version\Tests\TestAsset;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use Version\Version;
-use Version\VersionsCollection;
+use Version\VersionCollection;
 
-final class VersionsCollectionIsIdentical extends Constraint
+final class VersionCollectionIsIdentical extends Constraint
 {
     /** @var VersionIsIdentical[] */
     private $isIdenticalConstraints;
@@ -28,7 +28,7 @@ final class VersionsCollectionIsIdentical extends Constraint
 
     protected function matches($versions): bool
     {
-        /* @var $versions VersionsCollection */
+        /* @var $versions VersionCollection */
 
         if ($versions->count() !== count($this->isIdenticalConstraints)) {
             return false;
