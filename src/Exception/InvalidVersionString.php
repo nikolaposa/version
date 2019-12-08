@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Version\Exception;
 
-use DomainException;
+use InvalidArgumentException;
 
-class InvalidVersionString extends DomainException implements VersionException
+class InvalidVersionString extends InvalidArgumentException implements VersionException
 {
     /** @var string */
     protected $versionString;

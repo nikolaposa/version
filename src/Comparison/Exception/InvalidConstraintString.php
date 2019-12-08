@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Version\Comparison\Exception;
 
-use DomainException;
+use InvalidArgumentException;
 use Version\Exception\VersionException;
 
-class InvalidConstraintString extends DomainException implements VersionException
+class InvalidConstraintString extends InvalidArgumentException implements VersionException
 {
     public static function empty(): self
     {
