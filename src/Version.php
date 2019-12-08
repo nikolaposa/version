@@ -194,15 +194,6 @@ class Version implements JsonSerializable
         return !$this->preRelease->isEmpty();
     }
 
-    /**
-     * @deprecated Use hasBuild() instead
-     * @return bool
-     */
-    public function isBuild(): bool
-    {
-        return !$this->build->isEmpty();
-    }
-
     public function hasBuild(): bool
     {
         return !$this->build->isEmpty();
