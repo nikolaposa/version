@@ -12,9 +12,6 @@ use Version\Comparison\Constraint\Constraint;
 
 class VersionCollection implements Countable, IteratorAggregate
 {
-    public const SORT_ASC = 'ASC';
-    public const SORT_DESC = 'DESC';
-
     /** @var Version[] */
     protected $versions;
 
