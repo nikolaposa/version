@@ -45,6 +45,6 @@ final class VersionIsIdentical extends Constraint
 
     public function toString(): string
     {
-        return 'is identical to: ' . $this->expectedVersion->getVersionString();
+        return 'is identical to: ' . $this->expectedVersion->toString();
     }
 }

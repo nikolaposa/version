@@ -261,7 +261,7 @@ class Version implements JsonSerializable
         return $constraint->assert($this);
     }
 
-    public function getVersionString(): string
+    public function toString(): string
     {
         return
             $this->major
@@ -274,12 +274,12 @@ class Version implements JsonSerializable
 
     public function __toString(): string
     {
-        return $this->getVersionString();
+        return $this->toString();
     }
 
     public function jsonSerialize(): string
     {
-        return $this->getVersionString();
+        return $this->toString();
     }
 
     public function toArray(): array

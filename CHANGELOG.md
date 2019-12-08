@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Rename component-level `Version\Exception\ExceptionInterface` to `Version\Exception\VersionException`
 - Move comparision-related exceptions into `Version\Comparision\Exception` namespace
 - Remove `-Exception` suffix from all concrete exception names
+- Rename `Version->getVersionString()` to `Version->toString()`
 
 ### Removed
 - `Version\VersionAwareInterface`
