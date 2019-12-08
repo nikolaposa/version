@@ -10,7 +10,7 @@ use Version\Extension\BaseExtension;
 
 class InvalidExtensionIdentifierException extends DomainException implements ExceptionInterface
 {
-    public static function forExtensionIdentifier(BaseExtension $extension, string $identifier) : self
+    public static function forExtensionIdentifier(BaseExtension $extension, string $identifier): self
     {
         $extensionName = (new ReflectionClass($extension))->getShortName();
 

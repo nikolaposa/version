@@ -14,7 +14,7 @@ class ComparisonConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_is_created_from_operator_and_operand() : void
+    public function it_is_created_from_operator_and_operand(): void
     {
         $operand = Version::fromString('1.0.0');
         $constraint = new ComparisonConstraint(ComparisonConstraint::OPERATOR_GT, $operand);
@@ -27,7 +27,7 @@ class ComparisonConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_operator_is_not_valid() : void
+    public function it_raises_exception_if_operator_is_not_valid(): void
     {
         try {
             new ComparisonConstraint('invalid', Version::fromString('1.0.0'));
@@ -45,12 +45,12 @@ class ComparisonConstraintTest extends TestCase
      * @param Version $version
      * @param ComparisonConstraint $constraint
      */
-    public function it_asserts_provided_version(Version $version, ComparisonConstraint $constraint) : void
+    public function it_asserts_provided_version(Version $version, ComparisonConstraint $constraint): void
     {
         $this->assertTrue($constraint->assert($version));
     }
 
-    public function getConstraintAssertions() : array
+    public function getConstraintAssertions(): array
     {
         return [
             [

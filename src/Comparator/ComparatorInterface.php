@@ -8,5 +8,5 @@ use Version\Version;
 
 interface ComparatorInterface
 {
-    public function compare(Version $version1, Version $version2) : int;
+    public function compare(Version $version1, Version $version2): int;
 }

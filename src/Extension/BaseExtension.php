@@ -27,7 +27,7 @@ abstract class BaseExtension
      * @throws InvalidExtensionIdentifierException
      * @return void
      */
-    abstract protected function validate(string $identifier) : void;
+    abstract protected function validate(string $identifier): void;
 
     public static function fromIdentifiers(string $identifier, string ...$identifiers)
     {
@@ -39,17 +39,17 @@ abstract class BaseExtension
         return new static(...explode(self::IDENTIFIERS_SEPARATOR, $identifiers));
     }
 
-    public function getIdentifiers() : array
+    public function getIdentifiers(): array
     {
         return $this->identifiers;
     }
 
-    public function isEmpty() : bool
+    public function isEmpty(): bool
     {
         return empty($this->identifiers);
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return implode(self::IDENTIFIERS_SEPARATOR, $this->identifiers);
     }

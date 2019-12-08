@@ -27,14 +27,14 @@ class SemverComparatorTest extends TestCase
      * @param string $version2String
      * @param int $expectedResult
      */
-    public function it_compares_two_versions(string $version1String, string $version2String, int $expectedResult) : void
+    public function it_compares_two_versions(string $version1String, string $version2String, int $expectedResult): void
     {
         $result = $this->comparator->compare(Version::fromString($version1String), Version::fromString($version2String));
 
         $this->assertSame($expectedResult, $result);
     }
 
-    public static function getExpectedComparisonResults() : array
+    public static function getExpectedComparisonResults(): array
     {
         return [
             'major' => ['1.10.1', '2.1.0', -1],

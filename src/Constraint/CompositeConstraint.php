@@ -28,27 +28,27 @@ class CompositeConstraint implements ConstraintInterface
         $this->constraints = array_merge([$constraint], $constraints);
     }
 
-    public static function and(ConstraintInterface $constraint, ConstraintInterface ...$constraints) : CompositeConstraint
+    public static function and(ConstraintInterface $constraint, ConstraintInterface ...$constraints): CompositeConstraint
     {
         return new static(self::OPERATOR_AND, $constraint, ...$constraints);
     }
 
-    public static function or(ConstraintInterface $constraint, ConstraintInterface ...$constraints) : CompositeConstraint
+    public static function or(ConstraintInterface $constraint, ConstraintInterface ...$constraints): CompositeConstraint
     {
         return new static(self::OPERATOR_OR, $constraint, ...$constraints);
     }
 
-    public function getOperator() : string
+    public function getOperator(): string
     {
         return $this->operator;
     }
 
-    public function getConstraints() : array
+    public function getConstraints(): array
     {
         return $this->constraints;
     }
 
-    public function assert(Version $version) : bool
+    public function assert(Version $version): bool
     {
         if ($this->operator === self::OPERATOR_AND) {
             return $this->assertAnd($version);
@@ -57,7 +57,7 @@ class CompositeConstraint implements ConstraintInterface
         return $this->assertOr($version);
     }
 
-    protected function assertAnd(Version $version) : bool
+    protected function assertAnd(Version $version): bool
     {
         foreach ($this->constraints as $constraint) {
             if (! $constraint->assert($version)) {
@@ -68,7 +68,7 @@ class CompositeConstraint implements ConstraintInterface
         return true;
     }
 
-    protected function assertOr(Version $version) : bool
+    protected function assertOr(Version $version): bool
     {
         foreach ($this->constraints as $constraint) {
             if ($constraint->assert($version)) {

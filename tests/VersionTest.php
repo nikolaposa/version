@@ -20,7 +20,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_is_created_from_parts() : void
+    public function it_is_created_from_parts(): void
     {
         $version = Version::fromParts(
             1,
@@ -44,14 +44,14 @@ class VersionTest extends TestCase
      * @param string|bool $preRelease
      * @param string|bool $build
      */
-    public function it_can_be_created_from_string(string $versionString, int $major, int $minor, int $patch, $preRelease, $build) : void
+    public function it_can_be_created_from_string(string $versionString, int $major, int $minor, int $patch, $preRelease, $build): void
     {
         $version = Version::fromString($versionString);
 
         $this->assertThat($version, new VersionIsIdentical($major, $minor, $patch, $preRelease, $build));
     }
 
-    public static function getVersionStrings() : array
+    public static function getVersionStrings(): array
     {
         return [
             ['0.9.7', 0, 9, 7, null, null],
@@ -71,7 +71,7 @@ class VersionTest extends TestCase
      * @param string $versionString
      * @param Version $version
      */
-    public function it_can_be_casted_to_string(Version $version, string $versionString) : void
+    public function it_can_be_casted_to_string(Version $version, string $versionString): void
     {
         $this->assertSame($versionString, (string) $version);
     }
@@ -83,12 +83,12 @@ class VersionTest extends TestCase
      * @param string $versionString
      * @param Version $version
      */
-    public function it_can_be_serialized_to_json(Version $version, string $versionString) : void
+    public function it_can_be_serialized_to_json(Version $version, string $versionString): void
     {
         $this->assertSame('"' . $versionString . '"', json_encode($version));
     }
 
-    public static function getPrintedVersionStrings() : array
+    public static function getPrintedVersionStrings(): array
     {
         return [
             [Version::fromParts(2, 1), '2.1.0'],
@@ -105,14 +105,14 @@ class VersionTest extends TestCase
      * @param string $versionString
      * @param array $versionArray
      */
-    public function it_can_be_converted_to_an_array(string $versionString, array $versionArray) : void
+    public function it_can_be_converted_to_an_array(string $versionString, array $versionArray): void
     {
         $version = Version::fromString($versionString);
 
         $this->assertSame($versionArray, $version->toArray());
     }
 
-    public static function getVersionArrays() : array
+    public static function getVersionArrays(): array
     {
         return [
             [
@@ -137,7 +137,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_and_deserialized() : void
+    public function it_can_be_serialized_and_deserialized(): void
     {
         $version = Version::fromParts(
             1,
@@ -158,7 +158,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_created_with_invalid_major_version() : void
+    public function it_raises_exception_when_created_with_invalid_major_version(): void
     {
         try {
             Version::fromParts(-10, 0, 0, new NoPreRelease(), new NoBuild());
@@ -172,7 +172,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_created_with_invalid_minor_version() : void
+    public function it_raises_exception_when_created_with_invalid_minor_version(): void
     {
         try {
             Version::fromParts(0, -5, 1, new NoPreRelease(), new NoBuild());
@@ -186,7 +186,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_created_with_invalid_patch_version() : void
+    public function it_raises_exception_when_created_with_invalid_patch_version(): void
     {
         try {
             Version::fromParts(2, 1, -1, new NoPreRelease(), new NoBuild());
@@ -203,7 +203,7 @@ class VersionTest extends TestCase
      *
      * @param string $invalidVersion
      */
-    public function it_raises_exception_when_created_with_invalid_version_string(string $invalidVersion) : void
+    public function it_raises_exception_when_created_with_invalid_version_string(string $invalidVersion): void
     {
         try {
             Version::fromString($invalidVersion);
@@ -215,7 +215,7 @@ class VersionTest extends TestCase
         }
     }
 
-    public function getInvalidVersionStrings() : array
+    public function getInvalidVersionStrings(): array
     {
         return [
             'tooManySubVersions' => ['1.5.2.4.4'],
@@ -226,10 +226,10 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_setting_custom_comparator() : void
+    public function it_allows_setting_custom_comparator(): void
     {
         Version::setComparator(new class implements ComparatorInterface {
-            public function compare(Version $version1, Version $version2) : int
+            public function compare(Version $version1, Version $version2): int
             {
                 return 1;
             }

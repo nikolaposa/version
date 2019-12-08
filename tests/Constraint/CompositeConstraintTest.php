@@ -15,7 +15,7 @@ class CompositeConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_is_created_from_logical_operator_and_constraints() : void
+    public function it_is_created_from_logical_operator_and_constraints(): void
     {
         $constraint = new CompositeConstraint(CompositeConstraint::OPERATOR_AND, ...[
             new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
@@ -30,7 +30,7 @@ class CompositeConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_with_constraints_combined_with_and_operator() : void
+    public function it_can_be_created_with_constraints_combined_with_and_operator(): void
     {
         $constraint = CompositeConstraint::and(...[
             new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
@@ -43,7 +43,7 @@ class CompositeConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_with_constraints_combined_with_or_operator() : void
+    public function it_can_be_created_with_constraints_combined_with_or_operator(): void
     {
         $constraint = CompositeConstraint::or(...[
             new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
@@ -56,7 +56,7 @@ class CompositeConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_in_case_of_invalid_operator() : void
+    public function it_raises_exception_in_case_of_invalid_operator(): void
     {
         try {
             new CompositeConstraint('invalid', ...[
@@ -72,7 +72,7 @@ class CompositeConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_asserts_and_operation_constraint() : void
+    public function it_asserts_and_operation_constraint(): void
     {
         $constraint = CompositeConstraint::and(...[
             new ComparisonConstraint(ComparisonConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
@@ -88,7 +88,7 @@ class CompositeConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_asserts_or_operation_constraint() : void
+    public function it_asserts_or_operation_constraint(): void
     {
         $constraint = CompositeConstraint::or(...[
             new ComparisonConstraint(ComparisonConstraint::OPERATOR_EQ, Version::fromString('4.7.1')),

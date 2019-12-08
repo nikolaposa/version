@@ -41,18 +41,18 @@ class ComparisonConstraintParser
         return $this->buildCompositeConstraint();
     }
 
-    protected function isMultiPartConstraint() : bool
+    protected function isMultiPartConstraint(): bool
     {
         return (false !== strpos($this->constraintString, ' '));
     }
 
-    protected function splitConstraintParts() : void
+    protected function splitConstraintParts(): void
     {
         $constraintParts = explode(' ', $this->constraintString);
         $this->constraintParts = array_map('trim', $constraintParts);
     }
 
-    protected function buildConstraint(string $constraintPart) : ComparisonConstraint
+    protected function buildConstraint(string $constraintPart): ComparisonConstraint
     {
         [$operator, $operandString] = array_values($this->parseConstraint($constraintPart));
 
@@ -70,7 +70,7 @@ class ComparisonConstraintParser
         }
     }
 
-    protected function parseConstraint(string $constraintStringUnit) : array
+    protected function parseConstraint(string $constraintStringUnit): array
     {
         $i = 0;
         while (isset($constraintStringUnit[$i]) && !ctype_digit($constraintStringUnit[$i])) {
@@ -86,7 +86,7 @@ class ComparisonConstraintParser
         ];
     }
 
-    protected function buildCompositeConstraint() : CompositeConstraint
+    protected function buildCompositeConstraint(): CompositeConstraint
     {
         $compositeAndConstraints = $compositeOrConstraints = [];
 
@@ -113,7 +113,7 @@ class ComparisonConstraintParser
         return CompositeConstraint::and(...$compositeAndConstraints);
     }
 
-    protected function error() : void
+    protected function error(): void
     {
         throw InvalidComparisonConstraintStringException::forUnparsableString($this->constraintString);
     }

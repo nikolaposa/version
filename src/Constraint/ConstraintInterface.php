@@ -8,5 +8,5 @@ use Version\Version;
 
 interface ConstraintInterface
 {
-    public function assert(Version $version) : bool;
+    public function assert(Version $version): bool;
 }

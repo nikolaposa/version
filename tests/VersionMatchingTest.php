@@ -13,7 +13,7 @@ class VersionMatchingTest extends TestCase
     /**
      * @test
      */
-    public function it_checks_for_constraint_matching() : void
+    public function it_checks_for_constraint_matching(): void
     {
         $this->assertTrue(Version::fromString('1.1.0')->matches(ComparisonConstraint::fromString('>1.0.0')));
     }

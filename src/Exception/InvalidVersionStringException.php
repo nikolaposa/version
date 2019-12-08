@@ -11,7 +11,7 @@ class InvalidVersionStringException extends DomainException implements Exception
     /** @var string */
     protected $versionString;
 
-    public static function forVersionString(string $versionString) : self
+    public static function forVersionString(string $versionString): self
     {
         $exception = new self(sprintf("Version string '%s' is not valid and cannot be parsed", $versionString));
         $exception->versionString = $versionString;
@@ -19,7 +19,7 @@ class InvalidVersionStringException extends DomainException implements Exception
         return $exception;
     }
 
-    public function getVersionString() : string
+    public function getVersionString(): string
     {
         return $this->versionString;
     }

@@ -24,17 +24,17 @@ class VersionsCollection implements Countable, IteratorAggregate
         $this->versions = $versions;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->versions);
     }
 
-    public function isEmpty() : bool
+    public function isEmpty(): bool
     {
         return empty($this->versions);
     }
 
-    public function first() : Version
+    public function first(): Version
     {
         if (empty($this->versions)) {
             throw new CollectionIsEmptyException('Invoking first() on an empty collection');
@@ -43,7 +43,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return $this->versions[0];
     }
 
-    public function last() : Version
+    public function last(): Version
     {
         if (empty($this->versions)) {
             throw new CollectionIsEmptyException('Invoking last() on an empty collection');
@@ -52,7 +52,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return $this->versions[count($this->versions) - 1];
     }
 
-    public function getIterator() : Traversable
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->versions);
     }
@@ -60,7 +60,7 @@ class VersionsCollection implements Countable, IteratorAggregate
     /**
      * @deprecated This method will be removed in 4.0.0. Use sorted() instead.
      */
-    public function sort(string $direction = self::SORT_ASC) : void
+    public function sort(string $direction = self::SORT_ASC): void
     {
         usort($this->versions, function (Version $a, Version $b) use ($direction) {
             $result = $a->compareTo($b);
@@ -73,7 +73,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         });
     }
 
-    public function sortedAscending() : VersionsCollection
+    public function sortedAscending(): VersionsCollection
     {
         $versions = $this->versions;
 
@@ -84,7 +84,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return new static(...$versions);
     }
 
-    public function sortedDescending() : VersionsCollection
+    public function sortedDescending(): VersionsCollection
     {
         $versions = $this->versions;
 
@@ -95,7 +95,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return new static(...$versions);
     }
 
-    public function matching(ConstraintInterface $constraint) : VersionsCollection
+    public function matching(ConstraintInterface $constraint): VersionsCollection
     {
         return new static(...array_filter(
             $this->versions,
@@ -105,7 +105,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         ));
     }
 
-    public function majorReleases() : VersionsCollection
+    public function majorReleases(): VersionsCollection
     {
         return new static(...array_filter(
             $this->versions,
@@ -115,7 +115,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         ));
     }
 
-    public function minorReleases() : VersionsCollection
+    public function minorReleases(): VersionsCollection
     {
         return new static(...array_filter(
             $this->versions,
@@ -125,7 +125,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         ));
     }
 
-    public function patchReleases() : VersionsCollection
+    public function patchReleases(): VersionsCollection
     {
         return new static(...array_filter(
             $this->versions,
@@ -138,7 +138,7 @@ class VersionsCollection implements Countable, IteratorAggregate
     /**
      * @return Version[]
      */
-    public function toArray() : array
+    public function toArray(): array
     {
         return $this->versions;
     }

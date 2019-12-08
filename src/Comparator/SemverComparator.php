@@ -8,7 +8,7 @@ use Version\Version;
 
 final class SemverComparator implements ComparatorInterface
 {
-    public function compare(Version $version1, Version $version2) : int
+    public function compare(Version $version1, Version $version2): int
     {
         if (0 !== ($majorCompareResult = $this->compareNumberPart($version1->getMajor(), $version2->getMajor()))) {
             return $majorCompareResult;
@@ -25,7 +25,7 @@ final class SemverComparator implements ComparatorInterface
         return $this->compareMeta($version1, $version2);
     }
 
-    private function compareNumberPart(int $number1, int $number2) : int
+    private function compareNumberPart(int $number1, int $number2): int
     {
         $diff = $number1 - $number2;
 
@@ -40,7 +40,7 @@ final class SemverComparator implements ComparatorInterface
         return 0;
     }
 
-    private function compareMeta(Version $version1, Version $version2) : int
+    private function compareMeta(Version $version1, Version $version2): int
     {
         $v1IsPreRelease = $version1->isPreRelease();
         $v2IsPreRelease = $version2->isPreRelease();

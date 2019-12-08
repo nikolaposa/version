@@ -28,7 +28,7 @@ final class VersionsCollectionIsIdentical extends Constraint
         }
     }
 
-    protected function matches($versions) : bool
+    protected function matches($versions): bool
     {
         /* @var $versions VersionsCollection */
 
@@ -53,7 +53,7 @@ final class VersionsCollectionIsIdentical extends Constraint
         return true;
     }
 
-    public function toString() : string
+    public function toString(): string
     {
         return 'content is identical for specified versions';
     }

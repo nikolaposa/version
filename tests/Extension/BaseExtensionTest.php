@@ -10,12 +10,12 @@ use Version\Extension\BaseExtension;
 
 abstract class BaseExtensionTest extends TestCase
 {
-    abstract protected function createExtension($identifiers) : BaseExtension;
+    abstract protected function createExtension($identifiers): BaseExtension;
 
     /**
      * @test
      */
-    public function it_is_created_from_an_array_of_identifiers() : void
+    public function it_is_created_from_an_array_of_identifiers(): void
     {
         $extension = $this->createExtension(['123', '456']);
 
@@ -25,7 +25,7 @@ abstract class BaseExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_from_string() : void
+    public function it_can_be_created_from_string(): void
     {
         $extension = $this->createExtension('123.456');
 
@@ -35,7 +35,7 @@ abstract class BaseExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_from_a_single_identifier_string() : void
+    public function it_can_be_created_from_a_single_identifier_string(): void
     {
         $extension = $this->createExtension('123');
 
@@ -45,7 +45,7 @@ abstract class BaseExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_for_checking_whether_it_is_empty() : void
+    public function it_allows_for_checking_whether_it_is_empty(): void
     {
         $extension = $this->createExtension(['123']);
 
@@ -55,7 +55,7 @@ abstract class BaseExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_converted_to_string() : void
+    public function it_can_be_converted_to_string(): void
     {
         $extension = $this->createExtension(['123', '456']);
 
@@ -65,7 +65,7 @@ abstract class BaseExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_in_case_of_an_invalid_identifier() : void
+    public function it_raises_exception_in_case_of_an_invalid_identifier(): void
     {
         try {
             $this->createExtension(['$123']);
@@ -79,7 +79,7 @@ abstract class BaseExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_in_case_of_an_empty_identifier() : void
+    public function it_raises_exception_in_case_of_an_empty_identifier(): void
     {
         try {
             $this->createExtension(['123', '']);

@@ -18,7 +18,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_via_constructor() : void
+    public function it_can_be_created_via_constructor(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -36,7 +36,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_from_version_strings() : void
+    public function it_can_be_created_from_version_strings(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.1.0'),
@@ -52,7 +52,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_forwards_invalid_version_string_exception() : void
+    public function it_forwards_invalid_version_string_exception(): void
     {
         try {
             new VersionsCollection(
@@ -69,7 +69,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_is_countable() : void
+    public function it_is_countable(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -83,7 +83,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_provides_is_empty_check() : void
+    public function it_provides_is_empty_check(): void
     {
         $versions = new VersionsCollection();
 
@@ -93,7 +93,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_first_version() : void
+    public function it_gets_first_version(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -110,7 +110,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_getting_first_item_of_empty_collection() : void
+    public function it_raises_exception_when_getting_first_item_of_empty_collection(): void
     {
         $versions = new VersionsCollection();
 
@@ -126,7 +126,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_last_version() : void
+    public function it_gets_last_version(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -143,7 +143,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_getting_last_item_of_empty_collection() : void
+    public function it_raises_exception_when_getting_last_item_of_empty_collection(): void
     {
         $versions = new VersionsCollection();
 
@@ -159,7 +159,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_is_iterable() : void
+    public function it_is_iterable(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -175,7 +175,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_is_sorted_in_ascending_order_by_default() : void
+    public function it_is_sorted_in_ascending_order_by_default(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('2.3.3'),
@@ -201,7 +201,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_sorted_in_descending_order() : void
+    public function it_can_be_sorted_in_descending_order(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('2.3.3'),
@@ -225,7 +225,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_sorted_via_deprecated_sort_method() : void
+    public function it_can_be_sorted_via_deprecated_sort_method(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('2.3.3'),
@@ -251,7 +251,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_filters_versions_that_match_constraint() : void
+    public function it_filters_versions_that_match_constraint(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -271,7 +271,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_first_last_items_after_filtering() : void
+    public function it_gets_first_last_items_after_filtering(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -289,7 +289,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_become_empty_after_filtering_out_all_versions() : void
+    public function it_can_become_empty_after_filtering_out_all_versions(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -305,7 +305,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_major_releases() : void
+    public function it_finds_major_releases(): void
     {
         $releases = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -328,7 +328,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_minor_releases() : void
+    public function it_finds_minor_releases(): void
     {
         $releases = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -349,7 +349,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_patch_releases() : void
+    public function it_finds_patch_releases(): void
     {
         $releases = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -369,7 +369,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_latest_major_release() : void
+    public function it_finds_latest_major_release(): void
     {
         $releases = new VersionsCollection(
             Version::fromString('1.0.0'),
@@ -391,7 +391,7 @@ class VersionsCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_converted_to_an_array() : void
+    public function it_can_be_converted_to_an_array(): void
     {
         $versions = new VersionsCollection(
             Version::fromString('1.0.0'),

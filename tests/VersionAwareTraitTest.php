@@ -12,7 +12,7 @@ class VersionAwareTraitTest extends TestCase
     /**
      * @test
      */
-    public function it_sets_version() : void
+    public function it_sets_version(): void
     {
         $object = $this->getObjectForTrait('\Version\VersionAwareTrait');
         $this->assertAttributeEquals(null, 'version', $object);
@@ -25,7 +25,7 @@ class VersionAwareTraitTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_version() : void
+    public function it_gets_version(): void
     {
         $object = $this->getObjectForTrait('\Version\VersionAwareTrait');
         $this->assertNull($object->getVersion());

@@ -9,7 +9,7 @@ use Version\Extension\PreRelease;
 
 class PreReleaseTest extends BaseExtensionTest
 {
-    protected function createExtension($identifiers) : BaseExtension
+    protected function createExtension($identifiers): BaseExtension
     {
         if (is_string($identifiers)) {
             return PreRelease::fromIdentifiersString($identifiers);

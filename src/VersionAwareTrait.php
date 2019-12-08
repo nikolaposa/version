@@ -9,12 +9,12 @@ trait VersionAwareTrait
     /** @var Version */
     protected $version;
 
-    public function setVersion(Version $version) : void
+    public function setVersion(Version $version): void
     {
         $this->version = $version;
     }
 
-    public function getVersion() : ?Version
+    public function getVersion(): ?Version
     {
         return $this->version;
     }

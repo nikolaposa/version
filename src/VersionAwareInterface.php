@@ -6,5 +6,5 @@ namespace Version;
 
 interface VersionAwareInterface
 {
-    public function getVersion() : Version;
+    public function getVersion(): Version;
 }

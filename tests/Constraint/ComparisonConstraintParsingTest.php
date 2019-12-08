@@ -14,7 +14,7 @@ class ComparisonConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_parses_simple_constraint() : void
+    public function it_parses_simple_constraint(): void
     {
         $constraint = ComparisonConstraint::fromString('>=1.2.0');
 
@@ -26,7 +26,7 @@ class ComparisonConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_assumes_equals_as_default_operator_if_operator_not_supplied() : void
+    public function it_assumes_equals_as_default_operator_if_operator_not_supplied(): void
     {
         $constraint = ComparisonConstraint::fromString('1.2.0');
 
@@ -38,7 +38,7 @@ class ComparisonConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_parses_range_constraint() : void
+    public function it_parses_range_constraint(): void
     {
         $constraint = ComparisonConstraint::fromString('>=1.2.3 <1.3.0');
 
@@ -56,7 +56,7 @@ class ComparisonConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_parses_composite_constraints_containing_logical_operators() : void
+    public function it_parses_composite_constraints_containing_logical_operators(): void
     {
         $constraint = ComparisonConstraint::fromString('>=1.0.0 <1.1.0 || >=1.2.0');
 
@@ -85,7 +85,7 @@ class ComparisonConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_the_constraint_string_is_empty() : void
+    public function it_raises_exception_if_the_constraint_string_is_empty(): void
     {
         try {
             ComparisonConstraint::fromString('  ');
@@ -99,7 +99,7 @@ class ComparisonConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_the_constraint_string_cannot_be_parsed() : void
+    public function it_raises_exception_if_the_constraint_string_cannot_be_parsed(): void
     {
         try {
             ComparisonConstraint::fromString('invalid');
@@ -113,7 +113,7 @@ class ComparisonConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_the_constraint_contains_operator_that_cannot_be_parsed() : void
+    public function it_raises_exception_if_the_constraint_contains_operator_that_cannot_be_parsed(): void
     {
         try {
             ComparisonConstraint::fromString('"100');
@@ -127,7 +127,7 @@ class ComparisonConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_the_constraint_contains_version_that_cannot_be_parsed() : void
+    public function it_raises_exception_if_the_constraint_contains_version_that_cannot_be_parsed(): void
     {
         try {
             ComparisonConstraint::fromString('>100');
@@ -141,7 +141,7 @@ class ComparisonConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_the_constraint_contains_invalid_logical_operation() : void
+    public function it_raises_exception_if_the_constraint_contains_invalid_logical_operation(): void
     {
         try {
             ComparisonConstraint::fromString('>=1.0.0 <1.1.0 ||');

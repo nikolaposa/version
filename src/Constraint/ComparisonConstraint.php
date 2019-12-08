@@ -46,17 +46,17 @@ class ComparisonConstraint implements ConstraintInterface
         return $parser->parse($constraintString);
     }
 
-    public function getOperator() : string
+    public function getOperator(): string
     {
         return $this->operator;
     }
 
-    public function getOperand() : Version
+    public function getOperand(): Version
     {
         return $this->operand;
     }
 
-    public function assert(Version $version) : bool
+    public function assert(Version $version): bool
     {
         switch ($this->operator) {
             case self::OPERATOR_EQ:
@@ -74,7 +74,7 @@ class ComparisonConstraint implements ConstraintInterface
         }
     }
 
-    protected function validateOperator($operator) : void
+    protected function validateOperator($operator): void
     {
         static $validOperators = null;
 

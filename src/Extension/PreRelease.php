@@ -8,14 +8,14 @@ use Version\Exception\InvalidExtensionIdentifierException;
 
 class PreRelease extends BaseExtension
 {
-    protected function validate(string $identifier) : void
+    protected function validate(string $identifier): void
     {
         if (! preg_match('/^[0-9A-Za-z\-]+$/', $identifier)) {
             throw InvalidExtensionIdentifierException::forExtensionIdentifier($this, $identifier);
         }
     }
 
-    public function compareTo(PreRelease $preRelease) : int
+    public function compareTo(PreRelease $preRelease): int
     {
         $preRelease1Ids = array_values($this->getIdentifiers());
         $preRelease2Ids = array_values($preRelease->getIdentifiers());
@@ -36,7 +36,7 @@ class PreRelease extends BaseExtension
         return $preRelease1IdsCount - $preRelease2IdsCount;
     }
 
-    private function compareIdentifiers($identifier1, $identifier2) : int
+    private function compareIdentifiers($identifier1, $identifier2): int
     {
         $identifier1IsNumber = ctype_digit($identifier1);
         $identifier2IsNumber = ctype_digit($identifier2);

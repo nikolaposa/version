@@ -12,7 +12,7 @@ class VersionExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_contain_pre_release_identifier() : void
+    public function it_can_contain_pre_release_identifier(): void
     {
         $version = Version::fromString('1.0.0-alpha');
 
@@ -25,7 +25,7 @@ class VersionExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_contain_multiple_pre_release_identifiers() : void
+    public function it_can_contain_multiple_pre_release_identifiers(): void
     {
         $version = Version::fromString('1.0.0-alpha.1.2');
 
@@ -39,7 +39,7 @@ class VersionExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_contain_build_identifier() : void
+    public function it_can_contain_build_identifier(): void
     {
         $version = Version::fromString('1.0.0+20150919');
 
@@ -53,7 +53,7 @@ class VersionExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_contain_multiple_build_identifiers() : void
+    public function it_can_contain_multiple_build_identifiers(): void
     {
         $version = Version::fromString('1.0.0+exp.sha.5114f85');
 
@@ -67,7 +67,7 @@ class VersionExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_contain_both_pre_release_and_build_identifiers() : void
+    public function it_can_contain_both_pre_release_and_build_identifiers(): void
     {
         $version = Version::fromString('1.0.0-alpha.1+exp.sha.5114f85');
 
