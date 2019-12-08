@@ -15,8 +15,6 @@ final class VersionsCollectionIsIdentical extends Constraint
 
     public function __construct(array $expectedVersions)
     {
-        parent::__construct();
-
         foreach ($expectedVersions as [$expectedMajor, $expectedMinor, $expectedPatch, $expectedPreRelease, $expectedBuild]) {
             $this->isIdenticalConstraints[] = new VersionIsIdentical(
                 $expectedMajor,

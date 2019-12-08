@@ -21,8 +21,6 @@ final class VersionIsIdentical extends Constraint
         $expectedPreRelease = null,
         $expectedBuild = null
     ) {
-        parent::__construct();
-
         $this->expectedVersion = Version::fromParts(
             $expectedMajor,
             $expectedMinor,

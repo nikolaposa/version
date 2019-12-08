@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased][Unreleased]
+
+### Changed
+- PHPUnit 8 is now the minimum required version
+
 ## 3.2.0 - 2019-08-11
 ### Added
 - [23: Allow setting custom comparison strategy](https://github.com/nikolaposa/version/pull/23)
@@ -95,4 +100,4 @@ All notable changes to this project will be documented in this file.
 This release is abandoned, please consider upgrading to 2.x.
 
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/3.1.0...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/3.2.0...HEAD

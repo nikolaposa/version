@@ -72,7 +72,7 @@ abstract class BaseExtensionTest extends TestCase
 
             $this->fail('Exception should have been raised');
         } catch (InvalidExtensionIdentifierException $ex) {
-            $this->assertContains("identifier: '$123' is not valid; it must comprise only ASCII alphanumerics and hyphen", $ex->getMessage());
+            $this->assertStringContainsString("identifier: '$123' is not valid; it must comprise only ASCII alphanumerics and hyphen", $ex->getMessage());
         }
     }
 
@@ -86,7 +86,7 @@ abstract class BaseExtensionTest extends TestCase
 
             $this->fail('Exception should have been raised');
         } catch (InvalidExtensionIdentifierException $ex) {
-            $this->assertContains("identifier: '' is not valid; it must comprise only ASCII alphanumerics and hyphen", $ex->getMessage());
+            $this->assertStringContainsString("identifier: '' is not valid; it must comprise only ASCII alphanumerics and hyphen", $ex->getMessage());
         }
     }
 }
