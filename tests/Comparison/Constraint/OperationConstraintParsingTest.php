@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Version\Tests\Comparison\Constraint;
 
 use PHPUnit\Framework\TestCase;
-use Version\Comparison\Constraint\OperatorConstraint;
+use Version\Comparison\Constraint\OperationConstraint;
 use Version\Comparison\Constraint\CompositeConstraint;
 use Version\Comparison\Exception\InvalidConstraintString;
 
-class OperatorConstraintParsingTest extends TestCase
+class OperationConstraintParsingTest extends TestCase
 {
     /**
      * @test
      */
     public function it_parses_simple_constraint(): void
     {
-        $constraint = OperatorConstraint::fromString('>=1.2.0');
+        $constraint = OperationConstraint::fromString('>=1.2.0');
 
-        $this->assertInstanceOf(OperatorConstraint::class, $constraint);
+        $this->assertInstanceOf(OperationConstraint::class, $constraint);
         $this->assertSame('>=', $constraint->getOperator());
         $this->assertSame('1.2.0', (string) $constraint->getOperand());
     }
@@ -28,9 +28,9 @@ class OperatorConstraintParsingTest extends TestCase
      */
     public function it_assumes_equals_as_default_operator_if_operator_not_supplied(): void
     {
-        $constraint = OperatorConstraint::fromString('1.2.0');
+        $constraint = OperationConstraint::fromString('1.2.0');
 
-        $this->assertInstanceOf(OperatorConstraint::class, $constraint);
+        $this->assertInstanceOf(OperationConstraint::class, $constraint);
         $this->assertSame('=', $constraint->getOperator());
         $this->assertSame('1.2.0', (string) $constraint->getOperand());
     }
@@ -40,7 +40,7 @@ class OperatorConstraintParsingTest extends TestCase
      */
     public function it_parses_range_constraint(): void
     {
-        $constraint = OperatorConstraint::fromString('>=1.2.3 <1.3.0');
+        $constraint = OperationConstraint::fromString('>=1.2.3 <1.3.0');
 
         $this->assertInstanceOf(CompositeConstraint::class, $constraint);
         $this->assertCompositeConstraintIsIdentical(
@@ -58,7 +58,7 @@ class OperatorConstraintParsingTest extends TestCase
      */
     public function it_parses_composite_constraints_containing_logical_operators(): void
     {
-        $constraint = OperatorConstraint::fromString('>=1.0.0 <1.1.0 || >=1.2.0');
+        $constraint = OperationConstraint::fromString('>=1.0.0 <1.1.0 || >=1.2.0');
 
         $this->assertInstanceOf(CompositeConstraint::class, $constraint);
         $this->assertCompositeConstraintIsIdentical(
@@ -88,7 +88,7 @@ class OperatorConstraintParsingTest extends TestCase
     public function it_raises_exception_if_the_constraint_string_is_empty(): void
     {
         try {
-            OperatorConstraint::fromString('  ');
+            OperationConstraint::fromString('  ');
 
             $this->fail('Exception should have been raised');
         } catch (InvalidConstraintString $ex) {
@@ -102,7 +102,7 @@ class OperatorConstraintParsingTest extends TestCase
     public function it_raises_exception_if_the_constraint_string_cannot_be_parsed(): void
     {
         try {
-            OperatorConstraint::fromString('invalid');
+            OperationConstraint::fromString('invalid');
 
             $this->fail('Exception should have been raised');
         } catch (InvalidConstraintString $ex) {
@@ -116,7 +116,7 @@ class OperatorConstraintParsingTest extends TestCase
     public function it_raises_exception_if_the_constraint_contains_operator_that_cannot_be_parsed(): void
     {
         try {
-            OperatorConstraint::fromString('"100');
+            OperationConstraint::fromString('"100');
 
             $this->fail('Exception should have been raised');
         } catch (InvalidConstraintString $ex) {
@@ -130,7 +130,7 @@ class OperatorConstraintParsingTest extends TestCase
     public function it_raises_exception_if_the_constraint_contains_version_that_cannot_be_parsed(): void
     {
         try {
-            OperatorConstraint::fromString('>100');
+            OperationConstraint::fromString('>100');
 
             $this->fail('Exception should have been raised');
         } catch (InvalidConstraintString $ex) {
@@ -144,7 +144,7 @@ class OperatorConstraintParsingTest extends TestCase
     public function it_raises_exception_if_the_constraint_contains_invalid_logical_operation(): void
     {
         try {
-            OperatorConstraint::fromString('>=1.0.0 <1.1.0 ||');
+            OperationConstraint::fromString('>=1.0.0 <1.1.0 ||');
 
             $this->fail('Exception should have been raised');
         } catch (InvalidConstraintString $ex) {
@@ -157,7 +157,7 @@ class OperatorConstraintParsingTest extends TestCase
         self::assertSame($expectedOperator, $compositeConstraint->getOperator());
 
         foreach ($compositeConstraint->getConstraints() as $i => $constraint) {
-            /* @var $constraint \Version\Comparison\Constraint\OperatorConstraint */
+            /* @var $constraint \Version\Comparison\Constraint\OperationConstraint */
 
             if ($constraint instanceof CompositeConstraint) {
                 self::assertCompositeConstraintIsIdentical(

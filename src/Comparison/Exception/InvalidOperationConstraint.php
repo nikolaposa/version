@@ -7,7 +7,7 @@ namespace Version\Comparison\Exception;
 use DomainException;
 use Version\Exception\VersionException;
 
-class InvalidOperatorConstraint extends DomainException implements VersionException
+class InvalidOperationConstraint extends DomainException implements VersionException
 {
     public static function unsupportedOperator(string $operator): self
     {

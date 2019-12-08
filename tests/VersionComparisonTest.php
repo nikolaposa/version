@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Version\Comparison\Constraint\OperatorConstraint;
+use Version\Comparison\Constraint\OperationConstraint;
 use Version\Version;
 
 class VersionComparisonTest extends TestCase
@@ -79,6 +79,6 @@ class VersionComparisonTest extends TestCase
      */
     public function it_checks_for_constraint_matching(): void
     {
-        $this->assertTrue(Version::fromString('1.1.0')->matches(OperatorConstraint::fromString('>1.0.0')));
+        $this->assertTrue(Version::fromString('1.1.0')->matches(OperationConstraint::fromString('>1.0.0')));
     }
 }

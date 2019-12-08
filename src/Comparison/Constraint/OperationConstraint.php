@@ -6,9 +6,9 @@ namespace Version\Comparison\Constraint;
 
 use ReflectionClass;
 use Version\Version;
-use Version\Comparison\Exception\InvalidOperatorConstraint;
+use Version\Comparison\Exception\InvalidOperationConstraint;
 
-class OperatorConstraint implements Constraint
+class OperationConstraint implements Constraint
 {
     public const OPERATOR_EQ = '=';
     public const OPERATOR_NEQ = '!=';
@@ -33,14 +33,14 @@ class OperatorConstraint implements Constraint
 
     /**
      * @param string $constraintString
-     * @return OperatorConstraint|CompositeConstraint
+     * @return OperationConstraint|CompositeConstraint
      */
     public static function fromString(string $constraintString)
     {
         static $parser = null;
 
         if (null === $parser) {
-            $parser = new OperatorConstraintParser();
+            $parser = new OperationConstraintParser();
         }
 
         return $parser->parse($constraintString);
@@ -83,7 +83,7 @@ class OperatorConstraint implements Constraint
         }
 
         if (! in_array($operator, $validOperators, true)) {
-            throw InvalidOperatorConstraint::unsupportedOperator($operator);
+            throw InvalidOperationConstraint::unsupportedOperator($operator);
         }
     }
 }

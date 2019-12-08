@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Version\Tests\Comparison\Constraint;
 
 use PHPUnit\Framework\TestCase;
-use Version\Comparison\Constraint\OperatorConstraint;
+use Version\Comparison\Constraint\OperationConstraint;
 use Version\Version;
-use Version\Comparison\Exception\InvalidOperatorConstraint;
+use Version\Comparison\Exception\InvalidOperationConstraint;
 
-class OperatorConstraintTest extends TestCase
+class OperationConstraintTest extends TestCase
 {
     /**
      * @test
@@ -17,10 +17,10 @@ class OperatorConstraintTest extends TestCase
     public function it_is_created_from_operator_and_operand(): void
     {
         $operand = Version::fromString('1.0.0');
-        $constraint = new OperatorConstraint(OperatorConstraint::OPERATOR_GT, $operand);
+        $constraint = new OperationConstraint(OperationConstraint::OPERATOR_GT, $operand);
 
-        $this->assertInstanceOf(OperatorConstraint::class, $constraint);
-        $this->assertSame(OperatorConstraint::OPERATOR_GT, $constraint->getOperator());
+        $this->assertInstanceOf(OperationConstraint::class, $constraint);
+        $this->assertSame(OperationConstraint::OPERATOR_GT, $constraint->getOperator());
         $this->assertSame($operand, $constraint->getOperand());
     }
 
@@ -30,10 +30,10 @@ class OperatorConstraintTest extends TestCase
     public function it_raises_exception_if_operator_is_not_valid(): void
     {
         try {
-            new OperatorConstraint('invalid', Version::fromString('1.0.0'));
+            new OperationConstraint('invalid', Version::fromString('1.0.0'));
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidOperatorConstraint $ex) {
+        } catch (InvalidOperationConstraint $ex) {
             $this->assertSame('Unsupported constraint operator: invalid', $ex->getMessage());
         }
     }
@@ -43,9 +43,9 @@ class OperatorConstraintTest extends TestCase
      * @dataProvider getConstraintAssertions
      *
      * @param Version $version
-     * @param OperatorConstraint $constraint
+     * @param OperationConstraint $constraint
      */
-    public function it_asserts_provided_version(Version $version, OperatorConstraint $constraint): void
+    public function it_asserts_provided_version(Version $version, OperationConstraint $constraint): void
     {
         $this->assertTrue($constraint->assert($version));
     }
@@ -55,27 +55,27 @@ class OperatorConstraintTest extends TestCase
         return [
             [
                 Version::fromString('1.0.0'),
-                new OperatorConstraint(OperatorConstraint::OPERATOR_EQ, Version::fromString('1.0.0'))
+                new OperationConstraint(OperationConstraint::OPERATOR_EQ, Version::fromString('1.0.0'))
             ],
             [
                 Version::fromString('2.0.0'),
-                new OperatorConstraint(OperatorConstraint::OPERATOR_NEQ, Version::fromString('1.0.0'))
+                new OperationConstraint(OperationConstraint::OPERATOR_NEQ, Version::fromString('1.0.0'))
             ],
             [
                 Version::fromString('1.1.0'),
-                new OperatorConstraint(OperatorConstraint::OPERATOR_GT, Version::fromString('1.0.0'))
+                new OperationConstraint(OperationConstraint::OPERATOR_GT, Version::fromString('1.0.0'))
             ],
             [
                 Version::fromString('1.0.0'),
-                new OperatorConstraint(OperatorConstraint::OPERATOR_GTE, Version::fromString('1.0.0'))
+                new OperationConstraint(OperationConstraint::OPERATOR_GTE, Version::fromString('1.0.0'))
             ],
             [
                 Version::fromString('1.0.0'),
-                new OperatorConstraint(OperatorConstraint::OPERATOR_LT, Version::fromString('2.0.0'))
+                new OperationConstraint(OperationConstraint::OPERATOR_LT, Version::fromString('2.0.0'))
             ],
             [
                 Version::fromString('1.0.0'),
-                new OperatorConstraint(OperatorConstraint::OPERATOR_LTE, Version::fromString('1.0.0'))
+                new OperationConstraint(OperationConstraint::OPERATOR_LTE, Version::fromString('1.0.0'))
             ],
         ];
     }

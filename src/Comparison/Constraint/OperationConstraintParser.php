@@ -8,7 +8,7 @@ use Version\Exception\VersionException;
 use Version\Comparison\Exception\InvalidConstraintString;
 use Version\Version;
 
-class OperatorConstraintParser
+class OperationConstraintParser
 {
     public const OPERATOR_OR = '||';
 
@@ -20,7 +20,7 @@ class OperatorConstraintParser
 
     /**
      * @param string $constraintString
-     * @return OperatorConstraint|CompositeConstraint
+     * @return OperationConstraint|CompositeConstraint
      */
     public function parse(string $constraintString)
     {
@@ -52,7 +52,7 @@ class OperatorConstraintParser
         $this->constraintParts = array_map('trim', $constraintParts);
     }
 
-    protected function buildConstraint(string $constraintPart): OperatorConstraint
+    protected function buildConstraint(string $constraintPart): OperationConstraint
     {
         [$operator, $operandString] = array_values($this->parseConstraint($constraintPart));
 
@@ -61,8 +61,8 @@ class OperatorConstraintParser
         }
 
         try {
-            return new OperatorConstraint(
-                $operator ?: OperatorConstraint::OPERATOR_EQ,
+            return new OperationConstraint(
+                $operator ?: OperationConstraint::OPERATOR_EQ,
                 Version::fromString($operandString)
             );
         } catch (VersionException $ex) {

@@ -8,13 +8,11 @@ All notable changes to this project will be documented in this file.
 - Rename `VersionsCollection` to `VersionCollection`
 - Rename `Version\Comparator` namespace to `Version\Comparison`
 - Move `Version\Constraint` namespace to `Version\Comparison\Constraint`
-- Rename `Version\Comparison\ComparatorInterface` to `Version\Comparison\Comparator`
-- Rename `Version\Comparison\Constraint\ComparisonConstraint` to `Version\Comparison\Constraint\OperatorConstraint`
-- Rename `Version\Comparison\Constraint\ComparisonConstraintParser` to `Version\Comparison\Constraint\OperatorConstraintParser`
-- Rename `Version\Exception\InvalidComparisionConstraintStringException` to `Version\Exception\InvalidConstraintStringException`
-- Rename `Version\Exception\InvalidComparisonConstraintException` to `Version\Exception\InvalidOperatorConstraintException`
+- Rename `ComparatorInterface` to `Version\Comparison\Comparator`
+- Rename `ComparisonConstraint` to `Version\Comparison\Constraint\OpeationConstraint`
+- Rename `ComparisonConstraintParser` to `Version\Comparison\Constraint\OpeationConstraintParser`
 - Rename component-level `Version\Exception\ExceptionInterface` to `Version\Exception\VersionException`
-- Move comparision-related exception into `Version\Comparision\Exception` namespace
+- Move comparision-related exceptions into `Version\Comparision\Exception` namespace
 - Remove `-Exception` suffix from all concrete exception names
 
 ### Removed
