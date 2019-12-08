@@ -30,7 +30,7 @@ class CompositeConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_with_constraints_combined_with_and_operator(): void
+    public function it_is_created_via_and_named_constructor(): void
     {
         $constraint = CompositeConstraint::and(...[
             new OperationConstraint(OperationConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
@@ -43,7 +43,7 @@ class CompositeConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_with_constraints_combined_with_or_operator(): void
+    public function it_is_created_via_or_named_constructor(): void
     {
         $constraint = CompositeConstraint::or(...[
             new OperationConstraint(OperationConstraint::OPERATOR_GTE, Version::fromString('1.0.0')),
@@ -56,7 +56,7 @@ class CompositeConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_in_case_of_invalid_operator(): void
+    public function it_validates_operator_input(): void
     {
         try {
             new CompositeConstraint('invalid', ...[

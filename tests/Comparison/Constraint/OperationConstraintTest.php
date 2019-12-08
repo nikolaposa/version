@@ -27,7 +27,7 @@ class OperationConstraintTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_operator_is_not_valid(): void
+    public function it_validates_operator_input(): void
     {
         try {
             new OperationConstraint('invalid', Version::fromString('1.0.0'));

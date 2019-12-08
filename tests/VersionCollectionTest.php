@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Version\Exception\InvalidVersionString;
 use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Tests\TestAsset\VersionCollectionIsIdentical;
 use Version\VersionCollection;
@@ -17,7 +16,7 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_via_constructor(): void
+    public function it_is_created_from_versions_variadic_arguments(): void
     {
         $versions = new VersionCollection(
             Version::fromString('1.0.0'),
@@ -30,39 +29,6 @@ class VersionCollectionTest extends TestCase
             [1, 1, 0, null, null],
             [2, 3, 3, null, null],
         ]));
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_be_created_from_version_strings(): void
-    {
-        $versions = new VersionCollection(
-            Version::fromString('1.1.0'),
-            Version::fromString('2.3.3')
-        );
-
-        $this->assertThat($versions, new VersionCollectionIsIdentical([
-            [1, 1, 0, null, null],
-            [2, 3, 3, null, null],
-        ]));
-    }
-
-    /**
-     * @test
-     */
-    public function it_forwards_invalid_version_string_exception(): void
-    {
-        try {
-            new VersionCollection(
-                Version::fromString('1.1.0'),
-                Version::fromString('invalid')
-            );
-
-            $this->fail('Exception should have been raised');
-        } catch (InvalidVersionString $ex) {
-            $this->assertSame('invalid', $ex->getVersionString());
-        }
     }
 
     /**
@@ -82,7 +48,7 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_provides_is_empty_check(): void
+    public function it_checks_for_emptiness(): void
     {
         $versions = new VersionCollection();
 
@@ -153,7 +119,7 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_is_sorted_in_ascending_order_by_default(): void
+    public function it_is_sorted_in_ascending_order(): void
     {
         $versions = new VersionCollection(
             Version::fromString('2.3.3'),
@@ -179,7 +145,7 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_sorted_in_descending_order(): void
+    public function it_is_sorted_in_descending_order(): void
     {
         $versions = new VersionCollection(
             Version::fromString('2.3.3'),
@@ -223,41 +189,7 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_first_last_items_after_filtering(): void
-    {
-        $versions = new VersionCollection(
-            Version::fromString('1.0.0'),
-            Version::fromString('1.0.1'),
-            Version::fromString('2.0.0'),
-            Version::fromString('2.0.1')
-        );
-
-        $versions2 = $versions->matching(OperationConstraint::fromString('>=2.0.0'));
-
-        $this->assertThat($versions2->first(), new VersionIsIdentical(2, 0, 0));
-        $this->assertThat($versions2->last(), new VersionIsIdentical(2, 0, 1));
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_become_empty_after_filtering_out_all_versions(): void
-    {
-        $versions = new VersionCollection(
-            Version::fromString('1.0.0'),
-            Version::fromString('1.0.1'),
-            Version::fromString('1.1.0')
-        );
-
-        $versions2 = $versions->matching(OperationConstraint::fromString('>=2.0.0'));
-
-        $this->assertCount(0, $versions2);
-    }
-
-    /**
-     * @test
-     */
-    public function it_finds_major_releases(): void
+    public function it_filters_major_releases(): void
     {
         $releases = new VersionCollection(
             Version::fromString('1.0.0'),
@@ -280,7 +212,7 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_minor_releases(): void
+    public function it_filters_minor_releases(): void
     {
         $releases = new VersionCollection(
             Version::fromString('1.0.0'),
@@ -301,7 +233,7 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_patch_releases(): void
+    public function it_filters_patch_releases(): void
     {
         $releases = new VersionCollection(
             Version::fromString('1.0.0'),
@@ -321,7 +253,7 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_latest_major_release(): void
+    public function it_filters_latest_major_release(): void
     {
         $releases = new VersionCollection(
             Version::fromString('1.0.0'),
@@ -343,7 +275,7 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_converted_to_an_array(): void
+    public function it_casts_to_array(): void
     {
         $versions = new VersionCollection(
             Version::fromString('1.0.0'),

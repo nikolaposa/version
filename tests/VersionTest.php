@@ -20,7 +20,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_is_created_from_parts(): void
+    public function it_is_created_from_version_parts(): void
     {
         $version = Version::from(
             1,
@@ -71,7 +71,7 @@ class VersionTest extends TestCase
      * @param string $versionString
      * @param Version $version
      */
-    public function it_can_be_casted_to_string(Version $version, string $versionString): void
+    public function it_casts_to_string(Version $version, string $versionString): void
     {
         $this->assertSame($versionString, (string) $version);
     }
@@ -83,7 +83,7 @@ class VersionTest extends TestCase
      * @param string $versionString
      * @param Version $version
      */
-    public function it_can_be_serialized_to_json(Version $version, string $versionString): void
+    public function it_casts_to_json(Version $version, string $versionString): void
     {
         $this->assertSame('"' . $versionString . '"', json_encode($version));
     }
@@ -105,7 +105,7 @@ class VersionTest extends TestCase
      * @param string $versionString
      * @param array $versionArray
      */
-    public function it_can_be_converted_to_an_array(string $versionString, array $versionArray): void
+    public function it_casts_to_array(string $versionString, array $versionArray): void
     {
         $version = Version::fromString($versionString);
 
@@ -137,7 +137,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_and_deserialized(): void
+    public function it_is_serializable(): void
     {
         $version = Version::from(
             1,
@@ -158,7 +158,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_created_with_invalid_major_version(): void
+    public function it_validates_major_version_number(): void
     {
         try {
             Version::from(-10, 0, 0, new NoPreRelease(), new NoBuild());
@@ -172,7 +172,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_created_with_invalid_minor_version(): void
+    public function it_validates_minor_version_number(): void
     {
         try {
             Version::from(0, -5, 1, new NoPreRelease(), new NoBuild());
@@ -186,7 +186,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_when_created_with_invalid_patch_version(): void
+    public function it_validates_patch_version_number(): void
     {
         try {
             Version::from(2, 1, -1, new NoPreRelease(), new NoBuild());
@@ -203,7 +203,7 @@ class VersionTest extends TestCase
      *
      * @param string $invalidVersion
      */
-    public function it_raises_exception_when_created_with_invalid_version_string(string $invalidVersion): void
+    public function it_validates_version_string_input(string $invalidVersion): void
     {
         try {
             Version::fromString($invalidVersion);
@@ -226,7 +226,7 @@ class VersionTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_setting_custom_comparator(): void
+    public function it_allows_setting_custom_comparator_strategy(): void
     {
         Version::setComparator(new class implements Comparator {
             public function compare(Version $version1, Version $version2): int

@@ -26,7 +26,7 @@ class OperationConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_assumes_equals_as_default_operator_if_operator_not_supplied(): void
+    public function it_uses_equals_as_default_operator(): void
     {
         $constraint = OperationConstraint::fromString('1.2.0');
 
@@ -56,7 +56,7 @@ class OperationConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_parses_composite_constraints_containing_logical_operators(): void
+    public function it_parses_composite_constraints_that_include_logical_operators(): void
     {
         $constraint = OperationConstraint::fromString('>=1.0.0 <1.1.0 || >=1.2.0');
 
@@ -85,7 +85,7 @@ class OperationConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_the_constraint_string_is_empty(): void
+    public function it_validates_constraint_string_for_emptiness(): void
     {
         try {
             OperationConstraint::fromString('  ');
@@ -99,21 +99,7 @@ class OperationConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_the_constraint_string_cannot_be_parsed(): void
-    {
-        try {
-            OperationConstraint::fromString('invalid');
-
-            $this->fail('Exception should have been raised');
-        } catch (InvalidConstraintString $ex) {
-            $this->assertSame("Comparision constraint string: 'invalid' is not valid and cannot be parsed", $ex->getMessage());
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function it_raises_exception_if_the_constraint_contains_operator_that_cannot_be_parsed(): void
+    public function it_validates_constraint_string_operator(): void
     {
         try {
             OperationConstraint::fromString('"100');
@@ -127,7 +113,7 @@ class OperationConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_the_constraint_contains_version_that_cannot_be_parsed(): void
+    public function it_validates_constraint_string_version_operand(): void
     {
         try {
             OperationConstraint::fromString('>100');
@@ -141,7 +127,7 @@ class OperationConstraintParsingTest extends TestCase
     /**
      * @test
      */
-    public function it_raises_exception_if_the_constraint_contains_invalid_logical_operation(): void
+    public function it_validates_compound_constraint_string(): void
     {
         try {
             OperationConstraint::fromString('>=1.0.0 <1.1.0 ||');
@@ -152,7 +138,7 @@ class OperationConstraintParsingTest extends TestCase
         }
     }
 
-    public static function assertCompositeConstraintIsIdentical(CompositeConstraint $compositeConstraint, string $expectedOperator, array $expectedConstraints)
+    public static function assertCompositeConstraintIsIdentical(CompositeConstraint $compositeConstraint, string $expectedOperator, array $expectedConstraints): void
     {
         self::assertSame($expectedOperator, $compositeConstraint->getOperator());
 
