@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Version\Exception\InvalidExtensionIdentifier;
+use Version\Exception\InvalidVersion;
 use Version\Extension\BaseExtension;
 
 abstract class BaseExtensionTest extends TestCase
@@ -71,8 +71,8 @@ abstract class BaseExtensionTest extends TestCase
             $this->createExtension(['$123']);
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidExtensionIdentifier $ex) {
-            $this->assertStringContainsString("identifier: '$123' is not valid; it must comprise only ASCII alphanumerics and hyphen", $ex->getMessage());
+        } catch (InvalidVersion $ex) {
+            $this->assertStringContainsString('identifiers must include only alphanumerics and hyphen', $ex->getMessage());
         }
     }
 
@@ -85,8 +85,8 @@ abstract class BaseExtensionTest extends TestCase
             $this->createExtension(['123', '']);
 
             $this->fail('Exception should have been raised');
-        } catch (InvalidExtensionIdentifier $ex) {
-            $this->assertStringContainsString("identifier: '' is not valid; it must comprise only ASCII alphanumerics and hyphen", $ex->getMessage());
+        } catch (InvalidVersion $ex) {
+            $this->assertStringContainsString('identifiers must include only alphanumerics and hyphen', $ex->getMessage());
         }
     }
 }

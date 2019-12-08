@@ -4,16 +4,8 @@ declare(strict_types=1);
 
 namespace Version\Exception;
 
-use DomainException;
+use Assert\InvalidArgumentException;
 
-class InvalidVersion extends DomainException implements VersionException
+class InvalidVersion extends InvalidArgumentException implements VersionException
 {
-    public static function negativeNumber(string $part, int $value): self
-    {
-        return new self(sprintf(
-            '%s version must be positive integer, %s given',
-            ucfirst($part),
-            $value
-        ));
-    }
 }

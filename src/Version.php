@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Version;
 
 use JsonSerializable;
+use Version\Assert\VersionAssert;
 use Version\Extension\Build;
 use Version\Extension\NoBuild;
 use Version\Extension\NoPreRelease;
-use Version\Exception\InvalidVersion;
 use Version\Exception\InvalidVersionString;
 use Version\Comparison\Comparator;
 use Version\Comparison\SemverComparator;
@@ -37,22 +37,15 @@ class Version implements JsonSerializable
 
     protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
     {
-        $this->validateNumber('major', $major);
-        $this->validateNumber('minor', $minor);
-        $this->validateNumber('patch', $patch);
+        VersionAssert::that($major)->greaterOrEqualThan(0, 'Major version must be positive integer');
+        VersionAssert::that($minor)->greaterOrEqualThan(0, 'Minor version must be positive integer');
+        VersionAssert::that($patch)->greaterOrEqualThan(0, 'Patch version must be positive integer');
 
         $this->major = $major;
         $this->minor = $minor;
         $this->patch = $patch;
         $this->preRelease = $preRelease;
         $this->build = $build;
-    }
-
-    protected function validateNumber(string $name, int $value): void
-    {
-        if ($value < 0) {
-            throw InvalidVersion::negativeNumber($name, $value);
-        }
     }
 
     public static function fromParts(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null): Version

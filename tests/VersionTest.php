@@ -165,7 +165,7 @@ class VersionTest extends TestCase
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
-            $this->assertSame('Major version must be positive integer, -10 given', $ex->getMessage());
+            $this->assertSame('Major version must be positive integer', $ex->getMessage());
         }
     }
 
@@ -179,7 +179,7 @@ class VersionTest extends TestCase
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
-            $this->assertSame('Minor version must be positive integer, -5 given', $ex->getMessage());
+            $this->assertSame('Minor version must be positive integer', $ex->getMessage());
         }
     }
 
@@ -193,7 +193,7 @@ class VersionTest extends TestCase
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
-            $this->assertSame('Patch version must be positive integer, -1 given', $ex->getMessage());
+            $this->assertSame('Patch version must be positive integer', $ex->getMessage());
         }
     }
 
