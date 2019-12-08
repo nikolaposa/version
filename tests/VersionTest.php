@@ -22,7 +22,7 @@ class VersionTest extends TestCase
      */
     public function it_is_created_from_parts(): void
     {
-        $version = Version::fromParts(
+        $version = Version::from(
             1,
             0,
             0,
@@ -91,7 +91,7 @@ class VersionTest extends TestCase
     public static function getPrintedVersionStrings(): array
     {
         return [
-            [Version::fromParts(2, 1), '2.1.0'],
+            [Version::from(2, 1), '2.1.0'],
             [Version::fromString('1.0.0+20150919'), '1.0.0+20150919'],
             [Version::fromString('1.0.0+exp.sha.5114f85'), '1.0.0+exp.sha.5114f85'],
             [Version::fromString('1.0.0-alpha.1+exp.sha.5114f85'), '1.0.0-alpha.1+exp.sha.5114f85'],
@@ -139,7 +139,7 @@ class VersionTest extends TestCase
      */
     public function it_can_be_serialized_and_deserialized(): void
     {
-        $version = Version::fromParts(
+        $version = Version::from(
             1,
             0,
             0,
@@ -161,7 +161,7 @@ class VersionTest extends TestCase
     public function it_raises_exception_when_created_with_invalid_major_version(): void
     {
         try {
-            Version::fromParts(-10, 0, 0, new NoPreRelease(), new NoBuild());
+            Version::from(-10, 0, 0, new NoPreRelease(), new NoBuild());
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
@@ -175,7 +175,7 @@ class VersionTest extends TestCase
     public function it_raises_exception_when_created_with_invalid_minor_version(): void
     {
         try {
-            Version::fromParts(0, -5, 1, new NoPreRelease(), new NoBuild());
+            Version::from(0, -5, 1, new NoPreRelease(), new NoBuild());
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
@@ -189,7 +189,7 @@ class VersionTest extends TestCase
     public function it_raises_exception_when_created_with_invalid_patch_version(): void
     {
         try {
-            Version::fromParts(2, 1, -1, new NoPreRelease(), new NoBuild());
+            Version::from(2, 1, -1, new NoPreRelease(), new NoBuild());
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
@@ -236,7 +236,7 @@ class VersionTest extends TestCase
         });
 
         try {
-            $version = Version::fromParts(1);
+            $version = Version::from(1);
             $this->assertSame(1, $version->compareTo($version));
         } finally {
             // reset comparator

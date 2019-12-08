@@ -48,7 +48,7 @@ class Version implements JsonSerializable
         $this->build = $build;
     }
 
-    public static function fromParts(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null): Version
+    public static function from(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null): Version
     {
         return new static($major, $minor, $patch, $preRelease ?? new NoPreRelease(), $build ?? new NoBuild());
     }
@@ -79,7 +79,7 @@ class Version implements JsonSerializable
         $preRelease = !empty($parts['preRelease']) ? PreRelease::fromIdentifiersString($parts['preRelease']) : new NoPreRelease();
         $build = !empty($parts['build']) ? Build::fromIdentifiersString($parts['build']) : new NoBuild();
 
-        return static::fromParts((int) $major, (int) $minor, (int) $patch, $preRelease, $build);
+        return static::from((int) $major, (int) $minor, (int) $patch, $preRelease, $build);
     }
 
     public function getMajor(): int
@@ -210,17 +210,17 @@ class Version implements JsonSerializable
 
     public function incrementMajor(): Version
     {
-        return static::fromParts($this->major + 1, 0, 0, new NoPreRelease(), new NoBuild());
+        return static::from($this->major + 1, 0, 0, new NoPreRelease(), new NoBuild());
     }
 
     public function incrementMinor(): Version
     {
-        return static::fromParts($this->major, $this->minor + 1, 0, new NoPreRelease(), new NoBuild());
+        return static::from($this->major, $this->minor + 1, 0, new NoPreRelease(), new NoBuild());
     }
 
     public function incrementPatch(): Version
     {
-        return static::fromParts($this->major, $this->minor, $this->patch + 1, new NoPreRelease(), new NoBuild());
+        return static::from($this->major, $this->minor, $this->patch + 1, new NoPreRelease(), new NoBuild());
     }
 
     /**
@@ -233,7 +233,7 @@ class Version implements JsonSerializable
             $preRelease = PreRelease::fromIdentifiersString($preRelease);
         }
 
-        return static::fromParts($this->major, $this->minor, $this->patch, $preRelease, new NoBuild());
+        return static::from($this->major, $this->minor, $this->patch, $preRelease, new NoBuild());
     }
 
     /**
@@ -246,7 +246,7 @@ class Version implements JsonSerializable
             $build = Build::fromIdentifiersString($build);
         }
 
-        return static::fromParts($this->major, $this->minor, $this->patch, $this->preRelease, $build);
+        return static::from($this->major, $this->minor, $this->patch, $this->preRelease, $build);
     }
 
     public function matches(Constraint $constraint): bool

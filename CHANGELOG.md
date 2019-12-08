@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - PHPUnit 8 is now the minimum required version
 - Rename `VersionsCollection` to `VersionCollection`
+- Rename `Version::fromParts()` to `Version::from()`
+- Use `beberlei/assert` library for input validation
 - Rename `Version\Comparator` namespace to `Version\Comparison`
 - Move `Version\Constraint` namespace to `Version\Comparison\Constraint`
 - Rename `ComparatorInterface` to `Version\Comparison\Comparator`
