@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Version\Constraint;
+namespace Version\Comparison\Constraint;
 
 use Version\Version;
 use Version\Exception\InvalidCompositeConstraintException;
 
-class CompositeConstraint implements ConstraintInterface
+class CompositeConstraint implements Constraint
 {
     public const OPERATOR_AND = 'AND';
     public const OPERATOR_OR = 'OR';
@@ -15,10 +15,10 @@ class CompositeConstraint implements ConstraintInterface
     /** @var string */
     protected $operator;
 
-    /** @var ConstraintInterface[] */
+    /** @var Constraint[] */
     protected $constraints;
 
-    public function __construct(string $operator, ConstraintInterface $constraint, ConstraintInterface ...$constraints)
+    public function __construct(string $operator, Constraint $constraint, Constraint ...$constraints)
     {
         if (! in_array($operator, [self::OPERATOR_AND, self::OPERATOR_OR], true)) {
             throw InvalidCompositeConstraintException::forUnsupportedOperator($operator);
@@ -28,12 +28,12 @@ class CompositeConstraint implements ConstraintInterface
         $this->constraints = array_merge([$constraint], $constraints);
     }
 
-    public static function and(ConstraintInterface $constraint, ConstraintInterface ...$constraints): CompositeConstraint
+    public static function and(Constraint $constraint, Constraint ...$constraints): CompositeConstraint
     {
         return new static(self::OPERATOR_AND, $constraint, ...$constraints);
     }
 
-    public static function or(ConstraintInterface $constraint, ConstraintInterface ...$constraints): CompositeConstraint
+    public static function or(Constraint $constraint, Constraint ...$constraints): CompositeConstraint
     {
         return new static(self::OPERATOR_OR, $constraint, ...$constraints);
     }

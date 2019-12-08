@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Version\Comparator;
+namespace Version\Comparison;
 
 use Version\Version;
 
-final class SemverComparator implements ComparatorInterface
+final class SemverComparator implements Comparator
 {
     public function compare(Version $version1, Version $version2): int
     {

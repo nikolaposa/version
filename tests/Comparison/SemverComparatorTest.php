@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Version\Tests\Comparator;
+namespace Version\Tests\Comparison;
 
 use PHPUnit\Framework\TestCase;
-use Version\Comparator\ComparatorInterface;
-use Version\Comparator\SemverComparator;
+use Version\Comparison\Comparator;
+use Version\Comparison\SemverComparator;
 use Version\Version;
 
 class SemverComparatorTest extends TestCase
 {
-    /** @var ComparatorInterface */
+    /** @var Comparator */
     protected $comparator;
 
     protected function setUp(): void

@@ -8,7 +8,7 @@ use Countable;
 use IteratorAggregate;
 use ArrayIterator;
 use Traversable;
-use Version\Constraint\ConstraintInterface;
+use Version\Comparison\Constraint\Constraint;
 use Version\Exception\CollectionIsEmptyException;
 
 class VersionsCollection implements Countable, IteratorAggregate
@@ -95,7 +95,7 @@ class VersionsCollection implements Countable, IteratorAggregate
         return new static(...$versions);
     }
 
-    public function matching(ConstraintInterface $constraint): VersionsCollection
+    public function matching(Constraint $constraint): VersionsCollection
     {
         return new static(...array_filter(
             $this->versions,

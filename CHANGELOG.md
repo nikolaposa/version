@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - PHPUnit 8 is now the minimum required version
+- Rename `Version\Comparator` namespace to `Version\Comparison`
+- Move `Version\Constraint` namespace to `Version\Comparison\Constraint`
+- Rename `Version\Comparison\ComparatorInterface` to `Version\Comparison\Comparator`
+- Rename `Version\Comparison\Constraint\ComparisonConstraint` to `Version\Comparison\Constraint\OperatorConstraint`
+- Rename `Version\Comparison\Constraint\ComparisonConstraintParser` to `Version\Comparison\Constraint\OperatorConstraintParser`
+- Rename `Version\Exception\InvalidComparisionConstraintStringException` to `Version\Exception\InvalidConstraintStringException`
+- Rename `Version\Exception\InvalidComparisonConstraintException` to `Version\Exception\InvalidOperatorConstraintException`
 
 ### Removed
 - `VersionAwareInterface`

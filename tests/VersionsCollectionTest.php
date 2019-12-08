@@ -11,7 +11,7 @@ use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Tests\TestAsset\VersionsCollectionIsIdentical;
 use Version\VersionsCollection;
 use Version\Version;
-use Version\Constraint\ComparisonConstraint;
+use Version\Comparison\Constraint\OperatorConstraint;
 
 class VersionsCollectionTest extends TestCase
 {
@@ -260,7 +260,7 @@ class VersionsCollectionTest extends TestCase
             Version::fromString('2.0.1')
         );
 
-        $versions2 = $versions->matching(ComparisonConstraint::fromString('>=2.0.0'));
+        $versions2 = $versions->matching(OperatorConstraint::fromString('>=2.0.0'));
 
         $this->assertThat($versions2, new VersionsCollectionIsIdentical([
             [2, 0, 0, null, null],
@@ -280,7 +280,7 @@ class VersionsCollectionTest extends TestCase
             Version::fromString('2.0.1')
         );
 
-        $versions2 = $versions->matching(ComparisonConstraint::fromString('>=2.0.0'));
+        $versions2 = $versions->matching(OperatorConstraint::fromString('>=2.0.0'));
 
         $this->assertThat($versions2->first(), new VersionIsIdentical(2, 0, 0));
         $this->assertThat($versions2->last(), new VersionIsIdentical(2, 0, 1));
@@ -297,7 +297,7 @@ class VersionsCollectionTest extends TestCase
             Version::fromString('1.1.0')
         );
 
-        $versions2 = $versions->matching(ComparisonConstraint::fromString('>=2.0.0'));
+        $versions2 = $versions->matching(OperatorConstraint::fromString('>=2.0.0'));
 
         $this->assertCount(0, $versions2);
     }

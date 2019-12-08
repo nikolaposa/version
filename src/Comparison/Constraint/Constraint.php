@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Version\Constraint;
+namespace Version\Comparison\Constraint;
 
 use Version\Version;
 
-interface ConstraintInterface
+interface Constraint
 {
     public function assert(Version $version): bool;
 }

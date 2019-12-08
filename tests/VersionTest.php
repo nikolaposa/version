@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Version\Comparator\ComparatorInterface;
+use Version\Comparison\Comparator;
 use Version\Exception\InvalidVersionException;
 use Version\Exception\InvalidVersionStringException;
 use Version\Extension\Build;
@@ -228,7 +228,7 @@ class VersionTest extends TestCase
      */
     public function it_allows_setting_custom_comparator(): void
     {
-        Version::setComparator(new class implements ComparatorInterface {
+        Version::setComparator(new class implements Comparator {
             public function compare(Version $version1, Version $version2): int
             {
                 return 1;

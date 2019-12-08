@@ -10,9 +10,9 @@ use Version\Extension\NoBuild;
 use Version\Extension\NoPreRelease;
 use Version\Exception\InvalidVersionException;
 use Version\Exception\InvalidVersionStringException;
-use Version\Comparator\ComparatorInterface;
-use Version\Comparator\SemverComparator;
-use Version\Constraint\ConstraintInterface;
+use Version\Comparison\Comparator;
+use Version\Comparison\SemverComparator;
+use Version\Comparison\Constraint\Constraint;
 use Version\Extension\PreRelease;
 
 class Version implements JsonSerializable
@@ -32,7 +32,7 @@ class Version implements JsonSerializable
     /** @var Build */
     protected $build;
 
-    /** @var ComparatorInterface|null */
+    /** @var Comparator|null */
     protected static $comparator;
 
     protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
@@ -256,7 +256,7 @@ class Version implements JsonSerializable
         return static::fromParts($this->major, $this->minor, $this->patch, $this->preRelease, $build);
     }
 
-    public function matches(ConstraintInterface $constraint): bool
+    public function matches(Constraint $constraint): bool
     {
         return $constraint->assert($this);
     }
@@ -293,12 +293,12 @@ class Version implements JsonSerializable
         ];
     }
 
-    public static function setComparator(?ComparatorInterface $comparator): void
+    public static function setComparator(?Comparator $comparator): void
     {
         static::$comparator = $comparator;
     }
 
-    protected function getComparator(): ComparatorInterface
+    protected function getComparator(): Comparator
     {
         if (null === static::$comparator) {
             static::$comparator = new SemverComparator();

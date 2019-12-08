@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Version\Constraint;
+namespace Version\Comparison\Constraint;
 
 use Version\Exception\ExceptionInterface;
-use Version\Exception\InvalidComparisonConstraintStringException;
+use Version\Exception\InvalidConstraintStringException;
 use Version\Version;
 
-class ComparisonConstraintParser
+class OperatorConstraintParser
 {
     public const OPERATOR_OR = '||';
 
@@ -20,14 +20,14 @@ class ComparisonConstraintParser
 
     /**
      * @param string $constraintString
-     * @return ComparisonConstraint|CompositeConstraint
+     * @return OperatorConstraint|CompositeConstraint
      */
     public function parse(string $constraintString)
     {
         $constraintString = trim($constraintString);
 
         if ('' === $constraintString) {
-            throw InvalidComparisonConstraintStringException::forEmptyString();
+            throw InvalidConstraintStringException::forEmptyString();
         }
 
         $this->constraintString = $constraintString;
@@ -52,7 +52,7 @@ class ComparisonConstraintParser
         $this->constraintParts = array_map('trim', $constraintParts);
     }
 
-    protected function buildConstraint(string $constraintPart): ComparisonConstraint
+    protected function buildConstraint(string $constraintPart): OperatorConstraint
     {
         [$operator, $operandString] = array_values($this->parseConstraint($constraintPart));
 
@@ -61,8 +61,8 @@ class ComparisonConstraintParser
         }
 
         try {
-            return new ComparisonConstraint(
-                $operator ?: ComparisonConstraint::OPERATOR_EQ,
+            return new OperatorConstraint(
+                $operator ?: OperatorConstraint::OPERATOR_EQ,
                 Version::fromString($operandString)
             );
         } catch (ExceptionInterface $ex) {
@@ -115,6 +115,6 @@ class ComparisonConstraintParser
 
     protected function error(): void
     {
-        throw InvalidComparisonConstraintStringException::forUnparsableString($this->constraintString);
+        throw InvalidConstraintStringException::forUnparsableString($this->constraintString);
     }
 }

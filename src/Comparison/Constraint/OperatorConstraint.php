@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Version\Constraint;
+namespace Version\Comparison\Constraint;
 
 use ReflectionClass;
 use Version\Version;
-use Version\Exception\InvalidComparisonConstraintException;
+use Version\Exception\InvalidOperatorConstraintException;
 
-class ComparisonConstraint implements ConstraintInterface
+class OperatorConstraint implements Constraint
 {
     public const OPERATOR_EQ = '=';
     public const OPERATOR_NEQ = '!=';
@@ -33,14 +33,14 @@ class ComparisonConstraint implements ConstraintInterface
 
     /**
      * @param string $constraintString
-     * @return ComparisonConstraint|CompositeConstraint
+     * @return OperatorConstraint|CompositeConstraint
      */
     public static function fromString(string $constraintString)
     {
         static $parser = null;
 
         if (null === $parser) {
-            $parser = new ComparisonConstraintParser();
+            $parser = new OperatorConstraintParser();
         }
 
         return $parser->parse($constraintString);
@@ -83,7 +83,7 @@ class ComparisonConstraint implements ConstraintInterface
         }
 
         if (! in_array($operator, $validOperators, true)) {
-            throw InvalidComparisonConstraintException::forUnsupportedOperator($operator);
+            throw InvalidOperatorConstraintException::forUnsupportedOperator($operator);
         }
     }
 }

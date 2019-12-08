@@ -6,7 +6,7 @@ namespace Version\Exception;
 
 use DomainException;
 
-class InvalidComparisonConstraintStringException extends DomainException implements ExceptionInterface
+class InvalidConstraintStringException extends DomainException implements ExceptionInterface
 {
     public static function forEmptyString(): self
     {
