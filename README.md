@@ -59,8 +59,8 @@ var_dump($v2->isGreaterThan($v1)); //bool(true)
 ```php
 $v = Version::fromString('2.2.0');
 
-var_dump($v->matches(OperationConstraint::equals('2.2.0'))); //bool(true)
-var_dump($v->matches(OperationConstraint::notEquals('2.2.0'))); //bool(true)
+var_dump($v->matches(OperationConstraint::equalTo(Version::fromString('2.2.0')))); //bool(true)
+var_dump($v->matches(OperationConstraint::notEqualTo(Version::fromString('2.2.0')))); //bool(true)
 var_dump($v->matches(OperationConstraint::fromString('>=2.0.0 <2.3.0'))); //bool(true)
 var_dump($v->matches(OperationConstraint::fromString('>=2.0.0 <2.1.0 || 2.2.0'))); //bool(true)
 ```
