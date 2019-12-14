@@ -6,11 +6,11 @@ namespace Version\Tests\Extension;
 
 use PHPUnit\Framework\TestCase;
 use Version\Exception\InvalidVersion;
-use Version\Extension\BaseExtension;
+use Version\Extension\Extension;
 
-abstract class BaseExtensionTest extends TestCase
+abstract class ExtensionTest extends TestCase
 {
-    abstract protected function createExtension($identifiers): BaseExtension;
+    abstract protected function createExtension($identifiers): Extension;
 
     /**
      * @test
@@ -45,21 +45,11 @@ abstract class BaseExtensionTest extends TestCase
     /**
      * @test
      */
-    public function it_checks_for_emptiness(): void
-    {
-        $extension = $this->createExtension(['123']);
-
-        $this->assertFalse($extension->isEmpty());
-    }
-
-    /**
-     * @test
-     */
     public function it_casts_to_string(): void
     {
         $extension = $this->createExtension(['123', '456']);
 
-        $this->assertSame('123.456', (string) $extension);
+        $this->assertSame('123.456', $extension->toString());
     }
 
     /**

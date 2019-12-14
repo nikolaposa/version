@@ -24,8 +24,8 @@ class VersionTest extends TestCase
             1,
             0,
             0,
-            PreRelease::fromIdentifiersString('beta'),
-            Build::fromIdentifiersString('11')
+            PreRelease::fromString('beta'),
+            Build::fromString('11')
         );
 
         $this->assertThat($version, new VersionIsIdentical(1, 0, 0, 'beta', '11'));
@@ -71,7 +71,7 @@ class VersionTest extends TestCase
      */
     public function it_casts_to_string(Version $version, string $versionString): void
     {
-        $this->assertSame($versionString, (string) $version);
+        $this->assertSame($versionString, $version->toString());
     }
 
     /**
@@ -141,8 +141,8 @@ class VersionTest extends TestCase
             1,
             0,
             0,
-            PreRelease::fromIdentifiersString('beta'),
-            Build::fromIdentifiersString('123')
+            PreRelease::fromString('beta'),
+            Build::fromString('123')
         );
 
         $serializedVersion = serialize($version);

@@ -20,7 +20,7 @@ class OperationConstraintParsingTest extends TestCase
 
         $this->assertInstanceOf(OperationConstraint::class, $constraint);
         $this->assertSame('>=', $constraint->getOperator());
-        $this->assertSame('1.2.0', (string) $constraint->getOperand());
+        $this->assertSame('1.2.0', $constraint->getOperand()->toString());
     }
 
     /**
@@ -32,7 +32,7 @@ class OperationConstraintParsingTest extends TestCase
 
         $this->assertInstanceOf(OperationConstraint::class, $constraint);
         $this->assertSame('=', $constraint->getOperator());
-        $this->assertSame('1.2.0', (string) $constraint->getOperand());
+        $this->assertSame('1.2.0', $constraint->getOperand()->toString());
     }
 
     /**
@@ -143,7 +143,7 @@ class OperationConstraintParsingTest extends TestCase
         self::assertSame($expectedOperator, $compositeConstraint->getOperator());
 
         foreach ($compositeConstraint->getConstraints() as $i => $constraint) {
-            /* @var $constraint \Version\Comparison\Constraint\OperationConstraint */
+            /* @var $constraint OperationConstraint */
 
             if ($constraint instanceof CompositeConstraint) {
                 self::assertCompositeConstraintIsIdentical(
@@ -155,7 +155,7 @@ class OperationConstraintParsingTest extends TestCase
             }
 
             self::assertSame($expectedConstraints[$i]['operator'], $constraint->getOperator());
-            self::assertSame($expectedConstraints[$i]['operand'], (string) $constraint->getOperand());
+            self::assertSame($expectedConstraints[$i]['operand'], $constraint->getOperand()->toString());
         }
     }
 }

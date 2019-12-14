@@ -25,8 +25,8 @@ final class VersionIsIdentical extends Constraint
             $expectedMajor,
             $expectedMinor,
             $expectedPatch,
-            is_string($expectedPreRelease) ? PreRelease::fromIdentifiersString($expectedPreRelease) : $expectedPreRelease,
-            is_string($expectedBuild) ? Build::fromIdentifiersString($expectedBuild) : $expectedBuild
+            is_string($expectedPreRelease) ? PreRelease::fromString($expectedPreRelease) : $expectedPreRelease,
+            is_string($expectedBuild) ? Build::fromString($expectedBuild) : $expectedBuild
         );
     }
 

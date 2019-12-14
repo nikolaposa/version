@@ -31,7 +31,7 @@ echo $v->getMajor(); //2
 echo $v->getMinor(); //0
 echo $v->getPatch(); //0
 var_dump($v->getPreRelease()->getIdentifiers()); //array(1) { [0]=> string(1) "alpha" }
-echo $v->getPreRelease(); //alpha
+echo $v->getPreRelease()->toString(); //alpha
 ```
 
 ### Creating a Version object from a string
@@ -41,7 +41,7 @@ use Version\Version;
 
 $v = Version::fromString('1.10.0');
 
-echo $v->getVersionString(); //1.10.0
+echo $v->toString(); //1.10.0
 
 ```
 
@@ -83,19 +83,19 @@ use Version\Version;
 $v = Version::fromString('1.10.0');
 
 $v1101 = $v->incrementPatch();
-echo $v1101; //1.10.1
+echo $v1101->toString(); //1.10.1
 
 $v1110 = $v1101->incrementMinor();
-echo $v1110; //1.11.0
+echo $v1110->toString(); //1.11.0
 
 $v2 = $v1101->incrementMajor();
-echo $v2; //2.0.0
+echo $v2->toString(); //2.0.0
 
 $v2Alpha = $v2->withPreRelease('alpha');
-echo $v2Alpha; //2.0.0-alpha
+echo $v2Alpha->toString(); //2.0.0-alpha
 
 $v2Alpha111 = $v2Alpha->withBuild('111');
-echo $v2Alpha111; //2.0.0-alpha+111
+echo $v2Alpha111->toString(); //2.0.0-alpha+111
 ```
 
 ### Version Collection
@@ -116,7 +116,7 @@ $versions = $versions->sortedDescending();
 
 //Outputs: 2.3.3, 1.1.0, 1.0.1
 foreach ($versions as $version) {
-    echo (string) $version;
+    echo $version->toString();
 }
 
 $minorReleases = $versions->minorReleases();

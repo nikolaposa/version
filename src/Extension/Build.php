@@ -6,19 +6,8 @@ namespace Version\Extension;
 
 use Version\Assert\VersionAssert;
 
-class Build extends BaseExtension
+class Build extends Extension
 {
-    public static function empty(): Build
-    {
-        static $noBuild = null;
-
-        if (null === $noBuild) {
-            $noBuild = new self(...[]);
-        }
-
-        return $noBuild;
-    }
-
     protected function validate(string $identifier): void
     {
         VersionAssert::that($identifier)->regex(

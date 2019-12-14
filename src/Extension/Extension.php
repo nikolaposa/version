@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Version\Extension;
 
-use Version\Exception\InvalidExtensionIdentifier;
+use Version\Exception\InvalidVersion;
 
-abstract class BaseExtension
+abstract class Extension
 {
     protected const IDENTIFIERS_SEPARATOR = '.';
 
@@ -22,21 +22,30 @@ abstract class BaseExtension
         $this->identifiers = $identifiers;
     }
 
+    public static function empty()
+    {
+        static $noExtension = null;
+
+        if (null === $noExtension) {
+            $noExtension = new static(...[]);
+        }
+
+        return $noExtension;
+    }
+
     /**
-     * @param string $identifier
-     * @return void
-     * @throws InvalidExtensionIdentifier
+     * @throws InvalidVersion
      */
     abstract protected function validate(string $identifier): void;
 
-    public static function fromIdentifiers(string $identifier, string ...$identifiers)
+    public static function from(string $identifier, string ...$identifiers)
     {
         return new static($identifier, ...$identifiers);
     }
 
-    public static function fromIdentifiersString(string $identifiers)
+    public static function fromString(string $extension)
     {
-        return new static(...explode(self::IDENTIFIERS_SEPARATOR, $identifiers));
+        return new static(...explode(self::IDENTIFIERS_SEPARATOR, $extension));
     }
 
     public function getIdentifiers(): array
@@ -49,8 +58,13 @@ abstract class BaseExtension
         return empty($this->identifiers);
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return implode(self::IDENTIFIERS_SEPARATOR, $this->identifiers);
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }

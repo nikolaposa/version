@@ -74,8 +74,8 @@ class Version implements JsonSerializable
         }
 
         [$major, $minor, $patch] = explode('.', $parts['core']);
-        $preRelease = !empty($parts['preRelease']) ? PreRelease::fromIdentifiersString($parts['preRelease']) : PreRelease::empty();
-        $build = !empty($parts['build']) ? Build::fromIdentifiersString($parts['build']) : Build::empty();
+        $preRelease = !empty($parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : PreRelease::empty();
+        $build = !empty($parts['build']) ? Build::fromString($parts['build']) : Build::empty();
 
         return static::from((int) $major, (int) $minor, (int) $patch, $preRelease, $build);
     }
@@ -189,12 +189,12 @@ class Version implements JsonSerializable
 
     public function isPreRelease(): bool
     {
-        return !$this->preRelease->isEmpty();
+        return !($this->preRelease === PreRelease::empty());
     }
 
     public function hasBuild(): bool
     {
-        return !$this->build->isEmpty();
+        return !($this->build === Build::empty());
     }
 
     public function incrementMajor(): Version
@@ -219,7 +219,7 @@ class Version implements JsonSerializable
     public function withPreRelease($preRelease): Version
     {
         if (is_string($preRelease)) {
-            $preRelease = PreRelease::fromIdentifiersString($preRelease);
+            $preRelease = PreRelease::fromString($preRelease);
         }
 
         return static::from($this->major, $this->minor, $this->patch, $preRelease, Build::empty());
@@ -232,7 +232,7 @@ class Version implements JsonSerializable
     public function withBuild($build): Version
     {
         if (is_string($build)) {
-            $build = Build::fromIdentifiersString($build);
+            $build = Build::fromString($build);
         }
 
         return static::from($this->major, $this->minor, $this->patch, $this->preRelease, $build);
@@ -249,8 +249,8 @@ class Version implements JsonSerializable
             $this->major
             . '.' . $this->minor
             . '.' . $this->patch
-            . ($this->isPreRelease() ? '-' . $this->preRelease : '')
-            . ($this->hasBuild() ? '+' . $this->build : '')
+            . ($this->isPreRelease() ? '-' . $this->preRelease->toString() : '')
+            . ($this->hasBuild() ? '+' . $this->build->toString() : '')
         ;
     }
 

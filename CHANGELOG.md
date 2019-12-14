@@ -19,13 +19,20 @@ All notable changes to this project will be documented in this file.
 - Move comparision-related exceptions into `Version\Comparision\Exception` namespace
 - Remove `-Exception` suffix from all concrete exception names
 - Rename `Version->getVersionString()` to `Version->toString()`
+- Rename `BaseExtension` to `Extension`
+- Rename `PreRelease::fromIdentifiers()` to `PreRelease::from()`
+- Rename `Build::fromIdentifiers()` to `Build::from()`
+- Rename `PreRelease::fromIdentifiersString()` to `PreRelease::fromString()`
+- Rename `Build::fromIdentifiersString()` to `Build::fromString()`
 
 ### Removed
 - `Version\VersionAwareInterface`
 - `Version\VersionAwareTrait`
 - `Version\Exception\CollectionIsEmptyException`
-- `Version\Extension\NoPreRelease`; `PreRelease::empty()` should be used instead
-- `Version\Extension\NoBuild`; `Build::empty()` should be used instead
+- `Version\Extension\NoPreRelease` (`PreRelease::empty()` should be used instead)
+- `Version\Extension\NoBuild` (`Build::empty()` should be used instead)
+- `PreRelease->isEmpty()`
+- `Build->isEmpty()`
 
 ## 3.2.0 - 2019-08-11
 ### Added

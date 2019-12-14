@@ -137,8 +137,9 @@ class VersionCollectionTest extends TestCase
             '2.3.3',
         ];
 
+        /** @var Version[] $versions */
         foreach ($versions as $key => $version) {
-            $this->assertSame($expectedOrder[$key], (string) $version);
+            $this->assertSame($expectedOrder[$key], $version->toString());
         }
     }
 
@@ -161,8 +162,9 @@ class VersionCollectionTest extends TestCase
             '1.0.0',
         ];
 
+        /** @var Version[] $versions */
         foreach ($versions as $key => $version) {
-            $this->assertSame($expectedOrder[$key], (string) $version);
+            $this->assertSame($expectedOrder[$key], $version->toString());
         }
     }
 

@@ -6,19 +6,8 @@ namespace Version\Extension;
 
 use Version\Assert\VersionAssert;
 
-class PreRelease extends BaseExtension
+class PreRelease extends Extension
 {
-    public static function empty(): PreRelease
-    {
-        static $noPreRelease = null;
-
-        if (null === $noPreRelease) {
-            $noPreRelease = new self(...[]);
-        }
-
-        return $noPreRelease;
-    }
-
     protected function validate(string $identifier): void
     {
         VersionAssert::that($identifier)->regex(
