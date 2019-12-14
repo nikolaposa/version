@@ -53,11 +53,6 @@ abstract class Extension
         return $this->identifiers;
     }
 
-    public function isEmpty(): bool
-    {
-        return empty($this->identifiers);
-    }
-
     public function toString(): string
     {
         return implode(self::IDENTIFIERS_SEPARATOR, $this->identifiers);
