@@ -12,7 +12,6 @@ use Version\Comparison\Constraint\Constraint;
 
 class VersionCollection implements Countable, IteratorAggregate
 {
-    /** @var Version[] */
     protected $versions;
 
     public function __construct(Version ...$versions)

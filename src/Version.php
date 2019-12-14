@@ -21,7 +21,6 @@ class Version implements JsonSerializable
     protected $preRelease;
     protected $build;
 
-    /** @var Comparator|null */
     protected static $comparator;
 
     protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
