@@ -15,19 +15,10 @@ use Version\Extension\PreRelease;
 
 class Version implements JsonSerializable
 {
-    /** @var int */
     protected $major;
-
-    /** @var int */
     protected $minor;
-
-    /**  @var int */
     protected $patch;
-
-    /** @var PreRelease */
     protected $preRelease;
-
-    /** @var Build */
     protected $build;
 
     /** @var Comparator|null */
@@ -52,11 +43,7 @@ class Version implements JsonSerializable
     }
 
     /**
-     * @param string $versionString
-     *
-     * @return Version
      * @throws InvalidVersionString
-     *
      */
     public static function fromString(string $versionString): Version
     {
