@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased][Unreleased]
 
+### Added
+- `OperationConstraint::equalsTo()` named constructor
+- `OperationConstraint::notEqualTo()` named constructor
+- `OperationConstraint::greaterThan()` named constructor
+- `OperationConstraint::greaterOrEqualTo()` named constructor
+- `OperationConstraint::lessThan()` named constructor
+- `OperationConstraint::lessOrEqualTo()` named constructor
+
 ### Changed
 - PHPUnit 8 is now the minimum required version
 - Rename `VersionsCollection` to `VersionCollection`
@@ -12,9 +20,9 @@ All notable changes to this project will be documented in this file.
 - Use `beberlei/assert` library for input validation
 - Rename `Version\Comparator` namespace to `Version\Comparison`
 - Move `Version\Constraint` namespace to `Version\Comparison\Constraint`
-- Rename `ComparatorInterface` to `Version\Comparison\Comparator`
-- Rename `ComparisonConstraint` to `Version\Comparison\Constraint\OpeationConstraint`
-- Rename `ComparisonConstraintParser` to `Version\Comparison\Constraint\OpeationConstraintParser`
+- Rename `ComparatorInterface` to `Comparator`
+- Rename `ComparisonConstraint` to `OpeationConstraint`
+- Rename `ComparisonConstraintParser` to `OpeationConstraintParser`
 - Rename component-level `Version\Exception\ExceptionInterface` to `Version\Exception\VersionException`
 - Move comparision-related exceptions into `Version\Comparision\Exception` namespace
 - Remove `-Exception` suffix from all concrete exception names

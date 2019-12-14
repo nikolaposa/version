@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace Version\Comparison\Constraint;
 
+use BadMethodCallException;
 use ReflectionClass;
 use Version\Version;
 use Version\Comparison\Exception\InvalidOperationConstraint;
 
+/**
+ * @method static OperationConstraint equalTo(Version $operand)
+ * @method static OperationConstraint notEqualTo(Version $operand)
+ * @method static OperationConstraint greaterThan(Version $operand)
+ * @method static OperationConstraint greaterOrEqualTo(Version $operand)
+ * @method static OperationConstraint lessThan(Version $operand)
+ * @method static OperationConstraint lessOrEqualTo(Version $operand)
+ */
 class OperationConstraint implements Constraint
 {
     public const OPERATOR_EQ = '=';
@@ -29,6 +38,28 @@ class OperationConstraint implements Constraint
 
         $this->operator = $operator;
         $this->operand = $operand;
+    }
+
+    public static function __callStatic($name, $arguments)
+    {
+        $methodNameOperatorMap = [
+            'equalTo' => self::OPERATOR_EQ,
+            'notEqualTo' => self::OPERATOR_NEQ,
+            'greaterThan' => self::OPERATOR_GT,
+            'greaterOrEqualTo' => self::OPERATOR_GTE,
+            'lessThan' => self::OPERATOR_LT,
+            'lessOrEqualTo' => self::OPERATOR_LTE,
+        ];
+
+        if (!isset($methodNameOperatorMap[$name])) {
+            throw new BadMethodCallException("Operation OperationConstraint::$name is not supported");
+        }
+
+        if (!isset($arguments[0])) {
+            throw new BadMethodCallException('Operand is missing');
+        }
+
+        return new static($methodNameOperatorMap[$name], $arguments[0]);
     }
 
     /**

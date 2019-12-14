@@ -22,10 +22,7 @@ composer require nikolaposa/version
 ### Creating a Version object via named constructor and accessing its values
 
 ```php
-use Version\Version;
-use Version\Extension\PreRelease;
-
-$v = Version::from(2, 0, 0, PreRelease::fromIdentifiers('alpha'));
+$v = Version::from(2, 0, 0, PreRelease::from('alpha'));
 
 echo $v->getMajor(); //2
 echo $v->getMinor(); //0
@@ -37,8 +34,6 @@ echo $v->getPreRelease()->toString(); //alpha
 ### Creating a Version object from a string
 
 ```php
-use Version\Version;
-
 $v = Version::fromString('1.10.0');
 
 echo $v->toString(); //1.10.0
@@ -48,8 +43,6 @@ echo $v->toString(); //1.10.0
 ### Comparing Version objects
 
 ```php
-use Version\Version;
-
 $v1 = Version::fromString('1.10.0');
 $v2 = Version::fromString('2.3.3');
 
@@ -64,22 +57,17 @@ var_dump($v2->isGreaterThan($v1)); //bool(true)
 ### Matching Version objects against constraints
 
 ```php
-use Version\Version;
-
 $v = Version::fromString('2.2.0');
 
-var_dump($v->matches('2.2.0')); //bool(true)
-var_dump($v->matches('=2.2.0')); //bool(true)
-var_dump($v->matches('!=2.1.0')); //bool(true)
-var_dump($v->matches('>=2.0.0 <2.3.0')); //bool(true)
-var_dump($v->matches('>=2.0.0 <2.1.0 || 2.2.0')); //bool(true)
+var_dump($v->matches(OperationConstraint::equals('2.2.0'))); //bool(true)
+var_dump($v->matches(OperationConstraint::notEquals('2.2.0'))); //bool(true)
+var_dump($v->matches(OperationConstraint::fromString('>=2.0.0 <2.3.0'))); //bool(true)
+var_dump($v->matches(OperationConstraint::fromString('>=2.0.0 <2.1.0 || 2.2.0'))); //bool(true)
 ```
 
 ### Version operations
 
 ```php
-use Version\Version;
-
 $v = Version::fromString('1.10.0');
 
 $v1101 = $v->incrementPatch();
@@ -101,10 +89,7 @@ echo $v2Alpha111->toString(); //2.0.0-alpha+111
 ### Version Collection
 
 ```php
-use Version\VersionsCollection;
-use Version\Version;
-
-$versions = new VersionsCollection(
+$versions = new VersionCollection(
     Version::from(1, 0, 1),
     Version::fromString('1.1.0'),
     Version::fromString('2.3.3')
