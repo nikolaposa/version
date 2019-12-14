@@ -8,6 +8,17 @@ use Version\Assert\VersionAssert;
 
 class PreRelease extends BaseExtension
 {
+    public static function empty(): PreRelease
+    {
+        static $noPreRelease = null;
+
+        if (null === $noPreRelease) {
+            $noPreRelease = new self(...[]);
+        }
+
+        return $noPreRelease;
+    }
+
     protected function validate(string $identifier): void
     {
         VersionAssert::that($identifier)->regex(

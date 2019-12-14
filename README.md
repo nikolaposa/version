@@ -25,7 +25,7 @@ composer require nikolaposa/version
 use Version\Version;
 use Version\Extension\PreRelease;
 
-$v = Version::fromParts(2, 0, 0, PreRelease::fromIdentifiers('alpha'));
+$v = Version::from(2, 0, 0, PreRelease::fromIdentifiers('alpha'));
 
 echo $v->getMajor(); //2
 echo $v->getMinor(); //0
@@ -98,50 +98,14 @@ $v2Alpha111 = $v2Alpha->withBuild('111');
 echo $v2Alpha111; //2.0.0-alpha+111
 ```
 
-### Version-aware objects
-
-```php
-use Version\Version;
-use Version\VersionAwareInterface;
-use Version\VersionAwareTrait;
-
-class Package implements VersionAwareInterface
-{
-    use VersionAwareTrait;
-
-    private $name;
-
-    private $description;
-
-    public function __construct($name, $description = '')
-    {
-        $this->name = $name;
-        $this->description = $description;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-}
-
-$package = new Package('Test');
-$package->setVersion(Version::fromString('2.3.3'));
-```
-
-### Versions collection
+### Version Collection
 
 ```php
 use Version\VersionsCollection;
 use Version\Version;
 
 $versions = new VersionsCollection(
-    Version::fromParts(1),
+    Version::from(1, 0, 1),
     Version::fromString('1.1.0'),
     Version::fromString('2.3.3')
 );
@@ -150,7 +114,7 @@ echo count($versions); //3
 
 $versions = $versions->sortedDescending();
 
-//Outputs: 2.3.3, 1.1.0, 1.0.0
+//Outputs: 2.3.3, 1.1.0, 1.0.1
 foreach ($versions as $version) {
     echo (string) $version;
 }

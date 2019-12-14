@@ -9,8 +9,6 @@ use Version\Comparison\Comparator;
 use Version\Exception\InvalidVersion;
 use Version\Exception\InvalidVersionString;
 use Version\Extension\Build;
-use Version\Extension\NoBuild;
-use Version\Extension\NoPreRelease;
 use Version\Extension\PreRelease;
 use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Version;
@@ -161,7 +159,7 @@ class VersionTest extends TestCase
     public function it_validates_major_version_number(): void
     {
         try {
-            Version::from(-10, 0, 0, new NoPreRelease(), new NoBuild());
+            Version::from(-10, 0, 0, PreRelease::empty(), Build::empty());
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
@@ -175,7 +173,7 @@ class VersionTest extends TestCase
     public function it_validates_minor_version_number(): void
     {
         try {
-            Version::from(0, -5, 1, new NoPreRelease(), new NoBuild());
+            Version::from(0, -5, 1, PreRelease::empty(), Build::empty());
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
@@ -189,7 +187,7 @@ class VersionTest extends TestCase
     public function it_validates_patch_version_number(): void
     {
         try {
-            Version::from(2, 1, -1, new NoPreRelease(), new NoBuild());
+            Version::from(2, 1, -1, PreRelease::empty(), Build::empty());
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {

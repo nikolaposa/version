@@ -24,6 +24,8 @@ All notable changes to this project will be documented in this file.
 - `Version\VersionAwareInterface`
 - `Version\VersionAwareTrait`
 - `Version\Exception\CollectionIsEmptyException`
+- `Version\Extension\NoPreRelease`; `PreRelease::empty()` should be used instead
+- `Version\Extension\NoBuild`; `Build::empty()` should be used instead
 
 ## 3.2.0 - 2019-08-11
 ### Added

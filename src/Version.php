@@ -7,8 +7,6 @@ namespace Version;
 use JsonSerializable;
 use Version\Assert\VersionAssert;
 use Version\Extension\Build;
-use Version\Extension\NoBuild;
-use Version\Extension\NoPreRelease;
 use Version\Exception\InvalidVersionString;
 use Version\Comparison\Comparator;
 use Version\Comparison\SemverComparator;
@@ -50,7 +48,7 @@ class Version implements JsonSerializable
 
     public static function from(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null): Version
     {
-        return new static($major, $minor, $patch, $preRelease ?? new NoPreRelease(), $build ?? new NoBuild());
+        return new static($major, $minor, $patch, $preRelease ?? PreRelease::empty(), $build ?? Build::empty());
     }
 
     /**
@@ -76,8 +74,8 @@ class Version implements JsonSerializable
         }
 
         [$major, $minor, $patch] = explode('.', $parts['core']);
-        $preRelease = !empty($parts['preRelease']) ? PreRelease::fromIdentifiersString($parts['preRelease']) : new NoPreRelease();
-        $build = !empty($parts['build']) ? Build::fromIdentifiersString($parts['build']) : new NoBuild();
+        $preRelease = !empty($parts['preRelease']) ? PreRelease::fromIdentifiersString($parts['preRelease']) : PreRelease::empty();
+        $build = !empty($parts['build']) ? Build::fromIdentifiersString($parts['build']) : Build::empty();
 
         return static::from((int) $major, (int) $minor, (int) $patch, $preRelease, $build);
     }
@@ -201,17 +199,17 @@ class Version implements JsonSerializable
 
     public function incrementMajor(): Version
     {
-        return static::from($this->major + 1, 0, 0, new NoPreRelease(), new NoBuild());
+        return static::from($this->major + 1, 0, 0, PreRelease::empty(), Build::empty());
     }
 
     public function incrementMinor(): Version
     {
-        return static::from($this->major, $this->minor + 1, 0, new NoPreRelease(), new NoBuild());
+        return static::from($this->major, $this->minor + 1, 0, PreRelease::empty(), Build::empty());
     }
 
     public function incrementPatch(): Version
     {
-        return static::from($this->major, $this->minor, $this->patch + 1, new NoPreRelease(), new NoBuild());
+        return static::from($this->major, $this->minor, $this->patch + 1, PreRelease::empty(), Build::empty());
     }
 
     /**
@@ -224,7 +222,7 @@ class Version implements JsonSerializable
             $preRelease = PreRelease::fromIdentifiersString($preRelease);
         }
 
-        return static::from($this->major, $this->minor, $this->patch, $preRelease, new NoBuild());
+        return static::from($this->major, $this->minor, $this->patch, $preRelease, Build::empty());
     }
 
     /**
