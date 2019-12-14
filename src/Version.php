@@ -189,12 +189,12 @@ class Version implements JsonSerializable
 
     public function isPreRelease(): bool
     {
-        return !($this->preRelease === PreRelease::empty());
+        return $this->preRelease !== PreRelease::empty();
     }
 
     public function hasBuild(): bool
     {
-        return !($this->build === Build::empty());
+        return $this->build !== Build::empty();
     }
 
     public function incrementMajor(): Version
