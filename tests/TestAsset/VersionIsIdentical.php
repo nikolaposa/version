@@ -37,8 +37,14 @@ final class VersionIsIdentical extends Constraint
             $version->getMajor() === $this->expectedVersion->getMajor()
             && $version->getMinor() === $this->expectedVersion->getMinor()
             && $version->getPatch() === $this->expectedVersion->getPatch()
-            && $version->getPreRelease()->getIdentifiers() === $this->expectedVersion->getPreRelease()->getIdentifiers()
-            && $version->getBuild()->getIdentifiers() === $this->expectedVersion->getBuild()->getIdentifiers()
+            && (
+                ($version->isPreRelease() && $this->expectedVersion->isPreRelease() && $version->getPreRelease()->getIdentifiers() === $this->expectedVersion->getPreRelease()->getIdentifiers())
+                || (!$version->isPreRelease() && !$this->expectedVersion->isPreRelease())
+            )
+            && (
+                ($version->hasBuild() && $this->expectedVersion->hasBuild() && $version->getBuild()->getIdentifiers() === $this->expectedVersion->getBuild()->getIdentifiers())
+                || (!$version->hasBuild() && !$this->expectedVersion->hasBuild())
+            )
         );
     }
 

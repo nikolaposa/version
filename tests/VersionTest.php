@@ -115,15 +115,15 @@ class VersionTest extends TestCase
         return [
             [
                 '1.7.3',
-                ['major' => 1, 'minor' => 7, 'patch' => 3, 'preRelease' => [], 'build' => []]
+                ['major' => 1, 'minor' => 7, 'patch' => 3, 'preRelease' => null, 'build' => null]
             ],
             [
                 '2.0.0-alpha',
-                ['major' => 2, 'minor' => 0, 'patch' => 0, 'preRelease' => ['alpha'], 'build' => []]
+                ['major' => 2, 'minor' => 0, 'patch' => 0, 'preRelease' => ['alpha'], 'build' => null]
             ],
             [
                 '1.11.3+111',
-                ['major' => 1, 'minor' => 11, 'patch' => 3, 'preRelease' => [], 'build' => ['111']]
+                ['major' => 1, 'minor' => 11, 'patch' => 3, 'preRelease' => null, 'build' => ['111']]
             ],
             [
                 '3.0.0-beta.1+1.2.3',
@@ -159,7 +159,7 @@ class VersionTest extends TestCase
     public function it_validates_major_version_number(): void
     {
         try {
-            Version::from(-10, 0, 0, PreRelease::empty(), Build::empty());
+            Version::from(-10);
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
@@ -173,7 +173,7 @@ class VersionTest extends TestCase
     public function it_validates_minor_version_number(): void
     {
         try {
-            Version::from(0, -5, 1, PreRelease::empty(), Build::empty());
+            Version::from(0, -5, 1);
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
@@ -187,7 +187,7 @@ class VersionTest extends TestCase
     public function it_validates_patch_version_number(): void
     {
         try {
-            Version::from(2, 1, -1, PreRelease::empty(), Build::empty());
+            Version::from(2, 1, -1);
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {

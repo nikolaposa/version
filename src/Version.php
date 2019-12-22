@@ -23,7 +23,7 @@ class Version implements JsonSerializable
 
     protected static $comparator;
 
-    protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease, Build $build)
+    protected function __construct(int $major, int $minor, int $patch, ?PreRelease $preRelease, ?Build $build)
     {
         VersionAssert::that($major)->greaterOrEqualThan(0, 'Major version must be positive integer');
         VersionAssert::that($minor)->greaterOrEqualThan(0, 'Minor version must be positive integer');
@@ -38,7 +38,7 @@ class Version implements JsonSerializable
 
     public static function from(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null): Version
     {
-        return new static($major, $minor, $patch, $preRelease ?? PreRelease::empty(), $build ?? Build::empty());
+        return new static($major, $minor, $patch, $preRelease, $build);
     }
 
     /**
@@ -60,8 +60,8 @@ class Version implements JsonSerializable
         }
 
         [$major, $minor, $patch] = explode('.', $parts['core']);
-        $preRelease = !empty($parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : PreRelease::empty();
-        $build = !empty($parts['build']) ? Build::fromString($parts['build']) : Build::empty();
+        $preRelease = !empty($parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : null;
+        $build = !empty($parts['build']) ? Build::fromString($parts['build']) : null;
 
         return static::from((int) $major, (int) $minor, (int) $patch, $preRelease, $build);
     }
@@ -81,12 +81,12 @@ class Version implements JsonSerializable
         return $this->patch;
     }
 
-    public function getPreRelease(): PreRelease
+    public function getPreRelease(): ?PreRelease
     {
         return $this->preRelease;
     }
 
-    public function getBuild(): Build
+    public function getBuild(): ?Build
     {
         return $this->build;
     }
@@ -175,27 +175,27 @@ class Version implements JsonSerializable
 
     public function isPreRelease(): bool
     {
-        return $this->preRelease !== PreRelease::empty();
+        return null !== $this->preRelease;
     }
 
     public function hasBuild(): bool
     {
-        return $this->build !== Build::empty();
+        return null !== $this->build;
     }
 
     public function incrementMajor(): Version
     {
-        return static::from($this->major + 1, 0, 0, PreRelease::empty(), Build::empty());
+        return new static($this->major + 1, 0, 0, null, null);
     }
 
     public function incrementMinor(): Version
     {
-        return static::from($this->major, $this->minor + 1, 0, PreRelease::empty(), Build::empty());
+        return new static($this->major, $this->minor + 1, 0, null, null);
     }
 
     public function incrementPatch(): Version
     {
-        return static::from($this->major, $this->minor, $this->patch + 1, PreRelease::empty(), Build::empty());
+        return new static($this->major, $this->minor, $this->patch + 1, null, null);
     }
 
     /**
@@ -208,7 +208,7 @@ class Version implements JsonSerializable
             $preRelease = PreRelease::fromString($preRelease);
         }
 
-        return static::from($this->major, $this->minor, $this->patch, $preRelease, Build::empty());
+        return new static($this->major, $this->minor, $this->patch, $preRelease, null);
     }
 
     /**
@@ -221,7 +221,7 @@ class Version implements JsonSerializable
             $build = Build::fromString($build);
         }
 
-        return static::from($this->major, $this->minor, $this->patch, $this->preRelease, $build);
+        return new static($this->major, $this->minor, $this->patch, $this->preRelease, $build);
     }
 
     public function matches(Constraint $constraint): bool
@@ -256,8 +256,8 @@ class Version implements JsonSerializable
             'major' => $this->major,
             'minor' => $this->minor,
             'patch' => $this->patch,
-            'preRelease' => $this->preRelease->getIdentifiers(),
-            'build' => $this->build->getIdentifiers(),
+            'preRelease' => $this->isPreRelease() ? $this->preRelease->getIdentifiers() : null,
+            'build' => $this->hasBuild() ? $this->build->getIdentifiers() : null,
         ];
     }
 

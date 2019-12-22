@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - PHPUnit 8 is now the minimum required version
 - Rename `VersionsCollection` to `VersionCollection`
+- `Version->getPreRelease()` now explicitly returns nullable type
+- `Version->getBuild()` now explicitly returns nullable type
 - Removed deprecated `Version->isBuild()`
 - Removed deprecated `VersionCollection->sort()`
 - Rename `Version::fromParts()` to `Version::from()`
@@ -37,8 +39,8 @@ All notable changes to this project will be documented in this file.
 - `Version\VersionAwareInterface`
 - `Version\VersionAwareTrait`
 - `Version\Exception\CollectionIsEmptyException`
-- `Version\Extension\NoPreRelease` (`PreRelease::empty()` should be used instead)
-- `Version\Extension\NoBuild` (`Build::empty()` should be used instead)
+- `Version\Extension\NoPreRelease`
+- `Version\Extension\NoBuild`
 - `PreRelease->isEmpty()`
 - `Build->isEmpty()`
 

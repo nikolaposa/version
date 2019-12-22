@@ -21,17 +21,6 @@ abstract class Extension
         $this->identifiers = $identifiers;
     }
 
-    public static function empty()
-    {
-        static $noExtension = null;
-
-        if (null === $noExtension) {
-            $noExtension = new static(...[]);
-        }
-
-        return $noExtension;
-    }
-
     /**
      * @throws InvalidVersion
      */

@@ -22,12 +22,11 @@ final class SemverComparator implements Comparator
             return $patchCompareResult;
         }
 
-        if ($version1->isPreRelease() xor $version2->isPreRelease()) {
-            return !$version1->isPreRelease()
-                ? 1 // normal version has greater precedence than a pre-release version version
-                : -1; // pre-release version has lower precedence than a normal version
+        if ($version1->isPreRelease() && $version2->isPreRelease()) {
+            return $version1->getPreRelease()->compareTo($version2->getPreRelease());
         }
 
-        return $version1->getPreRelease()->compareTo($version2->getPreRelease());
+        // pre-release version has lower precedence than a normal version
+        return ($version1->isPreRelease() <=> $version2->isPreRelease()) * -1;
     }
 }
