@@ -26,7 +26,7 @@ final class SemverComparator implements Comparator
             return $version1->getPreRelease()->compareTo($version2->getPreRelease());
         }
 
-        // pre-release version has lower precedence than a normal version
-        return ($version1->isPreRelease() <=> $version2->isPreRelease()) * -1;
+        // invert: pre-release version has lower precedence than a normal version
+        return -1 * ($version1->isPreRelease() <=> $version2->isPreRelease());
     }
 }
