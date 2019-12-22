@@ -23,7 +23,7 @@ class Version implements JsonSerializable
 
     protected static $comparator;
 
-    protected function __construct(int $major, int $minor, int $patch, ?PreRelease $preRelease, ?Build $build)
+    final protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease = null, Build $build = null)
     {
         VersionAssert::that($major)->greaterOrEqualThan(0, 'Major version must be positive integer');
         VersionAssert::that($minor)->greaterOrEqualThan(0, 'Minor version must be positive integer');
@@ -187,17 +187,17 @@ class Version implements JsonSerializable
 
     public function incrementMajor(): Version
     {
-        return new static($this->major + 1, 0, 0, null, null);
+        return new static($this->major + 1, 0, 0);
     }
 
     public function incrementMinor(): Version
     {
-        return new static($this->major, $this->minor + 1, 0, null, null);
+        return new static($this->major, $this->minor + 1, 0);
     }
 
     public function incrementPatch(): Version
     {
-        return new static($this->major, $this->minor, $this->patch + 1, null, null);
+        return new static($this->major, $this->minor, $this->patch + 1);
     }
 
     /**
@@ -210,7 +210,7 @@ class Version implements JsonSerializable
             $preRelease = PreRelease::fromString($preRelease);
         }
 
-        return new static($this->major, $this->minor, $this->patch, $preRelease, null);
+        return new static($this->major, $this->minor, $this->patch, $preRelease);
     }
 
     /**
