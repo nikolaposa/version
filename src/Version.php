@@ -63,8 +63,8 @@ class Version implements JsonSerializable
             (int) $parts['major'],
             (int) $parts['minor'],
             (int) $parts['patch'],
-            !empty($parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : null,
-            !empty($parts['build']) ? Build::fromString($parts['build']) : null
+            (isset($parts['preRelease']) && '' !== $parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : null,
+            (isset($parts['build']) && '' !== $parts['build']) ? Build::fromString($parts['build']) : null
         );
     }
 
