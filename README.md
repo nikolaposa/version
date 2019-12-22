@@ -22,13 +22,19 @@ composer require nikolaposa/version
 ### Creating a Version object via named constructor and accessing its values
 
 ```php
-$v = Version::from(2, 0, 0, PreRelease::from('alpha'));
+use Version\Extension\Build;
+use Version\Extension\PreRelease;
+use Version\Version;
+
+$v = Version::from(2, 0, 0, PreRelease::from('alpha', '1'), Build::from('20191222232137'));
 
 echo $v->getMajor(); //2
 echo $v->getMinor(); //0
 echo $v->getPatch(); //0
-var_dump($v->getPreRelease()->getIdentifiers()); //array(1) { [0]=> string(1) "alpha" }
-echo $v->getPreRelease()->toString(); //alpha
+print_r($v->getPreRelease()->getIdentifiers()); //Array([0] => alpha [1] => 1)
+echo $v->getPreRelease()->toString(); //alpha.1
+print_r($v->getBuild()->getIdentifiers()); //Array([0] => 20191222232137)
+echo $v->getBuild()->toString(); //20191222232137
 ```
 
 ### Creating a Version object from a string
