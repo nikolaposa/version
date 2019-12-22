@@ -46,10 +46,6 @@ class PreRelease extends Extension
             return $identifier1IsNumber ? -1 : 1;
         }
 
-        if ($identifier1IsNumber && $identifier2IsNumber) {
-            return (int) $identifier1 - (int) $identifier2;
-        }
-
-        return strcmp($identifier1, $identifier2);
+        return $identifier1 <=> $identifier2;
     }
 }
