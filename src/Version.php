@@ -49,9 +49,9 @@ class Version implements JsonSerializable
         if (!preg_match(
             '#^'
             . '(v|release\-)?'
-            . '(?P<core>(?:[0-9]|[1-9][0-9]+)(?:\.(?:[0-9]|[1-9][0-9]+)){2})'
-            . '(?:\-(?P<preRelease>[0-9A-Za-z\-\.]+))?'
-            . '(?:\+(?P<build>[0-9A-Za-z\-\.]+))?'
+            . '(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)'
+            . '(?:\-(?P<preRelease>(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*))*))?'
+            . '(?:\+(?P<build>[0-9a-zA-Z\-]+(?:\.[0-9a-zA-Z\-]+)*))?'
             . '$#',
             $versionString,
             $parts
@@ -59,11 +59,13 @@ class Version implements JsonSerializable
             throw InvalidVersionString::notParsable($versionString);
         }
 
-        [$major, $minor, $patch] = explode('.', $parts['core']);
-        $preRelease = !empty($parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : null;
-        $build = !empty($parts['build']) ? Build::fromString($parts['build']) : null;
-
-        return static::from((int) $major, (int) $minor, (int) $patch, $preRelease, $build);
+        return static::from(
+            (int) $parts['major'],
+            (int) $parts['minor'],
+            (int) $parts['patch'],
+            !empty($parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : null,
+            !empty($parts['build']) ? Build::fromString($parts['build']) : null
+        );
     }
 
     public function getMajor(): int
