@@ -8,11 +8,11 @@ use Version\Assert\VersionAssert;
 
 class Build extends Extension
 {
-    protected function validate(string $identifier): void
+    protected function validate(array $identifiers): void
     {
-        VersionAssert::that($identifier)->regex(
-            '/^[0-9A-Za-z\-]+$/',
-            'Build metadata is not valid; identifiers must include only alphanumerics and hyphen'
-        );
+        VersionAssert::that($identifiers)
+            ->minCount(1, 'Build metadata must contain at least one identifier')
+            ->all()
+            ->regex('/^[0-9A-Za-z\-]+$/', 'Build metadata identifiers can include only alphanumerics and hyphen');
     }
 }

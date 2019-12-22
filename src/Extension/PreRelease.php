@@ -8,12 +8,12 @@ use Version\Assert\VersionAssert;
 
 class PreRelease extends Extension
 {
-    protected function validate(string $identifier): void
+    protected function validate(array $identifiers): void
     {
-        VersionAssert::that($identifier)->regex(
-            '/^[0-9A-Za-z\-]+$/',
-            'Pre-release version is not valid; identifiers must include only alphanumerics and hyphen'
-        );
+        VersionAssert::that($identifiers)
+            ->minCount(1, 'Pre-release version must contain at least one identifier')
+            ->all()
+            ->regex('/^[0-9A-Za-z\-]+$/', 'Pre-release version identifiers can include only alphanumerics and hyphen');
     }
 
     public function compareTo(PreRelease $preRelease): int

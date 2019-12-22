@@ -12,11 +12,9 @@ abstract class Extension
 
     private $identifiers;
 
-    protected function __construct(string ...$identifiers)
+    final protected function __construct(array $identifiers)
     {
-        foreach ($identifiers as $identifier) {
-            $this->validate($identifier);
-        }
+        $this->validate($identifiers);
 
         $this->identifiers = $identifiers;
     }
@@ -24,16 +22,21 @@ abstract class Extension
     /**
      * @throws InvalidVersion
      */
-    abstract protected function validate(string $identifier): void;
+    abstract protected function validate(array $identifiers): void;
 
     public static function from(string $identifier, string ...$identifiers)
     {
-        return new static($identifier, ...$identifiers);
+        return new static(func_get_args());
+    }
+
+    public static function fromArray(array $identifiers)
+    {
+        return new static($identifiers);
     }
 
     public static function fromString(string $extension)
     {
-        return new static(...explode(self::IDENTIFIERS_SEPARATOR, $extension));
+        return new static(explode(self::IDENTIFIERS_SEPARATOR, trim($extension)));
     }
 
     public function getIdentifiers(): array
@@ -44,10 +47,5 @@ abstract class Extension
     public function toString(): string
     {
         return implode(self::IDENTIFIERS_SEPARATOR, $this->identifiers);
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }

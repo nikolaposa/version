@@ -42,7 +42,9 @@ All notable changes to this project will be documented in this file.
 - `Version\Extension\NoPreRelease`
 - `Version\Extension\NoBuild`
 - `PreRelease->isEmpty()`
+- `PreRelease->__toString()`
 - `Build->isEmpty()`
+- `Build->__toString()`
 
 ## 3.2.0 - 2019-08-11
 ### Added

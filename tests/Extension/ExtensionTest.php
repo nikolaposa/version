@@ -10,14 +10,15 @@ use Version\Extension\Extension;
 
 abstract class ExtensionTest extends TestCase
 {
-    abstract protected function createExtension($identifiers): Extension;
+    /** @var string|Extension */
+    protected $extensionClass;
 
     /**
      * @test
      */
-    public function it_is_created_from_identifiers_array(): void
+    public function it_is_created_from_identifiers_list(): void
     {
-        $extension = $this->createExtension(['123', '456']);
+        $extension = $this->extensionClass::from('123', '456');
 
         $this->assertSame(['123', '456'], $extension->getIdentifiers());
     }
@@ -27,17 +28,17 @@ abstract class ExtensionTest extends TestCase
      */
     public function it_can_be_created_from_string(): void
     {
-        $extension = $this->createExtension('123');
+        $extension = $this->extensionClass::fromString('123.456');
 
-        $this->assertSame(['123'], $extension->getIdentifiers());
+        $this->assertSame(['123', '456'], $extension->getIdentifiers());
     }
 
     /**
      * @test
      */
-    public function it_can_be_created_from_compound_string(): void
+    public function it_can_be_created_from_array(): void
     {
-        $extension = $this->createExtension('123.456');
+        $extension = $this->extensionClass::fromArray(['123', '456']);
 
         $this->assertSame(['123', '456'], $extension->getIdentifiers());
     }
@@ -47,7 +48,7 @@ abstract class ExtensionTest extends TestCase
      */
     public function it_casts_to_string(): void
     {
-        $extension = $this->createExtension(['123', '456']);
+        $extension = $this->extensionClass::from('123', '456');
 
         $this->assertSame('123.456', $extension->toString());
     }
@@ -58,11 +59,11 @@ abstract class ExtensionTest extends TestCase
     public function it_validates_identifier_input(): void
     {
         try {
-            $this->createExtension(['$123']);
+            $this->extensionClass::from('$123');
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
-            $this->assertStringContainsString('identifiers must include only alphanumerics and hyphen', $ex->getMessage());
+            $this->assertStringContainsString('identifiers can include only alphanumerics and hyphen', $ex->getMessage());
         }
     }
 
@@ -72,11 +73,25 @@ abstract class ExtensionTest extends TestCase
     public function it_validates_empty_identifier_input(): void
     {
         try {
-            $this->createExtension(['123', '']);
+            $this->extensionClass::from('123', '');
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
-            $this->assertStringContainsString('identifiers must include only alphanumerics and hyphen', $ex->getMessage());
+            $this->assertStringContainsString('identifiers can include only alphanumerics and hyphen', $ex->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_validates_empty_array_input(): void
+    {
+        try {
+            $this->extensionClass::fromArray([]);
+
+            $this->fail('Exception should have been raised');
+        } catch (InvalidVersion $ex) {
+            $this->assertStringContainsString('must contain at least one identifier', $ex->getMessage());
         }
     }
 }
