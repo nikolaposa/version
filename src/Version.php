@@ -15,6 +15,8 @@ use Version\Extension\PreRelease;
 
 class Version implements JsonSerializable
 {
+    public const REGEX = '#^(v|release\-)?(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:\-(?P<preRelease>(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*))*))?(?:\+(?P<build>[0-9a-zA-Z\-]+(?:\.[0-9a-zA-Z\-]+)*))?$#';
+
     protected $major;
     protected $minor;
     protected $patch;
@@ -36,7 +38,7 @@ class Version implements JsonSerializable
         $this->build = $build;
     }
 
-    public static function from(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null): Version
+    public static function from(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null)
     {
         return new static($major, $minor, $patch, $preRelease, $build);
     }
@@ -44,22 +46,13 @@ class Version implements JsonSerializable
     /**
      * @throws InvalidVersionString
      */
-    public static function fromString(string $versionString): Version
+    public static function fromString(string $versionString)
     {
-        if (!preg_match(
-            '#^'
-            . '(v|release\-)?'
-            . '(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)'
-            . '(?:\-(?P<preRelease>(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*))*))?'
-            . '(?:\+(?P<build>[0-9a-zA-Z\-]+(?:\.[0-9a-zA-Z\-]+)*))?'
-            . '$#',
-            $versionString,
-            $parts
-        )) {
+        if (!preg_match(self::REGEX, $versionString, $parts)) {
             throw InvalidVersionString::notParsable($versionString);
         }
 
-        return static::from(
+        return new static(
             (int) $parts['major'],
             (int) $parts['minor'],
             (int) $parts['patch'],
