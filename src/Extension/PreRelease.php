@@ -18,8 +18,8 @@ class PreRelease extends Extension
 
     public function compareTo(PreRelease $preRelease): int
     {
-        $preRelease1Ids = array_values($this->getIdentifiers());
-        $preRelease2Ids = array_values($preRelease->getIdentifiers());
+        $preRelease1Ids = $this->getIdentifiers();
+        $preRelease2Ids = $preRelease->getIdentifiers();
 
         $preRelease1IdsCount = count($preRelease1Ids);
         $preRelease2IdsCount = count($preRelease2Ids);
@@ -31,21 +31,9 @@ class PreRelease extends Extension
                 continue;
             }
 
-            return $this->compareIdentifiers($preRelease1Ids[$i], $preRelease2Ids[$i]);
+            return $preRelease1Ids[$i] <=> $preRelease2Ids[$i];
         }
 
         return $preRelease1IdsCount - $preRelease2IdsCount;
-    }
-
-    private function compareIdentifiers($identifier1, $identifier2): int
-    {
-        $identifier1IsNumber = ctype_digit($identifier1);
-        $identifier2IsNumber = ctype_digit($identifier2);
-
-        if ($identifier1IsNumber xor $identifier2IsNumber) {
-            return $identifier1IsNumber ? -1 : 1;
-        }
-
-        return $identifier1 <=> $identifier2;
     }
 }
