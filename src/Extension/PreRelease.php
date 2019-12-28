@@ -15,25 +15,4 @@ class PreRelease extends Extension
             ->all()
             ->regex('/^[0-9A-Za-z\-]+$/', 'Pre-release version identifiers can include only alphanumerics and hyphen');
     }
-
-    public function compareTo(PreRelease $preRelease): int
-    {
-        $preRelease1Ids = $this->getIdentifiers();
-        $preRelease2Ids = $preRelease->getIdentifiers();
-
-        $preRelease1IdsCount = count($preRelease1Ids);
-        $preRelease2IdsCount = count($preRelease2Ids);
-
-        $limit = min($preRelease1IdsCount, $preRelease2IdsCount);
-
-        for ($i = 0; $i < $limit; $i++) {
-            if ($preRelease1Ids[$i] === $preRelease2Ids[$i]) {
-                continue;
-            }
-
-            return $preRelease1Ids[$i] <=> $preRelease2Ids[$i];
-        }
-
-        return $preRelease1IdsCount - $preRelease2IdsCount;
-    }
 }
