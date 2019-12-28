@@ -24,8 +24,8 @@ jobs:
 
     - stage: Code Coverage
       php: 7.2
-      before_script:
-        - wget https://scrutinizer-ci.com/ocular.phar
       script:
         - vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
+      after_script:
+        - wget https://scrutinizer-ci.com/ocular.phar
         - php ocular.phar code-coverage:upload --format=php-clover clover.xml
