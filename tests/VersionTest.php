@@ -76,6 +76,25 @@ class VersionTest extends TestCase
 
     /**
      * @test
+     * @dataProvider getVersionStrings
+     */
+    public function it_preserves_prefix_when_created_from_string(string $versionString): void
+    {
+        $version = Version::fromString($versionString);
+
+        $this->assertSame($versionString, $version->toString());
+    }
+
+    public static function getPrefixedVersionStrings(): array
+    {
+        return [
+            ['v1.2.3'],
+            ['release-1.2.3'],
+        ];
+    }
+
+    /**
+     * @test
      * @dataProvider getPrintedVersionStrings
      *
      * @param string $versionString

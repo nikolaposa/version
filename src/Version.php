@@ -15,13 +15,15 @@ use Version\Extension\PreRelease;
 
 class Version implements JsonSerializable
 {
-    public const REGEX = '#^(v|release\-)?(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:\-(?P<preRelease>(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*))*))?(?:\+(?P<build>[0-9a-zA-Z\-]+(?:\.[0-9a-zA-Z\-]+)*))?$#';
+    public const REGEX = '#^(?P<prefix>v|release\-)?(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:\-(?P<preRelease>(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*))*))?(?:\+(?P<build>[0-9a-zA-Z\-]+(?:\.[0-9a-zA-Z\-]+)*))?$#';
 
     protected $major;
     protected $minor;
     protected $patch;
     protected $preRelease;
     protected $build;
+
+    protected $prefix;
 
     protected static $comparator;
 
@@ -52,13 +54,16 @@ class Version implements JsonSerializable
             throw InvalidVersionString::notParsable($versionString);
         }
 
-        return new static(
+        $version = new static(
             (int) $parts['major'],
             (int) $parts['minor'],
             (int) $parts['patch'],
             (isset($parts['preRelease']) && '' !== $parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : null,
             (isset($parts['build']) && '' !== $parts['build']) ? Build::fromString($parts['build']) : null
         );
+        $version->prefix = $parts['prefix'] ?? '';
+
+        return $version;
     }
 
     public function getMajor(): int
@@ -227,7 +232,8 @@ class Version implements JsonSerializable
     public function toString(): string
     {
         return
-            $this->major
+            $this->prefix
+            . $this->major
             . '.' . $this->minor
             . '.' . $this->patch
             . ($this->isPreRelease() ? '-' . $this->preRelease->toString() : '')
