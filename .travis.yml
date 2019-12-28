@@ -15,9 +15,6 @@ before_script:
 
 jobs:
   include:
-    - stage: Foobar
-      script: vendor/bin/phpunit
-
     - stage: Coding Standards
       script: vendor/bin/php-cs-fixer fix -v --diff --dry-run
 
