@@ -15,7 +15,7 @@ before_script:
 
 jobs:
   include:
-    - stage: Test
+    - stage: Foobar
       script: vendor/bin/phpunit
 
     - stage: Coding Standards
