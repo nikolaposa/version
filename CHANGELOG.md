@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased][Unreleased]
+## 4.0.0 - 2019-12-29
 
 ### Changed
 - PHPUnit 8 is now the minimum required version
@@ -141,4 +141,4 @@ All notable changes to this project will be documented in this file.
 This release is abandoned, please consider upgrading to 2.x.
 
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/3.2.0...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/4.0.0...HEAD
