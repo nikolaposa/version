@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Version\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Version\Exception\CollectionIsEmpty;
 use Version\Tests\TestAsset\VersionIsIdentical;
 use Version\Tests\TestAsset\VersionCollectionIsIdentical;
 use Version\VersionCollection;
@@ -75,6 +76,22 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
+    public function it_raises_exception_when_getting_first_item_of_empty_collection(): void
+    {
+        $versions = new VersionCollection();
+
+        try {
+            $versions->first();
+
+            $this->fail('Exception should have been raised');
+        } catch (CollectionIsEmpty $ex) {
+            $this->assertSame('Cannot get the first Version from an empty collection', $ex->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     */
     public function it_gets_last_version(): void
     {
         $versions = new VersionCollection(
@@ -92,12 +109,17 @@ class VersionCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_doesnt_return_first_last_versions_if_empty(): void
+    public function it_raises_exception_when_getting_last_item_of_empty_collection(): void
     {
         $versions = new VersionCollection();
 
-        $this->assertNull($versions->first());
-        $this->assertNull($versions->last());
+        try {
+            $versions->last();
+
+            $this->fail('Exception should have been raised');
+        } catch (CollectionIsEmpty $ex) {
+            $this->assertSame('Cannot get the last Version from an empty collection', $ex->getMessage());
+        }
     }
 
     /**

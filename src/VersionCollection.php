@@ -9,6 +9,7 @@ use IteratorAggregate;
 use ArrayIterator;
 use Traversable;
 use Version\Comparison\Constraint\Constraint;
+use Version\Exception\CollectionIsEmpty;
 
 class VersionCollection implements Countable, IteratorAggregate
 {
@@ -29,14 +30,25 @@ class VersionCollection implements Countable, IteratorAggregate
         return empty($this->versions);
     }
 
-    public function first(): ?Version
+    public function first(): Version
     {
-        return $this->versions[0] ?? null;
+        if (empty($this->versions)) {
+            throw CollectionIsEmpty::cannotGetFirst();
+        }
+
+        return reset($this->versions);
     }
 
-    public function last(): ?Version
+    public function last(): Version
     {
-        return $this->versions[count($this->versions) - 1] ?? null;
+        if (empty($this->versions)) {
+            throw CollectionIsEmpty::cannotGetLast();
+        }
+
+        $version = end($this->versions);
+        reset($this->versions);
+
+        return $version;
     }
 
     public function getIterator(): Traversable
