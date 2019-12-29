@@ -3,23 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased][Unreleased]
 
-### Added
-- `OperationConstraint::equalsTo()` named constructor
-- `OperationConstraint::notEqualTo()` named constructor
-- `OperationConstraint::greaterThan()` named constructor
-- `OperationConstraint::greaterOrEqualTo()` named constructor
-- `OperationConstraint::lessThan()` named constructor
-- `OperationConstraint::lessOrEqualTo()` named constructor
-- Prefix supplied in `Version::fromString()` is captured and included in `toString()` result
-
 ### Changed
 - PHPUnit 8 is now the minimum required version
 - Rename `VersionsCollection` to `VersionCollection`
 - `Version->getPreRelease()` now explicitly returns nullable type
 - `Version->getBuild()` now explicitly returns nullable type
-- Removed deprecated `Version->isBuild()`
-- Removed deprecated `VersionCollection->sort()`
 - Rename `Version::fromParts()` to `Version::from()`
+- Rename `Version->getVersionString()` to `Version->toString()`
 - Use `beberlei/assert` library for input validation
 - Rename `Version\Comparator` namespace to `Version\Comparison`
 - Move `Version\Constraint` namespace to `Version\Comparison\Constraint`
@@ -29,7 +19,6 @@ All notable changes to this project will be documented in this file.
 - Rename component-level `Version\Exception\ExceptionInterface` to `Version\Exception\VersionException`
 - Move comparision-related exceptions into `Version\Comparision\Exception` namespace
 - Remove `-Exception` suffix from all concrete exception names
-- Rename `Version->getVersionString()` to `Version->toString()`
 - Rename `BaseExtension` to `Extension`
 - Rename `PreRelease::fromIdentifiers()` to `PreRelease::from()`
 - Rename `Build::fromIdentifiers()` to `Build::from()`
@@ -39,13 +28,24 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - `Version\VersionAwareInterface`
 - `Version\VersionAwareTrait`
-- `Version\Exception\CollectionIsEmptyException`
 - `Version\Extension\NoPreRelease`
 - `Version\Extension\NoBuild`
+- `Version->isBuild()`
+- `VersionCollection->sort()`
 - `PreRelease->isEmpty()`
 - `PreRelease->__toString()`
 - `Build->isEmpty()`
 - `Build->__toString()`
+
+### Added
+- `OperationConstraint::equalsTo()` named constructor
+- `OperationConstraint::notEqualTo()` named constructor
+- `OperationConstraint::greaterThan()` named constructor
+- `OperationConstraint::greaterOrEqualTo()` named constructor
+- `OperationConstraint::lessThan()` named constructor
+- `OperationConstraint::lessOrEqualTo()` named constructor
+- Prefix supplied in `Version::fromString()` is captured and included in `toString()` result
+
 
 ## 3.2.0 - 2019-08-11
 ### Added
