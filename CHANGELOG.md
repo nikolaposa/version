@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - `OperationConstraint::greaterOrEqualTo()` named constructor
 - `OperationConstraint::lessThan()` named constructor
 - `OperationConstraint::lessOrEqualTo()` named constructor
+- Prefix supplied in `Version::fromString()` is captured and included in `toString()` result
 
 ### Changed
 - PHPUnit 8 is now the minimum required version
