@@ -10,6 +10,7 @@ abstract class Extension
 {
     protected const IDENTIFIERS_SEPARATOR = '.';
 
+    /** @var array */
     private $identifiers;
 
     final protected function __construct(array $identifiers)

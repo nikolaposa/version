@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Version\Tests\Comparison\Constraint;
 
-use BadMethodCallException;
 use PHPUnit\Framework\TestCase;
 use Version\Comparison\Constraint\OperationConstraint;
 use Version\Version;
@@ -36,36 +35,6 @@ class OperationConstraintTest extends TestCase
             $this->fail('Exception should have been raised');
         } catch (InvalidOperationConstraint $ex) {
             $this->assertSame('Unsupported constraint operator: invalid', $ex->getMessage());
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function it_validates_named_constructor_operator(): void
-    {
-        try {
-            /** @noinspection PhpUndefinedMethodInspection */
-            OperationConstraint::invalid(Version::fromString('1.0.0'));
-
-            $this->fail('Exception should have been raised');
-        } catch (BadMethodCallException $ex) {
-            $this->assertSame('Operation OperationConstraint::invalid is not supported', $ex->getMessage());
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function it_validates_named_constructor_operand(): void
-    {
-        try {
-            /** @noinspection PhpParamsInspection */
-            OperationConstraint::equalTo();
-
-            $this->fail('Exception should have been raised');
-        } catch (BadMethodCallException $ex) {
-            $this->assertSame('Operand is missing', $ex->getMessage());
         }
     }
 

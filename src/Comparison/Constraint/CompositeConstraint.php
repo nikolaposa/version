@@ -18,7 +18,7 @@ class CompositeConstraint implements Constraint
     /** @var Constraint[] */
     protected $constraints;
 
-    public function __construct(string $operator, Constraint $constraint, Constraint ...$constraints)
+    final public function __construct(string $operator, Constraint $constraint, Constraint ...$constraints)
     {
         if (! in_array($operator, [self::OPERATOR_AND, self::OPERATOR_OR], true)) {
             throw InvalidCompositeConstraint::unsupportedOperator($operator);

@@ -26,6 +26,9 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.1",
+        "phpstan/phpstan": "^0.12.10",
+        "phpstan/phpstan-beberlei-assert": "^0.12.2",
+        "phpstan/phpstan-phpunit": "^0.12.6",
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {
@@ -38,7 +41,8 @@
     },
     "scripts": {
         "test": "phpunit --colors=always",
-        "cs-fix": "php-cs-fixer fix --config=.php_cs"
+        "cs-fix": "php-cs-fixer fix --config=.php_cs",
+        "stan": "phpstan analyse"
     },
     "extra": {
         "branch-alias": {

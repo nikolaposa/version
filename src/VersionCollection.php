@@ -13,9 +13,10 @@ use Version\Exception\CollectionIsEmpty;
 
 class VersionCollection implements Countable, IteratorAggregate
 {
+    /** @var Version[] */
     protected $versions;
 
-    public function __construct(Version ...$versions)
+    final public function __construct(Version ...$versions)
     {
         $this->versions = $versions;
     }

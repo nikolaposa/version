@@ -17,14 +17,25 @@ class Version implements JsonSerializable
 {
     public const REGEX = '#^(?P<prefix>v|release\-)?(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:\-(?P<preRelease>(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*))*))?(?:\+(?P<build>[0-9a-zA-Z\-]+(?:\.[0-9a-zA-Z\-]+)*))?$#';
 
+    /** @var int */
     protected $major;
+
+    /** @var int */
     protected $minor;
+
+    /** @var int */
     protected $patch;
+
+    /** @var PreRelease|null */
     protected $preRelease;
+
+    /** @var Build|null */
     protected $build;
 
+    /** @var string */
     protected $prefix;
 
+    /** @var Comparator|null */
     protected static $comparator;
 
     final protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease = null, Build $build = null)
@@ -236,8 +247,8 @@ class Version implements JsonSerializable
             . $this->major
             . '.' . $this->minor
             . '.' . $this->patch
-            . ($this->isPreRelease() ? '-' . $this->preRelease->toString() : '')
-            . ($this->hasBuild() ? '+' . $this->build->toString() : '')
+            . ((null !== $this->preRelease) ? '-' . $this->preRelease->toString() : '')
+            . ((null !== $this->build) ? '+' . $this->build->toString() : '')
         ;
     }
 
@@ -257,8 +268,8 @@ class Version implements JsonSerializable
             'major' => $this->major,
             'minor' => $this->minor,
             'patch' => $this->patch,
-            'preRelease' => $this->isPreRelease() ? $this->preRelease->getIdentifiers() : null,
-            'build' => $this->hasBuild() ? $this->build->getIdentifiers() : null,
+            'preRelease' => (null !== $this->preRelease) ? $this->preRelease->getIdentifiers() : null,
+            'build' => (null !== $this->build) ? $this->build->getIdentifiers() : null,
         ];
     }
 

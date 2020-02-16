@@ -11,8 +11,17 @@ use Version\Version;
 
 final class VersionIsIdentical extends Constraint
 {
+    /** @var Version */
     private $expectedVersion;
 
+    /**
+     * VersionIsIdentical constructor.
+     * @param int $expectedMajor
+     * @param int $expectedMinor
+     * @param int $expectedPatch
+     * @param string|PreRelease|null $expectedPreRelease
+     * @param string|Build|null $expectedBuild
+     */
     public function __construct(
         int $expectedMajor,
         int $expectedMinor,

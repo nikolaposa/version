@@ -17,6 +17,9 @@ script: ./vendor/bin/phpunit
 
 jobs:
   include:
+    - stage: Static Analysis
+      script: vendor/bin/phpstan analyse
+
     - stage: Coding Standards
       script: ./vendor/bin/php-cs-fixer fix -v --diff --dry-run
 

@@ -39,8 +39,8 @@ class VersionTest extends TestCase
      * @param int $major
      * @param int $minor
      * @param int $patch
-     * @param string|bool $preRelease
-     * @param string|bool $build
+     * @param string|null $preRelease
+     * @param string|null $build
      */
     public function it_can_be_created_from_string(string $versionString, int $major, int $minor, int $patch, $preRelease, $build): void
     {

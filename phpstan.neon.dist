@@ -1,0 +1,16 @@
+parameters:
+    level: 7
+    paths:
+        - src
+        - tests
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        - '~Method [a-zA-Z0-9\\_]+::from[a-zA-Z0-9_]*\(\) has no return typehint specified.~'
+        - '~Method [a-zA-Z0-9\\_]+OperationConstraint::[a-zA-Z0-9_]*\(\) has no return typehint specified.~'
+        - '~Method [a-zA-Z0-9\\_]+OperationConstraint::assert\(\) should return bool but return statement is missing.~'
+        - '~Method [a-zA-Z0-9\\_]+OperationConstraintParser::buildConstraint\(\) should return [a-zA-Z0-9\\_]+OperationConstraint but return statement is missing.~'
+
+includes:
+    - vendor/phpstan/phpstan-beberlei-assert/extension.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
