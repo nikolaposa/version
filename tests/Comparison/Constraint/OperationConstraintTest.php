@@ -27,6 +27,19 @@ class OperationConstraintTest extends TestCase
     /**
      * @test
      */
+    public function it_is_created_via_named_constructor(): void
+    {
+        $operand = Version::fromString('1.2.3');
+        $constraint = OperationConstraint::equalTo($operand);
+
+        $this->assertInstanceOf(OperationConstraint::class, $constraint);
+        $this->assertSame(OperationConstraint::OPERATOR_EQ, $constraint->getOperator());
+        $this->assertSame($operand, $constraint->getOperand());
+    }
+
+    /**
+     * @test
+     */
     public function it_validates_operator_input(): void
     {
         try {
@@ -50,32 +63,62 @@ class OperationConstraintTest extends TestCase
         $this->assertTrue($constraint->assert($version));
     }
 
+    public function getNamedConstructors(): array
+    {
+        return [
+            [
+                Version::fromString('1.0.0'),
+                OperationConstraint::equalTo(Version::fromString('1.0.0'))
+            ],
+            [
+                Version::fromString('2.0.0'),
+                OperationConstraint::notEqualTo(Version::fromString('1.0.0'))
+            ],
+            [
+                Version::fromString('1.1.0'),
+                OperationConstraint::greaterThan(Version::fromString('1.0.0'))
+            ],
+            [
+                Version::fromString('1.0.0'),
+                OperationConstraint::greaterOrEqualTo(Version::fromString('1.0.0'))
+            ],
+            [
+                Version::fromString('1.0.0'),
+                OperationConstraint::lessThan(Version::fromString('2.0.0'))
+            ],
+            [
+                Version::fromString('1.0.0'),
+                OperationConstraint::lessOrEqualTo(Version::fromString('1.0.0'))
+            ],
+        ];
+    }
+
     public function getConstraintAssertions(): array
     {
         return [
             [
                 Version::fromString('1.0.0'),
-                new OperationConstraint(OperationConstraint::OPERATOR_EQ, Version::fromString('1.0.0'))
+                OperationConstraint::equalTo(Version::fromString('1.0.0'))
             ],
             [
                 Version::fromString('2.0.0'),
-                new OperationConstraint(OperationConstraint::OPERATOR_NEQ, Version::fromString('1.0.0'))
+                OperationConstraint::notEqualTo(Version::fromString('1.0.0'))
             ],
             [
                 Version::fromString('1.1.0'),
-                new OperationConstraint(OperationConstraint::OPERATOR_GT, Version::fromString('1.0.0'))
+                OperationConstraint::greaterThan(Version::fromString('1.0.0'))
             ],
             [
                 Version::fromString('1.0.0'),
-                new OperationConstraint(OperationConstraint::OPERATOR_GTE, Version::fromString('1.0.0'))
+                OperationConstraint::greaterOrEqualTo(Version::fromString('1.0.0'))
             ],
             [
                 Version::fromString('1.0.0'),
-                new OperationConstraint(OperationConstraint::OPERATOR_LT, Version::fromString('2.0.0'))
+                OperationConstraint::lessThan(Version::fromString('2.0.0'))
             ],
             [
                 Version::fromString('1.0.0'),
-                new OperationConstraint(OperationConstraint::OPERATOR_LTE, Version::fromString('1.0.0'))
+                OperationConstraint::lessOrEqualTo(Version::fromString('1.0.0'))
             ],
         ];
     }
