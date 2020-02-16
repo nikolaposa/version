@@ -63,36 +63,6 @@ class OperationConstraintTest extends TestCase
         $this->assertTrue($constraint->assert($version));
     }
 
-    public function getNamedConstructors(): array
-    {
-        return [
-            [
-                Version::fromString('1.0.0'),
-                OperationConstraint::equalTo(Version::fromString('1.0.0'))
-            ],
-            [
-                Version::fromString('2.0.0'),
-                OperationConstraint::notEqualTo(Version::fromString('1.0.0'))
-            ],
-            [
-                Version::fromString('1.1.0'),
-                OperationConstraint::greaterThan(Version::fromString('1.0.0'))
-            ],
-            [
-                Version::fromString('1.0.0'),
-                OperationConstraint::greaterOrEqualTo(Version::fromString('1.0.0'))
-            ],
-            [
-                Version::fromString('1.0.0'),
-                OperationConstraint::lessThan(Version::fromString('2.0.0'))
-            ],
-            [
-                Version::fromString('1.0.0'),
-                OperationConstraint::lessOrEqualTo(Version::fromString('1.0.0'))
-            ],
-        ];
-    }
-
     public function getConstraintAssertions(): array
     {
         return [
