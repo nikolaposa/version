@@ -17,13 +17,13 @@ script: ./vendor/bin/phpunit
 
 jobs:
   include:
-    - stage: Static Analysis
+    - stage: Static analysis
       script: vendor/bin/phpstan analyse
 
-    - stage: Coding Standards
+    - stage: Coding standards
       script: ./vendor/bin/php-cs-fixer fix -v --diff --dry-run
 
-    - stage: Code Coverage
+    - stage: Code coverage
       script:
         - ./vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
       after_script:
