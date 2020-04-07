@@ -15,7 +15,7 @@ use Version\Extension\PreRelease;
 
 class Version implements JsonSerializable
 {
-    public const REGEX = '#^(?P<prefix>v|release\-)?(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:\-(?P<preRelease>(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*))*))?(?:\+(?P<build>[0-9a-zA-Z\-]+(?:\.[0-9a-zA-Z\-]+)*))?$#';
+    public const REGEX = '#^(?P<prefix>v|release\-)?(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)(\.|\-)(?P<patch>0|[1-9]\d*)(?:\-(?P<preRelease>(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*))*))?(?:\+(?P<build>[0-9a-zA-Z\-]+(?:\.[0-9a-zA-Z\-]+)*))?$#';
 
     /** @var int */
     protected $major;
