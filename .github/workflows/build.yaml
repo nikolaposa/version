@@ -121,3 +121,55 @@ jobs:
 
       - name: Run phpunit/phpunit
         run: vendor/bin/phpunit
+
+  code-coverage:
+    name: Code Coverage
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version:
+          - 7.2
+
+    steps:
+      - name: Checkout commit
+        if: github.event_name == 'push'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Checkout head commit
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: xdebug
+          php-version: ${{ matrix.php-version }}
+
+      - name: Determine composer cache directory
+        id: determine-composer-cache-directory
+        run: echo "::set-output name=directory::$(composer config cache-dir)"
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.determine-composer-cache-directory.outputs.directory }}
+          key: php-${{ matrix.php-version }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: php-${{ matrix.php-version }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction
+
+      - name: Collect code coverage with phpunit/phpunit and
+        run: vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
+
+      - name: Download code coverage reporter
+        run: wget https://scrutinizer-ci.com/ocular.phar
+
+      - name: Upload code coverage
+        run: php ocular.phar code-coverage:upload --format=php-clover clover.xml
