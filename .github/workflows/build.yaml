@@ -133,8 +133,17 @@ jobs:
           - 7.2
 
     steps:
-      - name: Checkout
+      - name: Checkout commit
+        if: github.event_name == 'push'
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Checkout head commit
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
