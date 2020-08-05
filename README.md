@@ -1,6 +1,5 @@
 # Version
 
-[![Build Status](https://travis-ci.com/nikolaposa/version.svg?branch=master)](https://travis-ci.com/nikolaposa/version)
 [![Build](https://github.com/nikolaposa/version/workflows/Build/badge.svg?branch=master)](https://github.com/nikolaposa/version/actions)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nikolaposa/version/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/nikolaposa/version/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/nikolaposa/version/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/nikolaposa/version/?branch=master)
