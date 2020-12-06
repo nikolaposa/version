@@ -81,7 +81,7 @@ jobs:
         run: composer install --no-interaction
 
       - name: Run friendsofphp/php-cs-fixer
-        run: vendor/bin/php-cs-fixer fix -v --diff --dry-run
+        run: tools/php-cs-fixer fix -v --diff --dry-run
 
   tests:
     name: Tests
@@ -94,6 +94,7 @@ jobs:
           - 7.2
           - 7.3
           - 7.4
+          - 8.0
 
     steps:
       - name: Checkout
