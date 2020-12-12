@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 4.1.0 – 2020-12-12
+
+- [35: Allow PHP 8 installations](https://github.com/nikolaposa/version/pull/35)
+- PHPStan integration
+- Migration to GitHub Actions thanks to [Andreas Möller](https://github.com/localheinz)
+  - [PHPStan](https://github.com/nikolaposa/version/pull/28)
+  - [PHP CS-Fixer](https://github.com/nikolaposa/version/pull/29)
+  - [PHPUnit](https://github.com/nikolaposa/version/pull/30)
+
 ## 4.0.0 - 2019-12-29
 
 ### Changed
@@ -141,4 +150,4 @@ All notable changes to this project will be documented in this file.
 This release is abandoned, please consider upgrading to 2.x.
 
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/4.0.0...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/4.1.0...HEAD
