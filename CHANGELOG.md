@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 4.1.1 – 2023-08-04
+
+### Fixed
+- [36: Add CS / SA files to .gitattributes](https://github.com/nikolaposa/version/pull/36)
+ 
 ## 4.1.0 – 2020-12-12
 
 - [35: Allow PHP 8 installations](https://github.com/nikolaposa/version/pull/35)
