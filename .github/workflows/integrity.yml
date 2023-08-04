@@ -1,0 +1,11 @@
+name: "Integrity"
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  call_workflow_integrity:
+    name: "Integrity"
+    uses: "szepeviktor/byte-level-care/.github/workflows/integrity.yml@master"
