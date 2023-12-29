@@ -29,7 +29,7 @@ class Version implements JsonSerializable
 
     protected string $prefix = '';
 
-    protected static ?Comparator $comparator;
+    protected static ?Comparator $comparator = null;
 
     final protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease = null, Build $build = null)
     {
