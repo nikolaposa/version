@@ -63,7 +63,7 @@ class OperationConstraintTest extends TestCase
         $this->assertTrue($constraint->assert($version));
     }
 
-    public function getConstraintAssertions(): array
+    public static function getConstraintAssertions(): array
     {
         return [
             [

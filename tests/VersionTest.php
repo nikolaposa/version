@@ -214,7 +214,7 @@ class VersionTest extends TestCase
         }
     }
 
-    public function getInvalidVersionStrings(): array
+    public static function getInvalidVersionStrings(): array
     {
         return [
             'tooManySubVersions' => ['1.5.2.4.4'],
