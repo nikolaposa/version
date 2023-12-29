@@ -14,7 +14,7 @@ use Version\Exception\CollectionIsEmpty;
 class VersionCollection implements Countable, IteratorAggregate
 {
     /** @var Version[] */
-    protected $versions;
+    protected array $versions;
 
     final public function __construct(Version ...$versions)
     {
@@ -61,7 +61,7 @@ class VersionCollection implements Countable, IteratorAggregate
     {
         $versions = $this->versions;
 
-        usort($versions, function (Version $a, Version $b) {
+        usort($versions, static function (Version $a, Version $b) {
             return $a->compareTo($b);
         });
 
@@ -72,7 +72,7 @@ class VersionCollection implements Countable, IteratorAggregate
     {
         $versions = $this->versions;
 
-        usort($versions, function (Version $a, Version $b) {
+        usort($versions, static function (Version $a, Version $b) {
             return $a->compareTo($b) * -1;
         });
 
@@ -83,7 +83,7 @@ class VersionCollection implements Countable, IteratorAggregate
     {
         return new static(...array_filter(
             $this->versions,
-            function (Version $version) use ($constraint) {
+            static function (Version $version) use ($constraint) {
                 return $version->matches($constraint);
             }
         ));
@@ -93,7 +93,7 @@ class VersionCollection implements Countable, IteratorAggregate
     {
         return new static(...array_filter(
             $this->versions,
-            function (Version $version) {
+            static function (Version $version) {
                 return $version->isMajorRelease();
             }
         ));
@@ -103,7 +103,7 @@ class VersionCollection implements Countable, IteratorAggregate
     {
         return new static(...array_filter(
             $this->versions,
-            function (Version $version) {
+            static function (Version $version) {
                 return $version->isMinorRelease();
             }
         ));
@@ -113,7 +113,7 @@ class VersionCollection implements Countable, IteratorAggregate
     {
         return new static(...array_filter(
             $this->versions,
-            function (Version $version) {
+            static function (Version $version) {
                 return $version->isPatchRelease();
             }
         ));

@@ -34,15 +34,8 @@ class VersionTest extends TestCase
     /**
      * @test
      * @dataProvider getVersionStrings
-     *
-     * @param string $versionString
-     * @param int $major
-     * @param int $minor
-     * @param int $patch
-     * @param string|null $preRelease
-     * @param string|null $build
      */
-    public function it_can_be_created_from_string(string $versionString, int $major, int $minor, int $patch, $preRelease, $build): void
+    public function it_can_be_created_from_string(string $versionString, int $major, int $minor, int $patch, ?string $preRelease, ?string $build): void
     {
         $version = Version::fromString($versionString);
 
@@ -65,9 +58,6 @@ class VersionTest extends TestCase
     /**
      * @test
      * @dataProvider getPrintedVersionStrings
-     *
-     * @param string $versionString
-     * @param Version $version
      */
     public function it_casts_to_string(Version $version, string $versionString): void
     {
@@ -96,9 +86,6 @@ class VersionTest extends TestCase
     /**
      * @test
      * @dataProvider getPrintedVersionStrings
-     *
-     * @param string $versionString
-     * @param Version $version
      */
     public function it_casts_to_json(Version $version, string $versionString): void
     {
@@ -118,9 +105,6 @@ class VersionTest extends TestCase
     /**
      * @test
      * @dataProvider getVersionArrays
-     *
-     * @param string $versionString
-     * @param array $versionArray
      */
     public function it_casts_to_array(string $versionString, array $versionArray): void
     {
@@ -217,8 +201,6 @@ class VersionTest extends TestCase
     /**
      * @test
      * @dataProvider getInvalidVersionStrings
-     *
-     * @param string $invalidVersion
      */
     public function it_validates_version_string_input(string $invalidVersion): void
     {

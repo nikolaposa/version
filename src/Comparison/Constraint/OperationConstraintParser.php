@@ -12,27 +12,24 @@ class OperationConstraintParser
 {
     public const OPERATOR_OR = '||';
 
-    /** @var string */
-    protected $constraintString;
+    protected string $constraintString;
 
-    /** @var array */
-    protected $constraintParts = [];
+    protected array $constraintParts = [];
 
     /**
-     * @param string $constraintString
      * @return OperationConstraint|CompositeConstraint
      */
     public function parse(string $constraintString)
     {
         $constraintString = trim($constraintString);
 
-        if ('' === $constraintString) {
+        if ($constraintString === '') {
             throw InvalidConstraintString::empty();
         }
 
         $this->constraintString = $constraintString;
 
-        if (! $this->isMultiPartConstraint()) {
+        if (!$this->isMultiPartConstraint()) {
             return $this->buildConstraint($this->constraintString);
         }
 
@@ -43,7 +40,7 @@ class OperationConstraintParser
 
     protected function isMultiPartConstraint(): bool
     {
-        return (false !== strpos($this->constraintString, ' '));
+        return str_contains($this->constraintString, ' ');
     }
 
     protected function splitConstraintParts(): void
@@ -65,7 +62,7 @@ class OperationConstraintParser
                 $operator ?: OperationConstraint::OPERATOR_EQ,
                 Version::fromString($operandString)
             );
-        } catch (VersionException $ex) {
+        } catch (VersionException) {
             $this->error();
         }
     }

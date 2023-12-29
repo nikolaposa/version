@@ -11,7 +11,7 @@ use Version\VersionCollection;
 final class VersionCollectionIsIdentical extends Constraint
 {
     /** @var VersionIsIdentical[] */
-    private $isIdenticalConstraints;
+    private array $isIdenticalConstraints = [];
 
     public function __construct(array $expectedVersions)
     {
@@ -43,7 +43,7 @@ final class VersionCollectionIsIdentical extends Constraint
 
             $isIdenticalConstraint = $this->isIdenticalConstraints[$i];
 
-            if (! $isIdenticalConstraint->evaluate($version, '', true)) {
+            if (!$isIdenticalConstraint->evaluate($version, '', true)) {
                 return false;
             }
         }

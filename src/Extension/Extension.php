@@ -10,8 +10,7 @@ abstract class Extension
 {
     protected const IDENTIFIERS_SEPARATOR = '.';
 
-    /** @var array */
-    private $identifiers;
+    private array $identifiers;
 
     final protected function __construct(array $identifiers)
     {
@@ -25,17 +24,17 @@ abstract class Extension
      */
     abstract protected function validate(array $identifiers): void;
 
-    public static function from(string $identifier, string ...$identifiers)
+    public static function from(string $identifier, string ...$identifiers): static
     {
         return new static(func_get_args());
     }
 
-    public static function fromArray(array $identifiers)
+    public static function fromArray(array $identifiers): static
     {
         return new static($identifiers);
     }
 
-    public static function fromString(string $extension)
+    public static function fromString(string $extension): static
     {
         return new static(explode(self::IDENTIFIERS_SEPARATOR, trim($extension)));
     }

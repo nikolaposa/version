@@ -11,14 +11,14 @@ use Version\Extension\Extension;
 abstract class ExtensionTest extends TestCase
 {
     /** @var string|Extension */
-    protected $extensionClass;
+    protected $extensionClassName;
 
     /**
      * @test
      */
     public function it_is_created_from_identifiers_list(): void
     {
-        $extension = $this->extensionClass::from('123', '456');
+        $extension = $this->extensionClassName::from('123', '456');
 
         $this->assertSame(['123', '456'], $extension->getIdentifiers());
     }
@@ -28,7 +28,7 @@ abstract class ExtensionTest extends TestCase
      */
     public function it_can_be_created_from_string(): void
     {
-        $extension = $this->extensionClass::fromString('123.456');
+        $extension = $this->extensionClassName::fromString('123.456');
 
         $this->assertSame(['123', '456'], $extension->getIdentifiers());
     }
@@ -38,7 +38,7 @@ abstract class ExtensionTest extends TestCase
      */
     public function it_can_be_created_from_array(): void
     {
-        $extension = $this->extensionClass::fromArray(['123', '456']);
+        $extension = $this->extensionClassName::fromArray(['123', '456']);
 
         $this->assertSame(['123', '456'], $extension->getIdentifiers());
     }
@@ -48,7 +48,7 @@ abstract class ExtensionTest extends TestCase
      */
     public function it_casts_to_string(): void
     {
-        $extension = $this->extensionClass::from('123', '456');
+        $extension = $this->extensionClassName::from('123', '456');
 
         $this->assertSame('123.456', $extension->toString());
     }
@@ -59,7 +59,7 @@ abstract class ExtensionTest extends TestCase
     public function it_validates_identifier_input(): void
     {
         try {
-            $this->extensionClass::from('$123');
+            $this->extensionClassName::from('$123');
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
@@ -73,7 +73,7 @@ abstract class ExtensionTest extends TestCase
     public function it_validates_empty_identifier_input(): void
     {
         try {
-            $this->extensionClass::from('123', '');
+            $this->extensionClassName::from('123', '');
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {
@@ -87,7 +87,7 @@ abstract class ExtensionTest extends TestCase
     public function it_validates_empty_array_input(): void
     {
         try {
-            $this->extensionClass::fromArray([]);
+            $this->extensionClassName::fromArray([]);
 
             $this->fail('Exception should have been raised');
         } catch (InvalidVersion $ex) {

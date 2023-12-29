@@ -92,7 +92,7 @@ class OperationConstraintParsingTest extends TestCase
 
             $this->fail('Exception should have been raised');
         } catch (InvalidConstraintString $ex) {
-            $this->assertSame('Comparision constraint string must not be empty', $ex->getMessage());
+            $this->assertSame('Comparison constraint string must not be empty', $ex->getMessage());
         }
     }
 
@@ -106,7 +106,7 @@ class OperationConstraintParsingTest extends TestCase
 
             $this->fail('Exception should have been raised');
         } catch (InvalidConstraintString $ex) {
-            $this->assertSame("Comparision constraint string: '\"100' is not valid and cannot be parsed", $ex->getMessage());
+            $this->assertSame("Comparison constraint string: '\"100' is not valid and cannot be parsed", $ex->getMessage());
         }
     }
 
@@ -120,7 +120,7 @@ class OperationConstraintParsingTest extends TestCase
 
             $this->fail('Exception should have been raised');
         } catch (InvalidConstraintString $ex) {
-            $this->assertSame("Comparision constraint string: '>100' is not valid and cannot be parsed", $ex->getMessage());
+            $this->assertSame("Comparison constraint string: '>100' is not valid and cannot be parsed", $ex->getMessage());
         }
     }
 
@@ -134,7 +134,7 @@ class OperationConstraintParsingTest extends TestCase
 
             $this->fail('Exception should have been raised');
         } catch (InvalidConstraintString $ex) {
-            $this->assertSame("Comparision constraint string: '>=1.0.0 <1.1.0 ||' is not valid and cannot be parsed", $ex->getMessage());
+            $this->assertSame("Comparison constraint string: '>=1.0.0 <1.1.0 ||' is not valid and cannot be parsed", $ex->getMessage());
         }
     }
 

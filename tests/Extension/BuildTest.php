@@ -8,5 +8,5 @@ use Version\Extension\Build;
 
 class BuildTest extends ExtensionTest
 {
-    protected $extensionClass = Build::class;
+    protected $extensionClassName = Build::class;
 }

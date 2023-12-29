@@ -17,11 +17,9 @@ class OperationConstraint implements Constraint
     public const OPERATOR_LT = '<';
     public const OPERATOR_LTE = '<=';
 
-    /** @var string */
-    protected $operator;
+    protected string $operator;
 
-    /** @var Version */
-    protected $operand;
+    protected Version $operand;
 
     final public function __construct(string $operator, Version $operand)
     {
@@ -31,41 +29,37 @@ class OperationConstraint implements Constraint
         $this->operand = $operand;
     }
 
-    public static function equalTo(Version $operand)
+    public static function equalTo(Version $operand): static
     {
         return new static(self::OPERATOR_EQ, $operand);
     }
 
-    public static function notEqualTo(Version $operand)
+    public static function notEqualTo(Version $operand): static
     {
         return new static(self::OPERATOR_NEQ, $operand);
     }
 
-    public static function greaterThan(Version $operand)
+    public static function greaterThan(Version $operand): static
     {
         return new static(self::OPERATOR_GT, $operand);
     }
 
-    public static function greaterOrEqualTo(Version $operand)
+    public static function greaterOrEqualTo(Version $operand): static
     {
         return new static(self::OPERATOR_GTE, $operand);
     }
 
-    public static function lessThan(Version $operand)
+    public static function lessThan(Version $operand): static
     {
         return new static(self::OPERATOR_LT, $operand);
     }
 
-    public static function lessOrEqualTo(Version $operand)
+    public static function lessOrEqualTo(Version $operand): static
     {
         return new static(self::OPERATOR_LTE, $operand);
     }
 
-    /**
-     * @param string $constraintString
-     * @return OperationConstraint|CompositeConstraint
-     */
-    public static function fromString(string $constraintString)
+    public static function fromString(string $constraintString): CompositeConstraint|OperationConstraint
     {
         static $parser = null;
 
@@ -88,31 +82,26 @@ class OperationConstraint implements Constraint
 
     public function assert(Version $version): bool
     {
-        switch ($this->operator) {
-            case self::OPERATOR_EQ:
-                return $version->isEqualTo($this->operand);
-            case self::OPERATOR_NEQ:
-                return !$version->isEqualTo($this->operand);
-            case self::OPERATOR_GT:
-                return $version->isGreaterThan($this->operand);
-            case self::OPERATOR_GTE:
-                return $version->isGreaterOrEqualTo($this->operand);
-            case self::OPERATOR_LT:
-                return $version->isLessThan($this->operand);
-            case self::OPERATOR_LTE:
-                return $version->isLessOrEqualTo($this->operand);
-        }
+        return match ($this->operator) {
+            self::OPERATOR_EQ => $version->isEqualTo($this->operand),
+            self::OPERATOR_NEQ => !$version->isEqualTo($this->operand),
+            self::OPERATOR_GT => $version->isGreaterThan($this->operand),
+            self::OPERATOR_GTE => $version->isGreaterOrEqualTo($this->operand),
+            self::OPERATOR_LT => $version->isLessThan($this->operand),
+            self::OPERATOR_LTE => $version->isLessOrEqualTo($this->operand),
+            default => throw InvalidOperationConstraint::unsupportedOperator($this->operator),
+        };
     }
 
     protected function validateOperator(string $operator): void
     {
         static $validOperators = null;
 
-        if (null === $validOperators) {
+        if ($validOperators === null) {
             $validOperators = (new ReflectionClass($this))->getConstants();
         }
 
-        if (! in_array($operator, $validOperators, true)) {
+        if (!in_array($operator, $validOperators, true)) {
             throw InvalidOperationConstraint::unsupportedOperator($operator);
         }
     }

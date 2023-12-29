@@ -12,11 +12,9 @@ class CompositeConstraint implements Constraint
     public const OPERATOR_AND = 'AND';
     public const OPERATOR_OR = 'OR';
 
-    /** @var string */
-    protected $operator;
+    protected string $operator;
 
-    /** @var Constraint[] */
-    protected $constraints;
+    protected array $constraints;
 
     final public function __construct(string $operator, Constraint $constraint, Constraint ...$constraints)
     {
@@ -60,7 +58,7 @@ class CompositeConstraint implements Constraint
     protected function assertAnd(Version $version): bool
     {
         foreach ($this->constraints as $constraint) {
-            if (! $constraint->assert($version)) {
+            if (!$constraint->assert($version)) {
                 return false;
             }
         }

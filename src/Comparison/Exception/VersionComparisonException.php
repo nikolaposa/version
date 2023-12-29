@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Version\Comparison\Exception;
 
-use Throwable;
+use Version\Exception\VersionException;
 
-interface VersionComparisonException extends Throwable
+interface VersionComparisonException extends VersionException
 {
 }
