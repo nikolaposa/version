@@ -8,8 +8,7 @@ use InvalidArgumentException;
 
 class InvalidVersionString extends InvalidArgumentException implements VersionException
 {
-    /** @var string */
-    protected $versionString;
+    protected string $versionString;
 
     public static function notParsable(string $versionString): self
     {

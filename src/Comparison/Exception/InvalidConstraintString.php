@@ -7,17 +7,17 @@ namespace Version\Comparison\Exception;
 use InvalidArgumentException;
 use Version\Exception\VersionException;
 
-class InvalidConstraintString extends InvalidArgumentException implements VersionException
+class InvalidConstraintString extends InvalidArgumentException implements VersionComparisonException
 {
     public static function empty(): self
     {
-        return new self('Comparision constraint string must not be empty');
+        return new self('Comparison constraint string must not be empty');
     }
 
     public static function notParsable(string $constraintString): self
     {
         return new self(sprintf(
-            "Comparision constraint string: '%s' is not valid and cannot be parsed",
+            "Comparison constraint string: '%s' is not valid and cannot be parsed",
             $constraintString
         ));
     }

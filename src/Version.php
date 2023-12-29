@@ -17,26 +17,19 @@ class Version implements JsonSerializable
 {
     public const REGEX = '#^(?P<prefix>v|release\-)?(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:\-(?P<preRelease>(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z\-][0-9a-zA-Z\-]*))*))?(?:\+(?P<build>[0-9a-zA-Z\-]+(?:\.[0-9a-zA-Z\-]+)*))?$#';
 
-    /** @var int */
-    protected $major;
+    protected int $major;
 
-    /** @var int */
-    protected $minor;
+    protected int $minor;
 
-    /** @var int */
-    protected $patch;
+    protected int $patch;
 
-    /** @var PreRelease|null */
-    protected $preRelease;
+    protected ?PreRelease $preRelease;
 
-    /** @var Build|null */
-    protected $build;
+    protected ?Build $build;
 
-    /** @var string */
-    protected $prefix;
+    protected string $prefix = '';
 
-    /** @var Comparator|null */
-    protected static $comparator;
+    protected static ?Comparator $comparator;
 
     final protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease = null, Build $build = null)
     {
@@ -51,7 +44,7 @@ class Version implements JsonSerializable
         $this->build = $build;
     }
 
-    public static function from(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null)
+    public static function from(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null): Version
     {
         return new static($major, $minor, $patch, $preRelease, $build);
     }
@@ -59,7 +52,7 @@ class Version implements JsonSerializable
     /**
      * @throws InvalidVersionString
      */
-    public static function fromString(string $versionString)
+    public static function fromString(string $versionString): Version
     {
         if (!preg_match(self::REGEX, $versionString, $parts)) {
             throw InvalidVersionString::notParsable($versionString);
@@ -102,65 +95,40 @@ class Version implements JsonSerializable
         return $this->build;
     }
 
-    /**
-     * @param Version|string $version
-     * @return bool
-     */
-    public function isEqualTo($version): bool
+    public function isEqualTo(Version|string $version): bool
     {
         return $this->compareTo($version) === 0;
     }
 
-    /**
-     * @param Version|string $version
-     * @return bool
-     */
-    public function isNotEqualTo($version): bool
+    public function isNotEqualTo(Version|string $version): bool
     {
         return !$this->isEqualTo($version);
     }
 
-    /**
-     * @param Version|string $version
-     * @return bool
-     */
-    public function isGreaterThan($version): bool
+    public function isGreaterThan(Version|string $version): bool
     {
         return $this->compareTo($version) > 0;
     }
 
-    /**
-     * @param Version|string $version
-     * @return bool
-     */
-    public function isGreaterOrEqualTo($version): bool
+    public function isGreaterOrEqualTo(Version|string $version): bool
     {
         return $this->compareTo($version) >= 0;
     }
 
-    /**
-     * @param Version|string $version
-     * @return bool
-     */
-    public function isLessThan($version): bool
+    public function isLessThan(Version|string $version): bool
     {
         return $this->compareTo($version) < 0;
     }
 
-    /**
-     * @param Version|string $version
-     * @return bool
-     */
-    public function isLessOrEqualTo($version): bool
+    public function isLessOrEqualTo(Version|string $version): bool
     {
         return $this->compareTo($version) <= 0;
     }
 
     /**
-     * @param Version|string $version
      * @return int (1 if $this > $version, -1 if $this < $version, 0 if equal)
      */
-    public function compareTo($version): int
+    public function compareTo(Version|string $version): int
     {
         if (is_string($version)) {
             $version = static::fromString($version);
@@ -186,12 +154,12 @@ class Version implements JsonSerializable
 
     public function isPreRelease(): bool
     {
-        return null !== $this->preRelease;
+        return $this->preRelease !== null;
     }
 
     public function hasBuild(): bool
     {
-        return null !== $this->build;
+        return $this->build !== null;
     }
 
     public function incrementMajor(): Version
@@ -209,11 +177,7 @@ class Version implements JsonSerializable
         return new static($this->major, $this->minor, $this->patch + 1);
     }
 
-    /**
-     * @param PreRelease|string|null $preRelease
-     * @return Version
-     */
-    public function withPreRelease($preRelease): Version
+    public function withPreRelease(PreRelease|string|null $preRelease): Version
     {
         if (is_string($preRelease)) {
             $preRelease = PreRelease::fromString($preRelease);
@@ -222,11 +186,7 @@ class Version implements JsonSerializable
         return new static($this->major, $this->minor, $this->patch, $preRelease);
     }
 
-    /**
-     * @param Build|string|null $build
-     * @return Version
-     */
-    public function withBuild($build): Version
+    public function withBuild(Build|string|null $build): Version
     {
         if (is_string($build)) {
             $build = Build::fromString($build);
@@ -247,8 +207,8 @@ class Version implements JsonSerializable
             . $this->major
             . '.' . $this->minor
             . '.' . $this->patch
-            . ((null !== $this->preRelease) ? '-' . $this->preRelease->toString() : '')
-            . ((null !== $this->build) ? '+' . $this->build->toString() : '')
+            . (($this->preRelease !== null) ? '-' . $this->preRelease->toString() : '')
+            . (($this->build !== null) ? '+' . $this->build->toString() : '')
         ;
     }
 
@@ -268,8 +228,8 @@ class Version implements JsonSerializable
             'major' => $this->major,
             'minor' => $this->minor,
             'patch' => $this->patch,
-            'preRelease' => (null !== $this->preRelease) ? $this->preRelease->getIdentifiers() : null,
-            'build' => (null !== $this->build) ? $this->build->getIdentifiers() : null,
+            'preRelease' => ($this->preRelease !== null) ? $this->preRelease->getIdentifiers() : null,
+            'build' => ($this->build !== null) ? $this->build->getIdentifiers() : null,
         ];
     }
 
@@ -280,7 +240,7 @@ class Version implements JsonSerializable
 
     protected function getComparator(): Comparator
     {
-        if (null === static::$comparator) {
+        if (static::$comparator === null) {
             static::$comparator = new SemverComparator();
         }
 

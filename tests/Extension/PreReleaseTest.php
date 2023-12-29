@@ -8,5 +8,5 @@ use Version\Extension\PreRelease;
 
 class PreReleaseTest extends ExtensionTest
 {
-    protected $extensionClass = PreRelease::class;
+    protected $extensionClassName = PreRelease::class;
 }
