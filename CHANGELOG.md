@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 4.2.0 - 2023-12-29
+
+### Changed
+- Updated code to use PHP 8 syntax
+- PHPUnit 8.1 is now the minimum required version
+
 ## 4.1.1 – 2023-08-04
 
 ### Fixed
@@ -155,4 +161,4 @@ All notable changes to this project will be documented in this file.
 This release is abandoned, please consider upgrading to 2.x.
 
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/4.1.0...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/4.2.0...HEAD
