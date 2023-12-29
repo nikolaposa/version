@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Version\Exception\InvalidVersion;
 use Version\Extension\Extension;
 
-abstract class ExtensionTest extends TestCase
+class ExtensionTest extends TestCase
 {
     /** @var string|Extension */
     protected $extensionClassName;

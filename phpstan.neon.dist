@@ -5,8 +5,12 @@ parameters:
         - tests
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
+    earlyTerminatingMethodCalls:
+        Version\Comparison\Constraint\OperationConstraintParser:
+            - error
     ignoreErrors:
-        - '~Method [a-zA-Z0-9\\_]+OperationConstraintParser::buildConstraint\(\) should return [a-zA-Z0-9\\_]+OperationConstraint but return statement is missing.~'
+            - '~Method [a-zA-Z0-9\\_]+::matches\(\) has parameter \$[a-zA-Z0-9]+ with no type specified.~'
+
 
 includes:
     - vendor/phpstan/phpstan-beberlei-assert/extension.neon
