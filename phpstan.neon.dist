@@ -5,9 +5,10 @@ parameters:
         - tests
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
-    ignoreErrors:
-        -
-            message: '#Method Version\\Comparison\\Constraint\\OperationConstraintParser::buildConstraint\(\) should return Version\\Comparison\\Constraint\\OperationConstraint but return statement is missing.#'
+    earlyTerminatingMethodCalls:
+        Version\Comparison\Constraint\OperationConstraintParser:
+            - error
+
 
 includes:
     - vendor/phpstan/phpstan-beberlei-assert/extension.neon
