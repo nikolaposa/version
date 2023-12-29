@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Updated code to use PHP 8 syntax
-- PHPUnit 8.1 is now the minimum required version
+- PHP 8.1 is now the minimum required version
 
 ## 4.1.1 – 2023-08-04
 
