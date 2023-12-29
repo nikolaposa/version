@@ -8,6 +8,8 @@ parameters:
     earlyTerminatingMethodCalls:
         Version\Comparison\Constraint\OperationConstraintParser:
             - error
+    ignoreErrors:
+            - '~Method [a-zA-Z0-9\\_]+::matches\(\) has parameter \$[a-zA-Z0-9]+ with no type specified.~'
 
 
 includes:
