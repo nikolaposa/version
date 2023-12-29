@@ -6,7 +6,8 @@ parameters:
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
-        - '~Method [a-zA-Z0-9\\_]+OperationConstraintParser::buildConstraint\(\) should return [a-zA-Z0-9\\_]+OperationConstraint but return statement is missing.~'
+        -
+            message: '#Method Version\\Comparison\\Constraint\\OperationConstraintParser::buildConstraint\(\) should return Version\\Comparison\\Constraint\\OperationConstraint but return statement is missing.#'
 
 includes:
     - vendor/phpstan/phpstan-beberlei-assert/extension.neon
