@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated code to use PHP 8 syntax
 - PHP 8.1 is now the minimum required version
+- Updated dependencies to their latest versions
 
 ## 4.1.1 – 2023-08-04
 
