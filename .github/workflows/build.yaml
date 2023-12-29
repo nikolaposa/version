@@ -165,11 +165,11 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction
 
+      - name: Download code coverage reporter
+        run: composer global require scrutinizer/ocular
+
       - name: Collect code coverage with phpunit/phpunit and
         run: vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
 
-      - name: Download code coverage reporter
-        run: wget https://scrutinizer-ci.com/ocular.phar
-
       - name: Upload code coverage
-        run: php ocular.phar code-coverage:upload --format=php-clover clover.xml
+        run: ~/.composer/vendor/bin/ocular code-coverage:upload --format=php-clover clover.xml
