@@ -6,11 +6,11 @@ namespace Version;
 
 use JsonSerializable;
 use Version\Assert\VersionAssert;
-use Version\Extension\Build;
-use Version\Exception\InvalidVersionString;
 use Version\Comparison\Comparator;
-use Version\Comparison\SemverComparator;
 use Version\Comparison\Constraint\Constraint;
+use Version\Comparison\SemverComparator;
+use Version\Exception\InvalidVersionString;
+use Version\Extension\Build;
 use Version\Extension\PreRelease;
 
 class Version implements JsonSerializable
@@ -31,7 +31,8 @@ class Version implements JsonSerializable
 
     protected static ?Comparator $comparator = null;
 
-    final protected function __construct(int $major, int $minor, int $patch, PreRelease $preRelease = null, Build $build = null)
+
+    final protected function __construct(int $major, int $minor, int $patch, ?PreRelease $preRelease = NULL, ?Build $build = NULL)
     {
         VersionAssert::that($major)->greaterOrEqualThan(0, 'Major version must be positive integer');
         VersionAssert::that($minor)->greaterOrEqualThan(0, 'Minor version must be positive integer');
@@ -44,7 +45,8 @@ class Version implements JsonSerializable
         $this->build = $build;
     }
 
-    public static function from(int $major, int $minor = 0, int $patch = 0, PreRelease $preRelease = null, Build $build = null): Version
+
+    public static function from(int $major, int $minor = 0, int $patch = 0, ?PreRelease $preRelease = NULL, ?Build $build = NULL): Version
     {
         return new static($major, $minor, $patch, $preRelease, $build);
     }
