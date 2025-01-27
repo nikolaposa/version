@@ -6,11 +6,11 @@
 
     use JsonSerializable;
     use Version\Assert\VersionAssert;
-    use Version\Extension\Build;
-    use Version\Exception\InvalidVersionString;
     use Version\Comparison\Comparator;
-    use Version\Comparison\SemverComparator;
     use Version\Comparison\Constraint\Constraint;
+    use Version\Comparison\SemverComparator;
+    use Version\Exception\InvalidVersionString;
+    use Version\Extension\Build;
     use Version\Extension\PreRelease;
 
     class Version implements JsonSerializable
@@ -65,7 +65,7 @@
                 (isset($parts['preRelease']) && '' !== $parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : null,
                 (isset($parts['build']) && '' !== $parts['build']) ? Build::fromString($parts['build']) : null
             );
-            $version->prefix = $parts['prefix'] ?? '';
+            $version->prefix = $parts[ 'prefix' ];
 
             return $version;
         }
