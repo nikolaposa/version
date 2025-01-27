@@ -30,7 +30,6 @@ final class VersionIsIdentical extends Constraint
         );
     }
 
-
     protected function matches($version): bool
     {
         /* @var $version Version */
@@ -52,7 +51,6 @@ final class VersionIsIdentical extends Constraint
             )
         );
     }
-
 
     public function toString(): string
     {
