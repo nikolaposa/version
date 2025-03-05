@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -34,7 +34,7 @@ jobs:
         run: echo "::set-output name=directory::$(composer config cache-dir)"
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.determine-composer-cache-directory.outputs.directory }}
           key: php-${{ matrix.php-version }}-composer-${{ hashFiles('composer.json') }}
@@ -58,7 +58,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -71,7 +71,7 @@ jobs:
         run: echo "::set-output name=directory::$(composer config cache-dir)"
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.determine-composer-cache-directory.outputs.directory }}
           key: php-${{ matrix.php-version }}-composer-${{ hashFiles('composer.json') }}
@@ -94,10 +94,11 @@ jobs:
           - 8.1
           - 8.2
           - 8.3
+          - 8.4
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -110,7 +111,7 @@ jobs:
         run: echo "::set-output name=directory::$(composer config cache-dir)"
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.determine-composer-cache-directory.outputs.directory }}
           key: php-${{ matrix.php-version }}-composer-${{ hashFiles('composer.json') }}
@@ -142,7 +143,7 @@ jobs:
 
       - name: Checkout head commit
         if: github.event_name == 'pull_request'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 10
@@ -158,7 +159,7 @@ jobs:
         run: echo "::set-output name=directory::$(composer config cache-dir)"
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.determine-composer-cache-directory.outputs.directory }}
           key: php-${{ matrix.php-version }}-composer-${{ hashFiles('composer.json') }}
