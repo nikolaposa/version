@@ -59,13 +59,13 @@ class Version implements JsonSerializable
         }
 
         $version = new static(
-            (int) $parts['major'],
-            (int) $parts['minor'],
-            (int) $parts['patch'],
+            (int)$parts['major'],
+            (int)$parts['minor'],
+            (int)$parts['patch'],
             (isset($parts['preRelease']) && '' !== $parts['preRelease']) ? PreRelease::fromString($parts['preRelease']) : null,
             (isset($parts['build']) && '' !== $parts['build']) ? Build::fromString($parts['build']) : null
         );
-        $version->prefix = $parts['prefix'] ?? '';
+        $version->prefix = $parts['prefix'];
 
         return $version;
     }
@@ -208,8 +208,7 @@ class Version implements JsonSerializable
             . '.' . $this->minor
             . '.' . $this->patch
             . (($this->preRelease !== null) ? '-' . $this->preRelease->toString() : '')
-            . (($this->build !== null) ? '+' . $this->build->toString() : '')
-        ;
+            . (($this->build !== null) ? '+' . $this->build->toString() : '');
     }
 
     public function __toString(): string

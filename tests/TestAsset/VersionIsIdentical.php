@@ -14,11 +14,11 @@ final class VersionIsIdentical extends Constraint
     private Version $expectedVersion;
 
     public function __construct(
-        int $expectedMajor,
-        int $expectedMinor,
-        int $expectedPatch,
-        PreRelease|string $expectedPreRelease = null,
-        Build|string $expectedBuild = null
+        int                    $expectedMajor,
+        int                    $expectedMinor,
+        int                    $expectedPatch,
+        PreRelease|string|null $expectedPreRelease = null,
+        Build|string|null      $expectedBuild = null
     ) {
         $this->expectedVersion = Version::from(
             $expectedMajor,
