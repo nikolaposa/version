@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 4.2.1 - 2025-03-25
+
+### Fixed
+- [Fix .gitattributes](https://github.com/nikolaposa/version/pull/41)
+- [Explicit nullable types](https://github.com/nikolaposa/version/pull/43)
+
 ## 4.2.0 - 2023-12-29
 
 ### Changed
@@ -162,4 +168,4 @@ All notable changes to this project will be documented in this file.
 This release is abandoned, please consider upgrading to 2.x.
 
 
-[Unreleased]: https://github.com/nikolaposa/version/compare/4.2.0...HEAD
+[Unreleased]: https://github.com/nikolaposa/version/compare/4.2.1...HEAD
